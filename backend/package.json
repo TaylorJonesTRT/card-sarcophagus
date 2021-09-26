@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "echo",
-    "test": "echo"
+    "test": "jest ./tests --passWithNoTests"
   },
   "dependencies": {
     "@types/node": "^16.10.1",
