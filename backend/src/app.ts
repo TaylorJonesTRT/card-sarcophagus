@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 // import middleware from './middlewares';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 
 const app = express();
