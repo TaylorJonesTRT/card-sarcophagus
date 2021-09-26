@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "build": "echo",
-    "test": "jest ./tests --passWithNoTests"
+    "test": "jest ./tests --passWithNoTests",
+    "lint": "eslint"
   },
   "dependencies": {
     "@types/node": "^16.10.1",

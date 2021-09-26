@@ -3,4 +3,5 @@
 
 # Need to update this for when work on the frontend is started to run its commands
 cd ./backend
+yarn run lint
 yarn test
