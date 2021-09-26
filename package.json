@@ -1,0 +1,15 @@
+{
+  "name": "card-sarcophagus",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:TaylorJonesTRT/card-sarcophagus.git",
+  "author": "Taylor Jones <taylor@taylorwjones.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "husky": "^7.0.2"
+  },
+  "scripts": {
+    "precommit": "lint-staged",
+    "backend-test": "cd ./backend && npm run test"
+  }
+}
