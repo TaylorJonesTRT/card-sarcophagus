@@ -5,7 +5,8 @@
   "author": "Taylor Jones",
   "license": "MIT",
   "scripts": {
-    "build": "echo"
+    "build": "echo",
+    "test": "echo"
   },
   "dependencies": {
     "@types/node": "^16.10.1",
