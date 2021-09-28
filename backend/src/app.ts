@@ -11,7 +11,10 @@ if (!process.env.MONGO_URL) {
   process.exit(1);
 }
 const mongoDBUrl = process.env.MONGO_URL;
-mongoose.connect(mongoDBUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongoDBUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
