@@ -1,8 +1,10 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import axios from 'axios';
 import Card from '../models/cardModel';
 
+// eslint-disable-next-line consistent-return
 const fetchCards = async () => {
   // TODO: Need to add a clause that if the database version hasn't been updated
   // todo: that the function will not attempt to fetch anymore cards.
@@ -27,6 +29,12 @@ const fetchCards = async () => {
       cardDef: ygoCards[i].def,
       cardImage: ygoCards[i].card_images[0].image_url,
     });
+
+    // If the card already exists in the databse than return and continue on
+    const alreadySaved = await Card.findOne({ cardId: card.cardId });
+    if (alreadySaved) {
+      return console.log(`Card Already Saved in Database: ${card.cardName}`);
+    }
 
     // Save the card to the database
     card.save((err) => {
