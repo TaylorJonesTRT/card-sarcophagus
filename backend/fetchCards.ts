@@ -33,7 +33,7 @@ const fetchCards = async () => {
     // If the card already exists in the databse than return and continue on
     const alreadySaved = await Card.findOne({ cardId: card.cardId });
     if (alreadySaved) {
-      return console.log(`Card Already Saved in Database: ${card.cardName}`);
+      return console.log(`Skipping ~${card.cardName}~ as already in database`);
     }
 
     // Save the card to the database
@@ -47,3 +47,5 @@ const fetchCards = async () => {
 };
 
 fetchCards();
+
+// TODO: Refactor file into a class
