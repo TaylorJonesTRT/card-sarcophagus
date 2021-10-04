@@ -4,6 +4,16 @@
 import axios from 'axios';
 import Card from '../models/cardModel';
 
+export class FetchCards {
+  constructor() {}
+  // fetching cards from YGOPRODECK
+  async apiFetch() {
+    const cards = await axios
+      .get('https://db.ygoprodec.com/api/v7/cardinfo.php');
+    return cards.data.data;
+  }
+}
+
 // eslint-disable-next-line consistent-return
 const fetchCards = async () => {
   // TODO: Need to add a clause that if the database version hasn't been updated
