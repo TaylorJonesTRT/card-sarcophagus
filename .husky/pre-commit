@@ -4,4 +4,4 @@
 # Need to update this for when work on the frontend is started to run its commands
 cd ./backend
 yarn run eslint ./src
-yarn test && yarn run test:ygoCards
+yarn test
