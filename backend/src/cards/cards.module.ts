@@ -13,5 +13,6 @@ import { CardsController } from './cards.controller';
   ],
   controllers: [CardsController],
   providers: [CardsService],
+  exports: [CardsService],
 })
 export class CardsModule {}

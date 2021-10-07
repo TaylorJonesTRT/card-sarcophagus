@@ -6,7 +6,12 @@ export class CardsController {
   constructor(private readonly cardsService: CardsService) {}
 
   @Get()
-  getCards(): Promise<any> {
-    return this.cardsService.apiFetch();
+  getCards() {
+    return this.cardsService.showDbVersion();
+  }
+
+  @Get('update-database')
+  updateCardDatabase() {
+    return this.cardsService.showDbVersion();
   }
 }
