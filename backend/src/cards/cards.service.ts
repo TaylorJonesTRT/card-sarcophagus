@@ -26,9 +26,14 @@ export class CardsService {
     const dataFetch = await lastValueFrom(
       this.httpService
         .get('https://db.ygoprodeck.com/api/v7/cardinfo.php')
-        .pipe(map((response) => response.data)),
+        .pipe(map((response) => response.data.data)),
     );
     return dataFetch;
+  }
+
+  async databaseLength() {
+    const cards = await this.apiFetch();
+    return cards.length;
   }
 
   async showDbVersion() {
@@ -44,44 +49,45 @@ export class CardsService {
 
   async saveCardsToDatabase() {
     const cardsArray: any[] = [];
-    const cards = await this.apiFetch().then((response) =>
-      console.log(response.data),
-    );
+    const cards = await this.apiFetch();
 
-    // for (let i = 0; i < cards.length; i += 1) {
-    //   // If the card is located in the database than it does not need to be
-    //   // added again.
-    //   return console.log(cards[i]);
-    //   const alreadySaved = await this.cardModel.findOne({
-    //     cardId: cards[i].id,
-    //   });
-    //   if (alreadySaved) {
-    //     return console.log(
-    //       `Skipping ~${cards[i].name}~ as already in database`,
-    //     );
-    //   }
+    for (let i = 0; i < cards.length; i += 1) {
+      // If the card is located in the database than it does not need to be
+      // added again.
+      const alreadySaved = await this.cardModel.findOne({
+        cardId: cards[i].id,
+      });
+      if (alreadySaved) {
+        return console.log(
+          `\x1b[41m`,
+          `Skipping ~${cards[i].name}~ as already in database`,
+        );
+      }
 
-    //   const newCard = new this.cardModel({
-    //     cardId: cards[i].id,
-    //     cardName: cards[i].name,
-    //     cardType: cards[i].type,
-    //     cardLevel: cards[i].level,
-    //     cardAttribute: cards[i].attribute,
-    //     cardRace: cards[i].race,
-    //     cardDesc: cards[i].desc,
-    //     cardAtk: cards[i].atk,
-    //     cardDef: cards[i].def,
-    //     cardImage: cards[i].card_images[0].image_url,
-    //   });
+      const newCard = new this.cardModel({
+        cardId: cards[i].id,
+        cardName: cards[i].name,
+        cardType: cards[i].type,
+        cardLevel: cards[i].level,
+        cardAttribute: cards[i].attribute,
+        cardRace: cards[i].race,
+        cardDesc: cards[i].desc,
+        cardAtk: cards[i].atk,
+        cardDef: cards[i].def,
+        cardImage: cards[i].card_images[0].image_url,
+      });
 
-    //   // Save the card to the Mongo Database
-    //   newCard.save((err) => {
-    //     if (err) {
-    //       return console.log(err);
-    //     }
-    //     return console.log(`${newCard.cardName} saved to the database`);
-    //   });
-    // }
-    return cards;
+      // Save the card to the Mongo Database
+      newCard.save((err) => {
+        if (err) {
+          return console.log(err);
+        }
+        return console.log(
+          `\x1b[32m`,
+          `${newCard.cardName} saved to the database`,
+        );
+      });
+    }
+    return 'Adding cards to database, check your console';
   }
 }

@@ -8,7 +8,9 @@ import { CardsService } from './cards/cards.service';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/card-sarcophagus'),
+    MongooseModule.forRoot(
+      'mongodb+srv://revtastic:0r3g0n@card-sarcophagus.lf2te.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+    ),
     CardsModule,
     HttpModule,
   ],

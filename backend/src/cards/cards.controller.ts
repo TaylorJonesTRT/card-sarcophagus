@@ -12,6 +12,11 @@ export class CardsController {
 
   @Get('update-database')
   updateCardDatabase() {
-    return this.cardsService.showDbVersion();
+    return this.cardsService.saveCardsToDatabase();
+  }
+
+  @Get('database-length')
+  getAmountOfCards() {
+    return this.cardsService.databaseLength();
   }
 }
