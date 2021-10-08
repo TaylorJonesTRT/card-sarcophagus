@@ -1,8 +1,7 @@
 import { HttpModule } from '@nestjs/axios';
-import { getModelToken, MongooseModule } from '@nestjs/mongoose';
+import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
-import { CardsModule } from './cards.module';
 import { CardsService } from './cards.service';
 import { Card, CardDocument } from './schemas/card.schema';
 
@@ -74,7 +73,7 @@ function mockedApiCall() {
 
 describe('CardsService', () => {
   let service: CardsService;
-  let mockCardModel: Model<CardDocument>;
+  // let mockCardModel: Model<CardDocument>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -87,7 +86,7 @@ describe('CardsService', () => {
       ],
       imports: [HttpModule],
     }).compile();
-    mockCardModel = module.get<Model<CardDocument>>(getModelToken(Card.name));
+    // mockCardModel = module.get<Model<CardDocument>>(getModelToken(Card.name));
     service = module.get<CardsService>(CardsService);
   });
 

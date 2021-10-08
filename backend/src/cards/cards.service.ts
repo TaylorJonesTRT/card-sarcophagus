@@ -1,10 +1,9 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { AxiosResponse } from 'axios';
 import { Model } from 'mongoose';
-import { lastValueFrom, Observable, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { lastValueFrom } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Card, CardDocument } from './schemas/card.schema';
 
 @Injectable()
@@ -48,7 +47,6 @@ export class CardsService {
   }
 
   async saveCardsToDatabase() {
-    const cardsArray: any[] = [];
     const cards = await this.apiFetch();
 
     for (let i = 0; i < cards.length; i += 1) {
