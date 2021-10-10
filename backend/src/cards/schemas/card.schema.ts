@@ -5,13 +5,13 @@ export type CardDocument = Card & Document;
 
 @Schema()
 export class Card {
-  @Prop()
+  @Prop({ required: true })
   cardId: number;
 
-  @Prop()
+  @Prop({ required: true })
   cardName: string;
 
-  @Prop()
+  @Prop({ required: true })
   cardType: string;
 
   @Prop()
@@ -20,10 +20,10 @@ export class Card {
   @Prop()
   cardAttribute: string;
 
-  @Prop()
+  @Prop({ required: true })
   cardRace: string;
 
-  @Prop()
+  @Prop({ required: true })
   cardDesc: string;
 
   @Prop()
@@ -32,8 +32,14 @@ export class Card {
   @Prop()
   cardDef: number;
 
-  @Prop()
+  @Prop({ required: true })
   cardImage: string;
+
+  @Prop({ required: true, default: false })
+  owned: boolean;
+
+  @Prop({ required: true, default: 0 })
+  amountOfCopies: number;
 }
 
 export const CardSchema = SchemaFactory.createForClass(Card);
