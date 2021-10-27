@@ -95,6 +95,6 @@ describe('CardsService', () => {
   });
 
   it('should fetch 5 cards', async () => {
-    expect(await mockedApiCall()).toEqual(mockedCards);
+    expect(mockedApiCall()).toEqual(mockedCards);
   });
 });

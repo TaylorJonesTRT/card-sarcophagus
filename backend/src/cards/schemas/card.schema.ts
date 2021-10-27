@@ -40,6 +40,9 @@ export class Card {
 
   @Prop({ required: true, default: 0 })
   amountOfCopies: number;
+
+  @Prop({ required: true, default: 0 })
+  availableCopies: number;
 }
 
 export const CardSchema = SchemaFactory.createForClass(Card);
