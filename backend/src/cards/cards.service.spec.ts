@@ -67,8 +67,14 @@ const mockedCards = [
     cardImage: 'https://card-image.com',
   },
 ];
+const cardDB: any[] = [];
+
 function mockedApiCall() {
   return mockedCards;
+}
+
+function addCard(card) {
+  return cardDB.push(card);
 }
 
 describe('CardsService', () => {
@@ -96,5 +102,24 @@ describe('CardsService', () => {
 
   it('should fetch 5 cards', async () => {
     expect(mockedApiCall()).toEqual(mockedCards);
+  });
+
+  it('Should push card to the card database', () => {
+    const mockedDb = [
+      {
+        cardId: 133121,
+        cardName: 'Dark Magician',
+        cardType: 'Spellcaster',
+        cardLevel: 7,
+        cardAttribute: 'Dark',
+        cardRace: 'Normal Monster',
+        cardDesc: 'I shoot the dark magic',
+        cardAtk: 2500,
+        cardDef: 1300,
+        cardImage: 'https://card-image.com',
+      },
+    ];
+    addCard(mockedCards[0]);
+    expect(cardDB).toEqual(mockedDb);
   });
 });

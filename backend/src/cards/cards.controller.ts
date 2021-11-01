@@ -15,8 +15,8 @@ export class CardsController {
     return this.cardsService.saveCardsToDatabase();
   }
 
-  @Get('database-length')
-  getAmountOfCards() {
-    return this.cardsService.databaseLength();
-  }
+  // @Get('database-length')
+  // getAmountOfCards() {
+  //   return this.cardsService.databaseLength();
+  // }
 }
