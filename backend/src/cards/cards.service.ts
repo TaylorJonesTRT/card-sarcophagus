@@ -73,6 +73,9 @@ export class CardsService {
         cardAtk: cards[i].atk,
         cardDef: cards[i].def,
         cardImage: cards[i].card_images[0].image_url,
+        owned: false,
+        amountOfCopies: 0,
+        availableCopies: 0,
       });
 
       // Save the card to the Mongo Database
@@ -87,5 +90,15 @@ export class CardsService {
       });
     }
     return 'Adding cards to database, check your console';
+  }
+
+  async addCard(cardId: number, copies: number, owned: boolean) {
+    const filter = { cardId };
+    const cardInformation = {
+      owned,
+      amountOfCopies: copies,
+    };
+    const card = await this.cardModel.findOneAndUpdate(filter, cardInformation);
+    return card;
   }
 }

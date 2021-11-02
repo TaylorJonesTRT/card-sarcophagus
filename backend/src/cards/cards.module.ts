@@ -8,7 +8,10 @@ import { CardsController } from './cards.controller';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'Card', schema: CardSchema }]),
+    MongooseModule.forFeature([
+      { name: 'Card', schema: CardSchema },
+      { name: 'OwnedCards', schema: CardSchema },
+    ]),
     HttpModule,
   ],
   controllers: [CardsController],

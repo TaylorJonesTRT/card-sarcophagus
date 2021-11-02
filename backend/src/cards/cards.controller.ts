@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { CardsService } from './cards.service';
 
 @Controller('cards')
@@ -19,4 +19,13 @@ export class CardsController {
   // getAmountOfCards() {
   //   return this.cardsService.databaseLength();
   // }
+
+  @Post('cards')
+  addOwnedCard(
+    @Body('cardId') cardId: number,
+    @Body('amountOfCopies') copies: number,
+    @Body('owned') owned: boolean,
+  ) {
+    return this.cardsService.addCard(cardId, copies, owned);
+  }
 }
