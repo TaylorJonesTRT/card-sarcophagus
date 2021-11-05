@@ -10,7 +10,7 @@ import { DecksModule } from './decks/decks.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://revtastic:0r3g0n@card-sarcophagus.lf2te.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+      'mongodb+srv://revtastic:0r3g0n@card-sarcophagus.lf2te.mongodb.net/Cards?retryWrites=true&w=majority',
     ),
     CardsModule,
     HttpModule,

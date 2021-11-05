@@ -20,7 +20,7 @@ export class CardsController {
   //   return this.cardsService.databaseLength();
   // }
 
-  @Post('cards')
+  @Post()
   addOwnedCard(
     @Body('cardId') cardId: number,
     @Body('amountOfCopies') copies: number,

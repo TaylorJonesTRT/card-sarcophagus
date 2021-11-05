@@ -32,7 +32,9 @@ export class CardsService {
 
   async databaseLength() {
     const cards = await this.apiFetch();
-    return cards.length;
+    console.log('hi');
+    // return cards.length;
+    return 'hi';
   }
 
   async showDbVersion() {
@@ -52,15 +54,6 @@ export class CardsService {
     for (let i = 0; i < cards.length; i += 1) {
       // If the card is located in the database than it does not need to be
       // added again.
-      const alreadySaved = await this.cardModel.findOne({
-        cardId: cards[i].id,
-      });
-      if (alreadySaved) {
-        return console.log(
-          `\x1b[41m`,
-          `Skipping ~${cards[i].name}~ as already in database`,
-        );
-      }
 
       const newCard = new this.cardModel({
         cardId: cards[i].id,
@@ -77,7 +70,15 @@ export class CardsService {
         amountOfCopies: 0,
         availableCopies: 0,
       });
-
+      const alreadySaved = await this.cardModel.findOne({
+        cardId: cards[i].id,
+      });
+      if (alreadySaved) {
+        return console.log(
+          `\x1b[41m`,
+          `Skipping ~${cards[i].name}~ as already in database`,
+        );
+      }
       // Save the card to the Mongo Database
       newCard.save((err) => {
         if (err) {
