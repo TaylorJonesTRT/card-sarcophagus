@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -30,21 +31,12 @@ export class CardsService {
     return dataFetch;
   }
 
-  async databaseLength() {
-    const cards = await this.apiFetch();
-    return cards.length;
-  }
-
-  async showDbVersion() {
-    const databaseVersion = this.httpService
-      .get('https://db.ygoprodeck.com/api/v7/checkDBVer.php')
-      .pipe(
-        map((response) => {
-          return response.data[0].database_version;
-        }),
-      );
-    return databaseVersion;
-  }
+  // async databaseLength() {
+  //   const cards = await this.apiFetch();
+  //   console.log('hi');
+  //   // return cards.length;
+  //   return 'hi';
+  // }
 
   async saveCardsToDatabase() {
     const cards = await this.apiFetch();
@@ -52,15 +44,6 @@ export class CardsService {
     for (let i = 0; i < cards.length; i += 1) {
       // If the card is located in the database than it does not need to be
       // added again.
-      const alreadySaved = await this.cardModel.findOne({
-        cardId: cards[i].id,
-      });
-      if (alreadySaved) {
-        return console.log(
-          `\x1b[41m`,
-          `Skipping ~${cards[i].name}~ as already in database`,
-        );
-      }
 
       const newCard = new this.cardModel({
         cardId: cards[i].id,
@@ -73,8 +56,19 @@ export class CardsService {
         cardAtk: cards[i].atk,
         cardDef: cards[i].def,
         cardImage: cards[i].card_images[0].image_url,
+        owned: false,
+        amountOfCopies: 0,
+        availableCopies: 0,
       });
-
+      const alreadySaved = await this.cardModel.findOne({
+        cardId: cards[i].id,
+      });
+      if (alreadySaved) {
+        return console.log(
+          `\x1b[41m`,
+          `Skipping ~${cards[i].name}~ as already in database`,
+        );
+      }
       // Save the card to the Mongo Database
       newCard.save((err) => {
         if (err) {
@@ -87,5 +81,19 @@ export class CardsService {
       });
     }
     return 'Adding cards to database, check your console';
+  }
+
+  async getOwnedCards() {
+    return await this.cardModel.find({ owned: true }).sort({ cardName: 1 });
+  }
+
+  async addCard(cardId: number, copies: number, owned: boolean) {
+    const filter = { cardId };
+    const cardInformation = {
+      owned,
+      amountOfCopies: copies,
+    };
+    const card = await this.cardModel.findOneAndUpdate(filter, cardInformation);
+    return card;
   }
 }

@@ -3,7 +3,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
 import { CardsService } from './cards.service';
-import { Card, CardDocument } from './schemas/card.schema';
+import { Card } from './schemas/card.schema';
 
 const mockedCards = [
   {
@@ -17,6 +17,9 @@ const mockedCards = [
     cardAtk: 2500,
     cardDef: 1300,
     cardImage: 'https://card-image.com',
+    owned: false,
+    amountOfCopies: 0,
+    availableCopies: 0,
   },
   {
     cardId: 323187,
@@ -29,6 +32,9 @@ const mockedCards = [
     cardAtk: 3000,
     cardDef: 2000,
     cardImage: 'https://card-image.com',
+    owned: false,
+    amountOfCopies: 0,
+    availableCopies: 0,
   },
   {
     cardId: 16919454,
@@ -41,6 +47,9 @@ const mockedCards = [
     cardAtk: 2700,
     cardDef: 1500,
     cardImage: 'https://card-image.com',
+    owned: false,
+    amountOfCopies: 0,
+    availableCopies: 0,
   },
   {
     cardId: 2164947878,
@@ -53,6 +62,9 @@ const mockedCards = [
     cardAtk: 2000,
     cardDef: 0,
     cardImage: 'https://card-image.com',
+    owned: false,
+    amountOfCopies: 0,
+    availableCopies: 0,
   },
   {
     cardId: 161919,
@@ -65,10 +77,19 @@ const mockedCards = [
     cardAtk: 2000,
     cardDef: 2800,
     cardImage: 'https://card-image.com',
+    owned: false,
+    amountOfCopies: 0,
+    availableCopies: 0,
   },
 ];
+const cardDB: any[] = [];
+
 function mockedApiCall() {
   return mockedCards;
+}
+
+function addCard(card) {
+  return cardDB.push(card);
 }
 
 describe('CardsService', () => {
@@ -96,5 +117,27 @@ describe('CardsService', () => {
 
   it('should fetch 5 cards', async () => {
     expect(mockedApiCall()).toEqual(mockedCards);
+  });
+
+  it('Should push card to the card database', () => {
+    const mockedDb = [
+      {
+        cardId: 133121,
+        cardName: 'Dark Magician',
+        cardType: 'Spellcaster',
+        cardLevel: 7,
+        cardAttribute: 'Dark',
+        cardRace: 'Normal Monster',
+        cardDesc: 'I shoot the dark magic',
+        cardAtk: 2500,
+        cardDef: 1300,
+        cardImage: 'https://card-image.com',
+        owned: false,
+        amountOfCopies: 0,
+        availableCopies: 0,
+      },
+    ];
+    addCard(mockedCards[0]);
+    expect(cardDB).toEqual(mockedDb);
   });
 });
