@@ -87,6 +87,10 @@ export class CardsService {
     return await this.cardModel.find({ owned: true }).sort({ cardName: 1 });
   }
 
+  async getAllCards() {
+    return await this.cardModel.find().sort({ cardName: 1 });
+  }
+
   async addCard(cardId: number, copies: number, owned: boolean) {
     const filter = { cardId };
     const cardInformation = {

@@ -4,6 +4,7 @@ import { CardsService } from './cards.service';
 @Controller('cards')
 export class CardsController {
   constructor(private readonly cardsService: CardsService) {}
+
   @Get('update-database')
   updateCardDatabase() {
     return this.cardsService.saveCardsToDatabase();
@@ -12,6 +13,11 @@ export class CardsController {
   @Get()
   getOwnedCards() {
     return this.cardsService.getOwnedCards();
+  }
+
+  @Get('all-cards')
+  getAllCards() {
+    return this.cardsService.getAllCards();
   }
 
   @Post()
