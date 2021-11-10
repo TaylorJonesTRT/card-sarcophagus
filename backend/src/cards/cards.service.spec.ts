@@ -3,7 +3,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
 import { CardsService } from './cards.service';
-import { Card, CardDocument } from './schemas/card.schema';
+import { Card } from './schemas/card.schema';
 
 const mockedCards = [
   {

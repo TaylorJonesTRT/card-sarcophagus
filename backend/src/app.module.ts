@@ -4,7 +4,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppService } from './app.service';
 import { CardsModule } from './cards/cards.module';
 import { HttpModule } from '@nestjs/axios';
-import { CardsService } from './cards/cards.service';
 import { DecksModule } from './decks/decks.module';
 
 @Module({
