@@ -5,6 +5,9 @@ export type DeckDocument = Deck & Document;
 
 @Schema()
 export class Deck {
+  @Prop()
+  deckName: string;
+
   @Prop([{ type: SchemaTypes.ObjectId, ref: 'Card' }])
   mainDeck: Types.ObjectId[];
 
