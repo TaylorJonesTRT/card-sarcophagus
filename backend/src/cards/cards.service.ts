@@ -14,14 +14,6 @@ export class CardsService {
     @InjectModel('Card') private readonly cardModel: Model<CardDocument>,
   ) {}
 
-  // TODO: Finish the below method later on so that I don't have to keep
-  // todo: pulling every single card from the API.
-  // checkDBVersion() {
-  //   let cardDbVersion = this.httpService
-  //     .get('https://db.ygoprodeck.com/api/v7/checkDBVer.php')
-  //     .pipe(map((response) => response.data));
-  // }
-
   async apiFetch() {
     const dataFetch = await lastValueFrom(
       this.httpService
@@ -30,13 +22,6 @@ export class CardsService {
     );
     return dataFetch;
   }
-
-  // async databaseLength() {
-  //   const cards = await this.apiFetch();
-  //   console.log('hi');
-  //   // return cards.length;
-  //   return 'hi';
-  // }
 
   async saveCardsToDatabase() {
     const cards = await this.apiFetch();

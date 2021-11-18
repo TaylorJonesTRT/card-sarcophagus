@@ -20,7 +20,7 @@ export class DecksController {
     return this.decksService.createDeck(deckName);
   }
 
-  @Put()
+  @Put(':id')
   updateDeck() {
     return 'Not implemented yet';
   }
