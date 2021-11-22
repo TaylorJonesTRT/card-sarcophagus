@@ -49,10 +49,11 @@ export class CardsService {
         cardId: cards[i].id,
       });
       if (alreadySaved) {
-        return console.log(
+        console.log(
           `\x1b[41m`,
           `Skipping ~${cards[i].name}~ as already in database`,
         );
+        continue;
       }
       // Save the card to the Mongo Database
       newCard.save((err) => {
