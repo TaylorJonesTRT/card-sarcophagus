@@ -33,4 +33,8 @@ export class DecksService {
       return { message: 'Deck successfully created!' };
     });
   }
+
+  async showAllDecks() {
+    return await this.deckModel.find().sort({ deckName: 1 });
+  }
 }

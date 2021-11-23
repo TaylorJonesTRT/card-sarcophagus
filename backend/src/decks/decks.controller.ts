@@ -7,7 +7,7 @@ export class DecksController {
 
   @Get()
   showAllDecks() {
-    return 'Not implemented yet';
+    return this.decksService.showAllDecks();
   }
 
   @Get(':id')
