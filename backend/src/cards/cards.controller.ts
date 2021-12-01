@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put } from '@nestjs/common';
 import { CardsService } from './cards.service';
 
 @Controller('cards')
@@ -27,5 +27,14 @@ export class CardsController {
     @Body('owned') owned: boolean,
   ) {
     return this.cardsService.addCard(cardId, copies, owned);
+  }
+
+  @Put()
+  updateCard(
+    @Body('cardId') cardId: number,
+    @Body('amountOfCopies') copies: number,
+    @Body('owned') owned: boolean,
+  ) {
+    return 'not implemented yet';
   }
 }
