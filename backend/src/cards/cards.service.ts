@@ -79,11 +79,19 @@ export class CardsService {
     return await this.cardModel.find().sort({ cardName: 1 });
   }
 
-  async addCard(cardId: number, copies: number, owned: boolean) {
+  async addOrUpdateCard(
+    cardId: number,
+    amountOfCopies: number,
+    owned: boolean,
+    binderLocation: string,
+    boxLocation: string,
+  ) {
     const filter = { cardId };
     const cardInformation = {
       owned,
-      amountOfCopies: copies,
+      amountOfCopies,
+      binderLocation,
+      boxLocation,
     };
     const card = await this.cardModel.findOneAndUpdate(filter, cardInformation);
     return card;
