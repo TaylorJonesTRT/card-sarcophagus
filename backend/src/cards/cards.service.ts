@@ -44,6 +44,8 @@ export class CardsService {
         owned: false,
         amountOfCopies: 0,
         availableCopies: 0,
+        boxLocation: null,
+        binderLocation: null,
       });
       const alreadySaved = await this.cardModel.findOne({
         cardId: cards[i].id,
