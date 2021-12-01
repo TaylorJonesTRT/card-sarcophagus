@@ -21,20 +21,19 @@ export class CardsController {
   }
 
   @Post()
-  addOwnedCard(
+  addOrUpdateCard(
     @Body('cardId') cardId: number,
     @Body('amountOfCopies') copies: number,
     @Body('owned') owned: boolean,
+    @Body('binderLocation') binderLocation: string,
+    @Body('boxLocation') boxLocation: string,
   ) {
-    return this.cardsService.addCard(cardId, copies, owned);
-  }
-
-  @Put()
-  updateCard(
-    @Body('cardId') cardId: number,
-    @Body('amountOfCopies') copies: number,
-    @Body('owned') owned: boolean,
-  ) {
-    return 'not implemented yet';
+    return this.cardsService.addOrUpdateCard(
+      cardId,
+      copies,
+      owned,
+      binderLocation,
+      boxLocation,
+    );
   }
 }
