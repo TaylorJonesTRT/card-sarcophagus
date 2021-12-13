@@ -1,4 +1,12 @@
-import { Controller, Delete, Get, Post, Put, Body } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
+  Body,
+  Param,
+} from '@nestjs/common';
 import { DecksService } from './decks.service';
 
 @Controller('decks')
@@ -26,7 +34,7 @@ export class DecksController {
   }
 
   @Delete(':id')
-  removeDeck() {
-    return 'Not implemented yet';
+  removeDeck(@Param('id') id: number) {
+    return this.decksService.removeDeck(id);
   }
 }
