@@ -37,4 +37,8 @@ export class DecksService {
   async showAllDecks() {
     return await this.deckModel.find().sort({ deckName: 1 });
   }
+
+  async removeDeck(deckId: number) {
+    return await this.deckModel.deleteOne({ _id: deckId });
+  }
 }
