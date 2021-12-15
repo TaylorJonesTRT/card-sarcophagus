@@ -41,4 +41,33 @@ export class DecksService {
   async removeDeck(deckId: number) {
     return await this.deckModel.deleteOne({ _id: deckId });
   }
+
+  async updateDeck(
+    deckId: number,
+    cardId: number,
+    deckLocation: string,
+    cardRemoval: boolean,
+  ) {
+    const deck = await this.deckModel.findOne({ _id: deckId });
+
+    if (cardRemoval) {
+      if (deckLocation == 'mainDeck') {
+        deck.mainDeck.filter((card) => card != cardId);
+      } else if (deckLocation == 'extraDeck') {
+        deck.extraDeck.filter((card) => card != cardId);
+      } else if (deckLocation == 'sideDeck') {
+        deck.sideDeck.filter((card) => card != cardId);
+      }
+    }
+
+    if (deckLocation == 'mainDeck') {
+      deck.mainDeck.push(cardId);
+    } else if (deckLocation == 'extraDeck') {
+      deck.extraDeck.push(cardId);
+    } else if (deckLocation == 'sideDeck') {
+      deck.sideDeck.push(cardId);
+    }
+
+    deck.save();
+  }
 }
