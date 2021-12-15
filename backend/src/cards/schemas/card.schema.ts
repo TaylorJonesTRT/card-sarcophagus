@@ -52,3 +52,4 @@ export class Card {
 }
 
 export const CardSchema = SchemaFactory.createForClass(Card);
+CardSchema.index({ cardName: 'text' });

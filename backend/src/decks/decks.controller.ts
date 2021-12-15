@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Delete,
-  Get,
-  Post,
-  Put,
-  Body,
-  Param,
-} from '@nestjs/common';
+import { Controller, Delete, Get, Post, Put, Body } from '@nestjs/common';
 import { DecksService } from './decks.service';
 
 @Controller('decks')
@@ -18,7 +10,7 @@ export class DecksController {
     return this.decksService.showAllDecks();
   }
 
-  @Get(':id')
+  @Get('')
   getDeck() {
     return 'Not implemented yet';
   }
@@ -29,12 +21,22 @@ export class DecksController {
   }
 
   @Put(':id')
-  updateDeck() {
-    return 'Not implemented yet';
+  updateDeck(
+    @Body('deckId') deckId: number,
+    @Body('cardId') cardId: number,
+    @Body('deckLocation') deckLocation: string,
+    @Body('cardRemoval') cardRemoval: boolean,
+  ) {
+    return this.decksService.updateDeck(
+      deckId,
+      cardId,
+      deckLocation,
+      cardRemoval,
+    );
   }
 
   @Delete(':id')
-  removeDeck(@Param('id') id: number) {
+  removeDeck(@Body('id') id: number) {
     return this.decksService.removeDeck(id);
   }
 }

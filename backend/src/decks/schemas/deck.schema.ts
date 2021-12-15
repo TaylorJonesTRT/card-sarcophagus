@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types, SchemaTypes } from 'mongoose';
+import { Document } from 'mongoose';
 
 export type DeckDocument = Deck & Document;
 
@@ -8,14 +8,14 @@ export class Deck {
   @Prop()
   deckName: string;
 
-  @Prop([{ type: SchemaTypes.ObjectId, ref: 'Card' }])
-  mainDeck: Types.ObjectId[];
+  @Prop()
+  mainDeck: number[];
 
-  @Prop([{ type: SchemaTypes.ObjectId, ref: 'Card' }])
-  extraDeck: Types.ObjectId[];
+  @Prop()
+  extraDeck: number[];
 
-  @Prop([{ type: SchemaTypes.ObjectId, ref: 'Card' }])
-  sideDeck: Types.ObjectId[];
+  @Prop()
+  sideDeck: number[];
 }
 
 export const DeckSchema = SchemaFactory.createForClass(Deck);
