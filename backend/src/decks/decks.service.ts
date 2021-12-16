@@ -68,6 +68,10 @@ export class DecksService {
       deck.sideDeck.push(cardId);
     }
 
-    deck.save();
+    deck.save((err) => {
+      if (err) {
+        return console.error(err);
+      }
+    });
   }
 }
