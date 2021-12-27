@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
 import { DecksService } from './decks.service';
 import { Deck } from './schemas/deck.schema';
+import { Card } from '../cards/schemas/card.schema';
 
 describe('DecksService', () => {
   let service: DecksService;
@@ -13,6 +14,10 @@ describe('DecksService', () => {
         DecksService,
         {
           provide: getModelToken(Deck.name),
+          useValue: Model,
+        },
+        {
+          provide: getModelToken(Card.name),
           useValue: Model,
         },
       ],

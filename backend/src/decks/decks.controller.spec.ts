@@ -4,6 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DecksController } from './decks.controller';
 import { DecksService } from './decks.service';
 import { Deck } from './schemas/deck.schema';
+import { Card } from '../cards/schemas/card.schema';
 
 describe('DecksController', () => {
   let controller: DecksController;
@@ -15,6 +16,10 @@ describe('DecksController', () => {
         DecksService,
         {
           provide: getModelToken(Deck.name),
+          useValue: Model,
+        },
+        {
+          provide: getModelToken(Card.name),
           useValue: Model,
         },
       ],

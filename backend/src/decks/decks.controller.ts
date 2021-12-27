@@ -10,9 +10,9 @@ export class DecksController {
     return this.decksService.showAllDecks();
   }
 
-  @Get('')
-  getDeck() {
-    return 'Not implemented yet';
+  @Get(':id')
+  getDeck(@Body('deckId') deckId: number) {
+    return this.decksService.getDeck(deckId);
   }
 
   @Post()
