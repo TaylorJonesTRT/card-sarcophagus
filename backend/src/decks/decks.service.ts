@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Card, CardDocument } from 'src/cards/schemas/card.schema';
 import { Deck, DeckDocument } from './schemas/deck.schema';
 
 @Injectable()
 export class DecksService {
   constructor(
     @InjectModel('Deck') private readonly deckModel: Model<DeckDocument>,
+    @InjectModel('Card') private readonly cardModel: Model<CardDocument>,
   ) {}
 
   async createDeck(deckName: string) {
@@ -73,5 +75,36 @@ export class DecksService {
         return console.error(err);
       }
     });
+  }
+
+  async getDeck(deckId: number) {
+    const deckData = {
+      mainDeck: [],
+      extraDeck: [],
+      sideDeck: [],
+    };
+    const deck = this.deckModel.findById(deckId);
+
+    if (!deck) {
+      throw Error('No deck could be found');
+    }
+
+    for (let i = 0; i < (await deck).mainDeck.length; i += 1) {
+      const cardId = (await deck).mainDeck[i];
+      const card = await this.cardModel.findOne({ cardId });
+      deckData.mainDeck.push(card);
+    }
+    for (let i = 0; i < (await deck).extraDeck.length; i += 1) {
+      const cardId = (await deck).extraDeck[i];
+      const card = await this.cardModel.findOne({ cardId });
+      deckData.extraDeck.push(card);
+    }
+    for (let i = 0; i < (await deck).sideDeck.length; i += 1) {
+      const cardId = (await deck).sideDeck[i];
+      const card = await this.cardModel.findOne({ cardId });
+      deckData.sideDeck.push(card);
+    }
+
+    return deckData;
   }
 }
