@@ -1,4 +1,12 @@
-import { Controller, Delete, Get, Post, Put, Body } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
+  Body,
+  Param,
+} from '@nestjs/common';
 import { DecksService } from './decks.service';
 
 @Controller('decks')
@@ -11,7 +19,7 @@ export class DecksController {
   }
 
   @Get(':id')
-  getDeck(@Body('deckId') deckId: number) {
+  getDeck(@Param('id') deckId: number) {
     return this.decksService.getDeck(deckId);
   }
 
@@ -20,7 +28,7 @@ export class DecksController {
     return this.decksService.createDeck(deckName);
   }
 
-  @Put(':id')
+  @Put('')
   updateDeck(
     @Body('deckId') deckId: number,
     @Body('cardId') cardId: number,
