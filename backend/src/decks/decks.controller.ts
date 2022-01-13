@@ -18,10 +18,10 @@ export class DecksController {
     return this.decksService.showAllDecks();
   }
 
-  @Get(':id')
-  getDeck(@Param('id') deckId: number) {
-    return this.decksService.getDeck(deckId);
-  }
+  // @Get(':id')
+  // getDeck(@Param('id') deckId: number) {
+  //   return this.decksService.getDeck(deckId);
+  // }
 
   @Post()
   createNewDeck(@Body('deckName') deckName: string) {
@@ -31,13 +31,15 @@ export class DecksController {
   @Put('')
   updateDeck(
     @Body('deckId') deckId: number,
-    @Body('cardId') cardId: number,
+    @Body('cardId') cardId: string,
+    @Body('amountOfCopies') amountOfCopies: number,
     @Body('deckLocation') deckLocation: string,
     @Body('cardRemoval') cardRemoval: boolean,
   ) {
     return this.decksService.updateDeck(
       deckId,
       cardId,
+      amountOfCopies,
       deckLocation,
       cardRemoval,
     );
