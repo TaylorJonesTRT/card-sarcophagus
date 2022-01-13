@@ -45,7 +45,7 @@ export class DecksController {
     );
   }
 
-  @Delete(':id')
+  @Delete('')
   removeDeck(@Body('id') id: number) {
     return this.decksService.removeDeck(id);
   }
