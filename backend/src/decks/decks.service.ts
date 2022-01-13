@@ -46,7 +46,8 @@ export class DecksService {
 
   async updateDeck(
     deckId: number,
-    cardId: number,
+    cardId: string,
+    amountOfCopies: number,
     deckLocation: string,
     cardRemoval: boolean,
   ) {
@@ -54,56 +55,74 @@ export class DecksService {
 
     if (cardRemoval) {
       if (deckLocation == 'mainDeck') {
-        deck.mainDeck.filter((card) => card != cardId);
+        deck.mainDeck.set(cardId, deck.mainDeck.get(cardId) - amountOfCopies);
+        return deck.save();
       } else if (deckLocation == 'extraDeck') {
-        deck.extraDeck.filter((card) => card != cardId);
-      } else if (deckLocation == 'sideDeck') {
-        deck.sideDeck.filter((card) => card != cardId);
+        deck.extraDeck.set(cardId, deck.extraDeck.get(cardId) - amountOfCopies);
+        return deck.save();
+      } else {
+        deck.sideDeck.set(cardId, deck.sideDeck.get(cardId) - amountOfCopies);
+        return deck.save();
+      }
+    } else {
+      if (deckLocation == 'mainDeck') {
+        deck.mainDeck.set(cardId, deck.mainDeck.get(cardId) + amountOfCopies);
+        return deck.save();
+      } else if (deckLocation == 'extraDeck') {
+        deck.extraDeck.set(cardId, deck.extraDeck.get(cardId) + amountOfCopies);
+        return deck.save();
+      } else {
+        deck.sideDeck.set(cardId, deck.sideDeck.get(cardId) + amountOfCopies);
+        return deck.save();
       }
     }
-
-    if (deckLocation == 'mainDeck') {
-      deck.mainDeck.push(cardId);
-    } else if (deckLocation == 'extraDeck') {
-      deck.extraDeck.push(cardId);
-    } else if (deckLocation == 'sideDeck') {
-      deck.sideDeck.push(cardId);
-    }
-
-    deck.save((err) => {
-      if (err) {
-        return console.error(err);
-      }
-    });
   }
 
   async getDeck(deckId: number) {
+    //TODO: Need to refactor this entire method as decks now use a hash map to
+    //todo: store all cards included in said deck.
+
     const deckData = {
       mainDeck: [],
       extraDeck: [],
       sideDeck: [],
     };
-    const deck = this.deckModel.findById(deckId);
+    const deck = await this.deckModel.findById(deckId);
 
     if (!deck) {
       throw Error('No deck could be found');
     }
 
-    for (let i = 0; i < (await deck).mainDeck.length; i += 1) {
-      const cardId = (await deck).mainDeck[i];
-      const card = await this.cardModel.findOne({ cardId });
-      deckData.mainDeck.push(card);
+    for (const key in deck.mainDeck) {
+      for (let i = 0; i < deck.mainDeck[key]; i += 1) {
+        deckData.mainDeck.push(key);
+      }
     }
-    for (let i = 0; i < (await deck).extraDeck.length; i += 1) {
-      const cardId = (await deck).extraDeck[i];
-      const card = await this.cardModel.findOne({ cardId });
-      deckData.extraDeck.push(card);
+    for (const key in deck.extraDeck) {
+      for (let i = 0; i < deck.extraDeck[key]; i += 1) {
+        deckData.extraDeck.push(key);
+      }
     }
-    for (let i = 0; i < (await deck).sideDeck.length; i += 1) {
-      const cardId = (await deck).sideDeck[i];
-      const card = await this.cardModel.findOne({ cardId });
-      deckData.sideDeck.push(card);
+    for (const key in deck.sideDeck) {
+      for (let i = 0; i < deck.sideDeck[key]; i += 1) {
+        deckData.sideDeck.push(key);
+      }
     }
+    // for (let i = 0; i < (await deck).mainDeck.length; i += 1) {
+    //   const cardId = (await deck).mainDeck[i];
+    //   const card = await this.cardModel.findOne({ cardId });
+    //   deckData.mainDeck.push(card);
+    // }
+    // for (let i = 0; i < (await deck).extraDeck.length; i += 1) {
+    //   const cardId = (await deck).extraDeck[i];
+    //   const card = await this.cardModel.findOne({ cardId });
+    //   deckData.extraDeck.push(card);
+    // }
+    // for (let i = 0; i < (await deck).sideDeck.length; i += 1) {
+    //   const cardId = (await deck).sideDeck[i];
+    //   const card = await this.cardModel.findOne({ cardId });
+    //   deckData.sideDeck.push(card);
+    // }
 
     return deckData;
   }
