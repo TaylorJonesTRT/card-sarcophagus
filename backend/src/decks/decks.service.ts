@@ -46,64 +46,57 @@ export class DecksService {
 
   async updateDeck(
     deckId: number,
-    cardId: number,
+    cardId: string,
+    amountOfCopies: number,
     deckLocation: string,
     cardRemoval: boolean,
   ) {
     const deck = await this.deckModel.findOne({ _id: deckId });
 
+    if (!deck) {
+      throw Error('No deck couild found by that deckId!');
+    }
+
     if (cardRemoval) {
       if (deckLocation == 'mainDeck') {
-        deck.mainDeck.filter((card) => card != cardId);
+        deck.mainDeck.set(cardId, deck.mainDeck.get(cardId) - amountOfCopies);
+        return deck.save();
       } else if (deckLocation == 'extraDeck') {
-        deck.extraDeck.filter((card) => card != cardId);
-      } else if (deckLocation == 'sideDeck') {
-        deck.sideDeck.filter((card) => card != cardId);
+        deck.extraDeck.set(cardId, deck.extraDeck.get(cardId) - amountOfCopies);
+        return deck.save();
+      } else {
+        deck.sideDeck.set(cardId, deck.sideDeck.get(cardId) - amountOfCopies);
+        return deck.save();
+      }
+    } else {
+      if (deckLocation == 'mainDeck') {
+        deck.mainDeck.set(cardId, deck.mainDeck.get(cardId) + amountOfCopies);
+        return deck.save();
+      } else if (deckLocation == 'extraDeck') {
+        deck.extraDeck.set(cardId, deck.extraDeck.get(cardId) + amountOfCopies);
+        return deck.save();
+      } else {
+        deck.sideDeck.set(cardId, deck.sideDeck.get(cardId) + amountOfCopies);
+        return deck.save();
       }
     }
-
-    if (deckLocation == 'mainDeck') {
-      deck.mainDeck.push(cardId);
-    } else if (deckLocation == 'extraDeck') {
-      deck.extraDeck.push(cardId);
-    } else if (deckLocation == 'sideDeck') {
-      deck.sideDeck.push(cardId);
-    }
-
-    deck.save((err) => {
-      if (err) {
-        return console.error(err);
-      }
-    });
   }
 
-  async getDeck(deckId: number) {
+  async getDeckById(deckId: number) {
     const deckData = {
-      mainDeck: [],
-      extraDeck: [],
-      sideDeck: [],
+      mainDeck: {},
+      extraDeck: {},
+      sideDeck: {},
     };
-    const deck = this.deckModel.findById(deckId);
+    const deck = await this.deckModel.findById(deckId);
 
     if (!deck) {
-      throw Error('No deck could be found');
+      throw Error('No deck could be found by that deckId');
     }
 
-    for (let i = 0; i < (await deck).mainDeck.length; i += 1) {
-      const cardId = (await deck).mainDeck[i];
-      const card = await this.cardModel.findOne({ cardId });
-      deckData.mainDeck.push(card);
-    }
-    for (let i = 0; i < (await deck).extraDeck.length; i += 1) {
-      const cardId = (await deck).extraDeck[i];
-      const card = await this.cardModel.findOne({ cardId });
-      deckData.extraDeck.push(card);
-    }
-    for (let i = 0; i < (await deck).sideDeck.length; i += 1) {
-      const cardId = (await deck).sideDeck[i];
-      const card = await this.cardModel.findOne({ cardId });
-      deckData.sideDeck.push(card);
-    }
+    deckData.mainDeck = deck.mainDeck;
+    deckData.extraDeck = deck.extraDeck;
+    deckData.sideDeck = deck.sideDeck;
 
     return deckData;
   }

@@ -20,7 +20,7 @@ export class DecksController {
 
   @Get(':id')
   getDeck(@Param('id') deckId: number) {
-    return this.decksService.getDeck(deckId);
+    return this.decksService.getDeckById(deckId);
   }
 
   @Post()
@@ -31,19 +31,21 @@ export class DecksController {
   @Put('')
   updateDeck(
     @Body('deckId') deckId: number,
-    @Body('cardId') cardId: number,
+    @Body('cardId') cardId: string,
+    @Body('amountOfCopies') amountOfCopies: number,
     @Body('deckLocation') deckLocation: string,
     @Body('cardRemoval') cardRemoval: boolean,
   ) {
     return this.decksService.updateDeck(
       deckId,
       cardId,
+      amountOfCopies,
       deckLocation,
       cardRemoval,
     );
   }
 
-  @Delete(':id')
+  @Delete('')
   removeDeck(@Body('id') id: number) {
     return this.decksService.removeDeck(id);
   }

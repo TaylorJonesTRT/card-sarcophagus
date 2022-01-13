@@ -8,14 +8,14 @@ export class Deck {
   @Prop()
   deckName: string;
 
-  @Prop()
-  mainDeck: number[];
+  @Prop({ type: Map })
+  mainDeck = new Map<string, number>();
 
-  @Prop()
-  extraDeck: number[];
+  @Prop({ type: Map })
+  extraDeck = new Map<string, number>();
 
-  @Prop()
-  sideDeck: number[];
+  @Prop({ type: Map })
+  sideDeck = new Map<string, number>();
 }
 
 export const DeckSchema = SchemaFactory.createForClass(Deck);
