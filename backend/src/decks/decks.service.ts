@@ -53,6 +53,10 @@ export class DecksService {
   ) {
     const deck = await this.deckModel.findOne({ _id: deckId });
 
+    if (!deck) {
+      throw Error('No deck couild found by that deckId!');
+    }
+
     if (cardRemoval) {
       if (deckLocation == 'mainDeck') {
         deck.mainDeck.set(cardId, deck.mainDeck.get(cardId) - amountOfCopies);
@@ -78,51 +82,21 @@ export class DecksService {
     }
   }
 
-  async getDeck(deckId: number) {
-    //TODO: Need to refactor this entire method as decks now use a hash map to
-    //todo: store all cards included in said deck.
-
+  async getDeckById(deckId: number) {
     const deckData = {
-      mainDeck: [],
-      extraDeck: [],
-      sideDeck: [],
+      mainDeck: {},
+      extraDeck: {},
+      sideDeck: {},
     };
     const deck = await this.deckModel.findById(deckId);
 
     if (!deck) {
-      throw Error('No deck could be found');
+      throw Error('No deck could be found by that deckId');
     }
 
-    for (const key in deck.mainDeck) {
-      for (let i = 0; i < deck.mainDeck[key]; i += 1) {
-        deckData.mainDeck.push(key);
-      }
-    }
-    for (const key in deck.extraDeck) {
-      for (let i = 0; i < deck.extraDeck[key]; i += 1) {
-        deckData.extraDeck.push(key);
-      }
-    }
-    for (const key in deck.sideDeck) {
-      for (let i = 0; i < deck.sideDeck[key]; i += 1) {
-        deckData.sideDeck.push(key);
-      }
-    }
-    // for (let i = 0; i < (await deck).mainDeck.length; i += 1) {
-    //   const cardId = (await deck).mainDeck[i];
-    //   const card = await this.cardModel.findOne({ cardId });
-    //   deckData.mainDeck.push(card);
-    // }
-    // for (let i = 0; i < (await deck).extraDeck.length; i += 1) {
-    //   const cardId = (await deck).extraDeck[i];
-    //   const card = await this.cardModel.findOne({ cardId });
-    //   deckData.extraDeck.push(card);
-    // }
-    // for (let i = 0; i < (await deck).sideDeck.length; i += 1) {
-    //   const cardId = (await deck).sideDeck[i];
-    //   const card = await this.cardModel.findOne({ cardId });
-    //   deckData.sideDeck.push(card);
-    // }
+    deckData.mainDeck = deck.mainDeck;
+    deckData.extraDeck = deck.extraDeck;
+    deckData.sideDeck = deck.sideDeck;
 
     return deckData;
   }

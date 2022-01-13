@@ -18,10 +18,10 @@ export class DecksController {
     return this.decksService.showAllDecks();
   }
 
-  // @Get(':id')
-  // getDeck(@Param('id') deckId: number) {
-  //   return this.decksService.getDeck(deckId);
-  // }
+  @Get(':id')
+  getDeck(@Param('id') deckId: number) {
+    return this.decksService.getDeckById(deckId);
+  }
 
   @Post()
   createNewDeck(@Body('deckName') deckName: string) {
