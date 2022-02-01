@@ -2,6 +2,8 @@
 
 This project is currently a work in progress
 
+### Not ready for mobile use yet, only desktop.
+
 ---
 
 ## About
