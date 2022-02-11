@@ -1,5 +1,13 @@
 {
   "eslint.workingDirectories": [
    "backend" 
+  ],
+  "spellright.language": [
+    "en"
+  ],
+  "spellright.documentTypes": [
+    "markdown",
+    "latex",
+    "plaintext"
   ]
 }
