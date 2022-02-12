@@ -1,4 +1,5 @@
 import React from 'react';
+import BottomBar from '../BottomBar';
 import Header from '../Header';
 
 const CardArea = () => {
@@ -6,6 +7,7 @@ const CardArea = () => {
     <div className='App'>
       <Header />
       <h2>Card Area</h2>
+      <BottomBar />
     </div>
   );
 }
