@@ -72,11 +72,15 @@ export class CardsService {
   }
 
   async getOwnedCards() {
-    return await this.cardModel.find({ owned: true }).sort({ cardName: 1 });
+    const ownedCards = await this.cardModel
+      .find({ owned: true })
+      .sort({ cardName: 1 });
+    return ownedCards;
   }
 
   async getAllCards() {
-    return await this.cardModel.find().sort({ cardName: 1 });
+    const cards = await this.cardModel.find().sort({ cardName: 1 });
+    return cards;
   }
 
   async addOrUpdateCard(

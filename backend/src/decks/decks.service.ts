@@ -2,7 +2,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Card, CardDocument } from 'src/cards/schemas/card.schema';
+import { Card, CardDocument } from '../cards/schemas/card.schema';
 import { Deck, DeckDocument } from './schemas/deck.schema';
 
 @Injectable()
@@ -37,11 +37,13 @@ export class DecksService {
   }
 
   async showAllDecks() {
-    return await this.deckModel.find().sort({ deckName: 1 });
+    const allDecks = await this.deckModel.find().sort({ deckName: 1 });
+    return allDecks;
   }
 
   async removeDeck(deckId: number) {
-    return await this.deckModel.deleteOne({ _id: deckId });
+    const deck = await this.deckModel.deleteOne({ _id: deckId });
+    return deck;
   }
 
   async updateDeck(
