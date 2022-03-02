@@ -1,6 +1,6 @@
 import React from 'react';
 
-function BottomBar() {
+const BottomBar =() => {
   return (
     <footer>
       Bottom Bar

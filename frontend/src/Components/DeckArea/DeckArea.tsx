@@ -3,7 +3,7 @@
 import React from 'react';
 import Header from '../Header'
 
-function DeckArea() {
+const DeckArea = () => {
   return (
     <div className='App'>
       <Header />
