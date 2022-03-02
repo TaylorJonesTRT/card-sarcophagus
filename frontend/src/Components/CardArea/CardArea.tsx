@@ -6,7 +6,7 @@ import Header from '../Header';
 
 const CardArea = () => {
   return (
-    <div className='App w-screen h-screen flex flex-col'>
+    <div className='App w-screen h-screen grid font-sans'>
       <Header />
       <h2>Card Area</h2>
       <BottomBar />
