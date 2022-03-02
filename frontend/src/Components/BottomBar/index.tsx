@@ -1,11 +1,4 @@
-import React from 'react';
-
-function BottomBar() {
-  return (
-    <footer>
-      Bottom Bar
-    </footer>
-  )
-}
-
-export default BottomBar;
+/* eslint-disable no-restricted-exports */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+export { default } from './BottomBar';

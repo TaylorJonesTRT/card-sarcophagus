@@ -1,15 +1,4 @@
-import React from 'react';
-import BottomBar from '../BottomBar';
-import Header from '../Header';
-
-const CardArea = () => {
-  return (
-    <div className='App'>
-      <Header />
-      <h2>Card Area</h2>
-      <BottomBar />
-    </div>
-  );
-}
-
-export default CardArea;
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable no-restricted-exports */
+export { default } from './CardArea';
