@@ -4,9 +4,9 @@ import React from 'react';
 import BottomBar from '../BottomBar';
 import Header from '../Header';
 
-function CardArea() {
+const CardArea = () => {
   return (
-    <div className='App'>
+    <div className='App w-screen h-screen grid font-sans bg-gradient-to-bl from-gray-800 to-gray-600'>
       <Header />
       <h2>Card Area</h2>
       <BottomBar />

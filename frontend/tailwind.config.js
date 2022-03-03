@@ -1,8 +1,13 @@
 module.exports = {
-  content: [
-    "./src/**/*/.{js,jsx,ts,tsx}",
-  ],
+  purge: [],
+  darkMode: false, // or 'media' or 'class'
   theme: {
+    fontFamily: {
+      'sans': ['Poppins', 'sans-serif']
+    },
+    extend: {},
+  },
+  variants: {
     extend: {},
   },
   plugins: [],

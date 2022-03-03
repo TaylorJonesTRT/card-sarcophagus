@@ -1,7 +1,9 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import './index.css';
+import './Assets/main.css';
 import AppRoutes from './Routes';
 import reportWebVitals from './reportWebVitals';
 
