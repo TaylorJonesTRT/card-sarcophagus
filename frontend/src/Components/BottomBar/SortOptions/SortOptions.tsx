@@ -29,11 +29,11 @@ const SortOptions = () => {
       </div>
       
       <div className='sort-options'>
-        <FormControl>
-          <FormLabel id='demo-radio-buttons-group-label'>Sort By:</FormLabel>
+        <FormControl color='primary'>
+          <FormLabel id='demo-radio-buttons-group-label' color='primary' className='text-white'>Sort By:</FormLabel>
           <RadioGroup
             aria-labelledby='demo-radio-buttons-group-label'
-            defaultValue='name'
+            defaultValue='card-name'
             name='radio-buttons-group'
             className='h-1'
           >
