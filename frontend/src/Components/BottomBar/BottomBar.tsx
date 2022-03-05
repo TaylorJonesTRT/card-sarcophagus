@@ -7,7 +7,7 @@ import SortOptions from './SortOptions';
 const BottomBar =() => {
   return (
     <footer className='h-40 fixed inset-x-0 bottom-0 bg-gradient-to-bl
-    from-gray-800 to-gray-600 flex flex-row justify-between'
+    from-gray-800 to-gray-600 flex flex-row justify-between text-white'
     >
       <CardInfoArea />
       <SortOptions />
