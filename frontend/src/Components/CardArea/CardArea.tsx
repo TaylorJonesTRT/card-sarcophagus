@@ -57,7 +57,7 @@ const CardArea = () => {
     <ThemeProvider theme={theme}>
       <div className="App w-screen h-screen flex flex-col font-sans">
         <Header />
-        <div className="content">
+        <div className="content h-auto">
           {displayCardEditor ? (
             <CardEditor />
           ) : (
