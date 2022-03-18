@@ -1,75 +1,77 @@
 import React from 'react';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import SearchIcon from '@mui/icons-material/Search';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 
 const SortOptions = () => (
-  <div className="sort-options w-1/2 flex flex-col m-3">
-    <div className="search-field mb-5">
-      <TextField
-        variant="standard"
-        id="input-with-icon-textfield"
-        label="Search"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon color="primary" />
-            </InputAdornment>
-          ),
-        }}
-        color="primary"
-        focused
-      />
-    </div>
-
-    <div className="sort-options">
-      <FormControl color="primary">
-        <FormLabel
-          id="demo-radio-buttons-group-label"
-          color="primary"
-          className="text-white"
-        >
-          Sort By:
-        </FormLabel>
-        <RadioGroup
-          aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue="card-name"
-          name="radio-buttons-group"
-          className="h-1"
-        >
-          <FormControlLabel
-            value="card-name"
-            control={<Radio />}
-            label="Name"
+  <div className='sort-options w-1/2 flex flex-col m-3'>
+    <form>
+      <ul>
+        <li>
+          <label htmlFor='card-name' className='grid grid-rows-2'>
+            Search:
+            <input
+              type='text'
+              id='card-search'
+              name='card-name'
+              className='border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+            />
+          </label>
+        </li>
+      </ul>
+      <ul className='grid grid-cols-5'>
+        <li>
+          <input
+            type='radio'
+            id='card-name'
+            name='card-sort-options'
+            value='Name'
           />
-          <FormControlLabel
-            value="card-attack"
-            control={<Radio />}
-            label="Attack"
-          />
-          <FormControlLabel
-            value="card-defense"
-            control={<Radio />}
-            label="Defense"
-          />
-          <FormControlLabel
-            value="card-type"
-            control={<Radio />}
-            label="Card Type"
-          />
-          <FormControlLabel
-            value="card-level"
-            control={<Radio />}
-            label="Level/Rank"
-          />
-        </RadioGroup>
-      </FormControl>
-    </div>
+          Name
+        </li>
+        <li>
+          <label htmlFor='card-attack'>
+            <input
+              type='radio'
+              id='card-attack'
+              name='card-sort-options'
+              value='Attack'
+            />
+            Attack
+          </label>
+        </li>
+        <li>
+          <label htmlFor='card-defense'>
+            <input
+              type='radio'
+              id='card-defense'
+              name='card-sort-options'
+              value='Defense'
+            />
+            Defense
+          </label>
+        </li>
+        <li>
+          <label htmlFor='card-level'>
+            Level
+            <input
+              type='radio'
+              id='card-level'
+              name='card-sort-options'
+              value='Level'
+            />
+          </label>
+        </li>
+        <li>
+          <label htmlFor='card-type'>
+            <input
+              type='radio'
+              id='card-type'
+              name='card-sort-options'
+              value='Type'
+            />
+            Card Type
+          </label>
+        </li>
+      </ul>
+    </form>
   </div>
 );
 
