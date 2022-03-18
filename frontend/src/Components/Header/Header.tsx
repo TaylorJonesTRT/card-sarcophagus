@@ -10,6 +10,9 @@ const Header = () => (
     <h1 className='font-bold w-1/2 m-auto ml-6'>
       <Link to='/'>Card Sarcophagus</Link>
     </h1>
+    <div className='w-32 h-auto mt-2'>
+      <Link to='/card-editor'>+ Add a Card</Link>
+    </div>
     <nav className='w-1/2 m-auto'>
       <ul className='flex flex-row justify-end'>
         <li className='mr-6 hover:underline'>
