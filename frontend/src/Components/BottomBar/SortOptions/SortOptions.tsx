@@ -16,13 +16,14 @@ const SortOptions = () => (
           </label>
         </li>
       </ul>
-      <ul className='grid grid-cols-5'>
+      <ul className='flex flex-cols-5 gap-10 pt-5'>
         <li>
           <input
             type='radio'
             id='card-name'
             name='card-sort-options'
             value='Name'
+            className='mr-2'
           />
           Name
         </li>
@@ -33,6 +34,7 @@ const SortOptions = () => (
               id='card-attack'
               name='card-sort-options'
               value='Attack'
+              className='mr-2'
             />
             Attack
           </label>
@@ -44,19 +46,21 @@ const SortOptions = () => (
               id='card-defense'
               name='card-sort-options'
               value='Defense'
+              className='mr-2'
             />
             Defense
           </label>
         </li>
         <li>
           <label htmlFor='card-level'>
-            Level
             <input
               type='radio'
               id='card-level'
               name='card-sort-options'
               value='Level'
+              className='mr-2'
             />
+            Level
           </label>
         </li>
         <li>
@@ -66,6 +70,7 @@ const SortOptions = () => (
               id='card-type'
               name='card-sort-options'
               value='Type'
+              className='mr-2'
             />
             Card Type
           </label>
