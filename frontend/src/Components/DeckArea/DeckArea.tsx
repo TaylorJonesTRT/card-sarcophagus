@@ -13,11 +13,16 @@ const DeckArea = () => {
       <Header />
       <div className='content h-auto m-3 pt-10'>
         <div className='decks'>
-          <ul className='flex flex-row gap-4'>
+          <ul className='flex flex-row gap-10'>
             {cardData.map((card: string | undefined) => (
               <li>
-                <div role='button' tabIndex={0}>
+                <div
+                  role='button'
+                  tabIndex={0}
+                  className='flex flex-col text-center'
+                >
                   <img className='w-28' src={card} alt='ygo-card-back' />
+                  <span>Deck Name</span>
                 </div>
               </li>
             ))}
