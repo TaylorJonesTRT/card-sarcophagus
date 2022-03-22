@@ -36,4 +36,9 @@ export class CardsController {
       boxLocation,
     );
   }
+
+  @Get('card')
+  getCardData(@Body('cardId') cardId: number) {
+    return this.cardsService.getSingleCardData(cardId);
+  }
 }

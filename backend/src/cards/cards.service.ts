@@ -100,4 +100,9 @@ export class CardsService {
     const card = await this.cardModel.findOneAndUpdate(filter, cardInformation);
     return card;
   }
+
+  async getSingleCardData(cardId) {
+    const card = await this.cardModel.find({ cardId });
+    return card;
+  }
 }
