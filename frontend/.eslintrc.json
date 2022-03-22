@@ -27,6 +27,7 @@
             "namedComponents": "arrow-function",
             "unnamedComponents": "arrow-function"
           }],
-        "prettier/prettier": ["error"]
+        "prettier/prettier": ["error"],
+        "no-unused-vars": 1
     }
 }
