@@ -101,7 +101,7 @@ export class CardsService {
     return card;
   }
 
-  async getSingleCardData(cardId) {
+  async getSingleCardData(cardId: number) {
     const card = await this.cardModel.find({ cardId });
     return card;
   }

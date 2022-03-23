@@ -37,7 +37,7 @@ export class CardsController {
     );
   }
 
-  @Get('card')
+  @Post('card')
   getCardData(@Body('cardId') cardId: number) {
     return this.cardsService.getSingleCardData(cardId);
   }
