@@ -1,14 +1,76 @@
+/* eslint-disable dot-notation */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-restricted-exports */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 import cardBack from '../../Assets/card-back.png';
 import BottomBar from '../BottomBar';
 import Header from '../Header';
 
+interface PopulatedData {
+  _id: number;
+  cardId: number;
+  cardName: string;
+  cardType: string;
+  cardLevel: number;
+  cardAttribute: string;
+  cardRace: string;
+  cardDesc: string;
+  cardAtk: number;
+  cardDef: number;
+  cardImage: string;
+  owned: boolean;
+  amountOfCopies: number;
+  availableCopies: number;
+  boxLocation: null;
+  binderLocation: null;
+  __v: number;
+}
+
 const CardEditor = () => {
   const cardEditorSubmit = () => {};
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [populatedCardData, setPopulatedCardData] = useState<
+    PopulatedData | undefined
+  >({
+    _id: 0,
+    cardId: 0,
+    cardName: '',
+    cardType: '',
+    cardLevel: 0,
+    cardAttribute: '',
+    cardRace: '',
+    cardDesc: '',
+    cardAtk: 0,
+    cardDef: 0,
+    cardImage: '',
+    owned: false,
+    amountOfCopies: 0,
+    availableCopies: 0,
+    boxLocation: null,
+    binderLocation: null,
+    __v: 0,
+  });
+  const [emptyEditor, setEmptyEditor] = useState(true);
+  const cardId = searchParams.get('cardId');
+
+  useEffect(() => {
+    const fillInCardEditor = async () => {
+      if (cardId !== null) {
+        const card = await axios
+          .post('http://localhost:3001/api/cards/card', { cardId })
+          .then((response) => response.data[0]);
+        setEmptyEditor(false);
+        return setPopulatedCardData(card);
+      }
+      return setEmptyEditor(true);
+    };
+    fillInCardEditor();
+  }, []);
 
   return (
     <div className='App'>
@@ -24,7 +86,8 @@ const CardEditor = () => {
                   type='text'
                   id='card-name'
                   name='card-name'
-                  className='border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                  className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                  value={populatedCardData!.cardName || ''}
                 />
               </label>
             </li>
@@ -35,7 +98,8 @@ const CardEditor = () => {
                   type='checkbox'
                   id='card-owned'
                   name='card-owned'
-                  className='border-2 border-gray-400 rounded outline-none w-7 h-7'
+                  className='text-black border-2 border-gray-400 rounded outline-none w-7 h-7'
+                  checked={populatedCardData!.owned || false}
                 />
               </label>
             </li>
@@ -46,7 +110,8 @@ const CardEditor = () => {
                   type='number'
                   id='card-amount-copies'
                   name='card-amount-copies'
-                  className='border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                  className='text-black order-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                  value={populatedCardData?.amountOfCopies}
                 />
               </label>
             </li>
@@ -57,7 +122,8 @@ const CardEditor = () => {
                   type='number'
                   id='card-available-copies'
                   name='card-available-copies'
-                  className='border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                  className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                  value={populatedCardData?.availableCopies}
                 />
               </label>
             </li>
@@ -68,7 +134,8 @@ const CardEditor = () => {
                   type='text'
                   id='card-box-location'
                   name='card-box-location'
-                  className='border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                  className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                  value={populatedCardData?.boxLocation || ''}
                 />
               </label>
             </li>
@@ -79,7 +146,8 @@ const CardEditor = () => {
                   type='text'
                   id='card-binder-location'
                   name='card-binder-location'
-                  className='border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                  className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                  value={populatedCardData?.binderLocation || ''}
                 />
               </label>
             </li>
