@@ -6,11 +6,13 @@ import SortOptions from './SortOptions';
 
 const BottomBar = () => (
   <footer
-    className='h-40 fixed inset-x-0 bottom-0 bg-gradient-to-bl
-    from-gray-800 to-gray-600 flex flex-row justify-between text-white'
+    className='bg-gradient-to-bl
+    from-gray-800 to-gray-600 flex flex-row justify-between text-white basis-auto'
   >
-    <CardInfoArea />
-    <SortOptions />
+    <div className='container:lg w-[1240px] flex flex-row mx-auto'>
+      <CardInfoArea />
+      <SortOptions />
+    </div>
   </footer>
 );
 

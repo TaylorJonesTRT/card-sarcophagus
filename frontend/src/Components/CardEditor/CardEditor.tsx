@@ -73,10 +73,9 @@ const CardEditor = () => {
   }, []);
 
   return (
-    <div className='App'>
-      <Header />
-      <div className='card-editor w-full h-screen flex items-center justify-center'>
-        <form className='bg-gradient-to-r from-gray-700 to-gray-900 rounded w-3/4 h-1/3 flex flex-row p-5 justify-between text-white'>
+    <div className='w-full basis-full'>
+      <div className='container:lg w-[1240px] mx-auto'>
+        <form className='w-[900px] h-[250px] bg-gradient-to-r from-gray-700 to-gray-900 rounded grid grid-flow-col auto-cols-auto p-5 text-white mx-auto mt-52'>
           <img src={cardBack} alt='card' />
           <ul className='h-max grid grid-col-2 gap-2 pl-5'>
             <li className='col-start-1'>
@@ -153,7 +152,7 @@ const CardEditor = () => {
             </li>
           </ul>
           <button
-            className='card-editor-button p-4 bg-gradient-to-b from-blue-500 to-indigo-500 hover:from-blue-500 hover:to-green-400 rounded text-blue-900 hover:text-white'
+            className='card-editor-button p-4 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-blue-500 hover:to-cyan-400 rounded text-blue-900'
             type='submit'
             onSubmit={cardEditorSubmit}
           >
@@ -161,7 +160,6 @@ const CardEditor = () => {
           </button>
         </form>
       </div>
-      <BottomBar />
     </div>
   );
 };

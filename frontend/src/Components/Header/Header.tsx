@@ -5,9 +5,9 @@ const Header = () => (
   <header
     className='
     w-full mx-auto h-9 justify-around shadow-xl bg-gradient-to-r 
-    from-gray-900 to-gray-700 text-white border-b-2 border-gray-700 fixed inset-x-0 top-0 z-50'
+    from-gray-900 to-gray-700 text-white border-b-2 border-gray-700 basis-9'
   >
-    <div className='container-lg w-[1240px] flex flex-row mx-auto justify-between mt-1'>
+    <div className='container-lg w-[1240px] flex flex-row mx-auto justify-between pt-1 overflow-hidden flex-grow'>
       <h1 className='font-bold'>
         <Link to='/'>Card Sarcophagus</Link>
       </h1>
