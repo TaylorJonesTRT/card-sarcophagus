@@ -23,10 +23,9 @@ const CardArea = () => {
   }, []);
 
   return (
-    <div className='App w-screen h-screen flex flex-col font-sans'>
-      <Header />
-      <div className='content h-auto'>
-        <ul className='flex flex-row gap-4 flex-wrap m-3 pt-10'>
+    <div className='w-full basis-full pt-3'>
+      <div className='container:lg w-[1240px] mx-auto'>
+        <ul className='flex flex-row gap-4 flex-wrap overflow-auto'>
           {cards!.map((card) => (
             <li key={card.cardId}>
               <div
@@ -48,7 +47,6 @@ const CardArea = () => {
           ))}
         </ul>
       </div>
-      <BottomBar />
     </div>
   );
 };
