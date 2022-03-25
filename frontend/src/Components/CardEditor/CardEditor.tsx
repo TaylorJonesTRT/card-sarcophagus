@@ -153,7 +153,7 @@ const CardEditor = () => {
             </li>
           </ul>
           <button
-            className='card-editor-button p-4 bg-gradient-to-b from-blue-500 to-indigo-500 hover:from-blue-500 hover:to-green-400 rounded text-blue-900 hover:text-white'
+            className='card-editor-button p-4 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-blue-500 hover:to-cyan-400 rounded text-blue-900'
             type='submit'
             onSubmit={cardEditorSubmit}
           >
