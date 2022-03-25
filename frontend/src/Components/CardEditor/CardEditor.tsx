@@ -76,10 +76,10 @@ const CardEditor = () => {
     <div className='App'>
       <Header />
       <div className='card-editor w-full h-screen flex items-center justify-center'>
-        <form className='bg-gradient-to-r from-gray-700 to-gray-900 rounded w-1/2 flex flex-row p-5 text-white'>
-          <img className='w-3/12' src={cardBack} alt='card' />
-          <ul className='max-h-72 grid grid-cols-2 gap-4 pl-5'>
-            <li>
+        <form className='bg-gradient-to-r from-gray-700 to-gray-900 rounded w-3/4 h-1/3 flex flex-row p-5 justify-between text-white'>
+          <img src={cardBack} alt='card' />
+          <ul className='h-max grid grid-col-2 gap-2 pl-5'>
+            <li className='col-start-1'>
               <label htmlFor='card-name'>
                 Card Name:
                 <input
@@ -115,7 +115,7 @@ const CardEditor = () => {
                 />
               </label>
             </li>
-            <li>
+            <li className='col-start-2'>
               <label htmlFor='card-available-copies'>
                 Available for Use:
                 <input
