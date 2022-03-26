@@ -27,9 +27,6 @@ export class CardsService {
     const cards = await this.apiFetch();
 
     for (let i = 0; i < cards.length; i += 1) {
-      // If the card is located in the database than it does not need to be
-      // added again.
-
       const newCard = new this.cardModel({
         cardId: cards[i].id,
         cardName: cards[i].name,

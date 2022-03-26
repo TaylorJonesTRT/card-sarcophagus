@@ -109,7 +109,7 @@ const CardEditor = () => {
                   type='number'
                   id='card-amount-copies'
                   name='card-amount-copies'
-                  className='text-black order-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                  className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
                   value={populatedCardData?.amountOfCopies}
                 />
               </label>
