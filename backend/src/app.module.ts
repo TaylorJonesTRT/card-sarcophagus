@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { CardsModule } from './cards/cards.module';
 import { HttpModule } from '@nestjs/axios';
 import { DecksModule } from './decks/decks.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { DecksModule } from './decks/decks.module';
     CardsModule,
     HttpModule,
     DecksModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
