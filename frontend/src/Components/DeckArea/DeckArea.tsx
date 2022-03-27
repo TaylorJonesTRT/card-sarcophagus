@@ -1,8 +1,6 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import React from 'react';
-import BottomBar from '../BottomBar';
-import Header from '../Header';
 import deckBox from '../../Assets/deckbox.png';
 
 const DeckArea = () => {
