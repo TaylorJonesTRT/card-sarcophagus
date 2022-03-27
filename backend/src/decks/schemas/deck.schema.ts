@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types, Schema as MongooseSchema } from 'mongoose';
 
 export type DeckDocument = Deck & Document;
 
@@ -16,6 +16,9 @@ export class Deck {
 
   @Prop({ type: Map })
   sideDeck = new Map<string, number>();
+
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Users' })
+  deckOwner: Types.ObjectId;
 }
 
 export const DeckSchema = SchemaFactory.createForClass(Deck);
