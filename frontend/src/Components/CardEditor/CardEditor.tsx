@@ -7,8 +7,6 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import cardBack from '../../Assets/card-back.png';
-import BottomBar from '../BottomBar';
-import Header from '../Header';
 
 interface PopulatedData {
   _id: number;
@@ -55,7 +53,6 @@ const CardEditor = () => {
     binderLocation: null,
     __v: 0,
   });
-  const [emptyEditor, setEmptyEditor] = useState(true);
   const cardId = searchParams.get('cardId');
 
   useEffect(() => {
@@ -64,10 +61,9 @@ const CardEditor = () => {
         const card = await axios
           .post('http://localhost:3001/api/cards/card', { cardId })
           .then((response) => response.data[0]);
-        setEmptyEditor(false);
         return setPopulatedCardData(card);
       }
-      return setEmptyEditor(true);
+      return setPopulatedCardData(undefined);
     };
     fillInCardEditor();
   }, []);
@@ -76,7 +72,7 @@ const CardEditor = () => {
     <div className='w-full basis-full'>
       <div className='container:lg w-[1240px] mx-auto'>
         <form className='w-[900px] h-[250px] bg-gradient-to-r from-gray-700 to-gray-900 rounded grid grid-flow-col auto-cols-auto p-5 text-white mx-auto mt-52'>
-          <img src={cardBack} alt='card' />
+          <img src={cardBack} alt='card' className='mt-2' />
           <ul className='h-max grid grid-col-2 gap-2 pl-5'>
             <li className='col-start-1'>
               <label htmlFor='card-name'>
@@ -86,7 +82,7 @@ const CardEditor = () => {
                   id='card-name'
                   name='card-name'
                   className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-                  value={populatedCardData!.cardName || ''}
+                  value={populatedCardData?.cardName || ''}
                 />
               </label>
             </li>
@@ -98,7 +94,7 @@ const CardEditor = () => {
                   id='card-owned'
                   name='card-owned'
                   className='text-black border-2 border-gray-400 rounded outline-none w-7 h-7'
-                  checked={populatedCardData!.owned || false}
+                  checked={populatedCardData?.owned || false}
                 />
               </label>
             </li>
@@ -152,7 +148,7 @@ const CardEditor = () => {
             </li>
           </ul>
           <button
-            className='card-editor-button p-4 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-blue-500 hover:to-cyan-400 rounded text-blue-900'
+            className='card-editor-button h-auto p-4 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-blue-500 hover:to-cyan-400 rounded text-blue-900'
             type='submit'
             onSubmit={cardEditorSubmit}
           >
