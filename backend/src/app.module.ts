@@ -12,7 +12,7 @@ import { DecksModule } from './decks/decks.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGO_URL),
+    MongooseModule.forRoot(process.env.MONGODB_URL),
     CardsModule,
     HttpModule,
     DecksModule,
