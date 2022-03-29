@@ -16,6 +16,9 @@ export class Users {
 
   @Prop([{ type: MongooseSchema.Types.ObjectId, ref: 'Deck' }])
   decks: [Types.ObjectId];
+
+  @Prop({ default: 0 })
+  jwtId: number;
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users);
