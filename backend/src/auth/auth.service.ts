@@ -3,12 +3,14 @@ import { Injectable } from '@nestjs/common';
 import { Users, UsersDocument } from '../users/schemas/users.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel('Users') private readonly usersModel: Model<UsersDocument>,
+    private jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, pass: string): Promise<any> {
@@ -46,5 +48,12 @@ export class AuthService {
       }
     });
     return { message: 'Account Created!' };
+  }
+
+  async login(user: any) {
+    const payload = { username: user.username, sub: user.userId };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }
