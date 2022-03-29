@@ -5,9 +5,13 @@ import { AuthController } from './auth.controller';
 import { Users, UsersSchema } from '../users/schemas/users.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
+import { UsersModule } from '../users/users.module';
+import { LocalStrategy } from './local.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
+    UsersModule,
     MongooseModule.forFeature([{ name: 'Users', schema: UsersSchema }]),
     MongooseModule.forFeatureAsync([
       {
@@ -24,8 +28,9 @@ import * as bcrypt from 'bcrypt';
         },
       },
     ]),
+    PassportModule,
   ],
-  providers: [AuthService],
+  providers: [AuthService, LocalStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })
