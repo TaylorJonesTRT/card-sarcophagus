@@ -12,14 +12,20 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.usersModel.findOne({ email });
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(pass, salt);
-    if (user && user.password === hashedPassword) {
-      const { password, ...result } = user;
-      return result;
+    try {
+      const user = await this.usersModel.findOne({ email });
+      if (!user) {
+        return null;
+      }
+      const validatePassword = await bcrypt.compare(pass, user.password);
+      if (user && validatePassword) {
+        const { password, ...result } = user;
+        return result;
+      }
+      return null;
+    } catch (err) {
+      console.log(err);
     }
-    return null;
   }
 
   async createUser(email: string, password: string) {
