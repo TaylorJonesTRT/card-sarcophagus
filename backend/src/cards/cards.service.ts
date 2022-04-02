@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { UsersDocument } from '../users/schemas/users.schema';
 import { Card, CardDocument } from './schemas/card.schema';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class CardsService {
   constructor(
     private httpService: HttpService,
     @InjectModel('Card') private readonly cardModel: Model<CardDocument>,
+    @InjectModel('Users') private readonly usersModel: Model<UsersDocument>,
   ) {}
 
   async apiFetch() {
@@ -68,10 +70,12 @@ export class CardsService {
     return 'Adding cards to database, check your console';
   }
 
-  async getOwnedCards() {
-    const ownedCards = await this.cardModel
-      .find({ owned: true })
-      .sort({ cardName: 1 });
+  async getOwnedCards(userId: string) {
+    const user = await this.usersModel.findOne({ _id: userId });
+    const ownedCards = user.ownedCards;
+    // const ownedCards = await this.cardModel
+    //   .find({ owned: true })
+    //   .sort({ cardName: 1 });
     return ownedCards;
   }
 

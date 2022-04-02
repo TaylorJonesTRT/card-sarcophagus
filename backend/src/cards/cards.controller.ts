@@ -11,8 +11,8 @@ export class CardsController {
   }
 
   @Get()
-  getOwnedCards() {
-    return this.cardsService.getOwnedCards();
+  getOwnedCards(userId: string) {
+    return this.cardsService.getOwnedCards(userId);
   }
 
   @Get('all-cards')

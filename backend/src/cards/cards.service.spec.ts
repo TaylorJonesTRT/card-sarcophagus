@@ -2,6 +2,7 @@ import { HttpModule } from '@nestjs/axios';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
+import { Users } from '../users/schemas/users.schema';
 import { CardsService } from './cards.service';
 import { Card } from './schemas/card.schema';
 
@@ -102,6 +103,10 @@ describe('CardsService', () => {
         CardsService,
         {
           provide: getModelToken(Card.name),
+          useValue: Model,
+        },
+        {
+          provide: getModelToken(Users.name),
           useValue: Model,
         },
       ],
