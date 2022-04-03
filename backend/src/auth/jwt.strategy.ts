@@ -19,9 +19,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    // TODO: Need to create a richer user request object (cards, decks, etc)
-    // TODO: Need to implement more validation here. Compare JWT token ID to
-    // todo: the one that is stored on the users database file, etc etc.
     const user = await this.usersModel.findOne({ _id: payload.sub });
 
     if (payload.jwtId !== user.jwtId) {
