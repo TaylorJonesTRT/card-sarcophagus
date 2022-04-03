@@ -51,14 +51,27 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = {
-      email: user._doc.email,
-      sub: user._doc._id,
-      ownedCards: user._doc.ownedCards,
-      decks: user._doc.decks,
-    };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    try {
+      const payload = {
+        email: user._doc.email,
+        sub: user._doc._id,
+        ownedCards: user._doc.ownedCards,
+        decks: user._doc.decks,
+        jwtId: user._doc.jwtId,
+      };
+
+      const activeUser = await this.usersModel.findOne({ _id: user._doc._id });
+      activeUser.jwtId += 1;
+      activeUser.save((err) => {
+        if (err) {
+          return console.log(err);
+        }
+      });
+      return {
+        access_token: this.jwtService.sign(payload),
+      };
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
