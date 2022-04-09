@@ -42,7 +42,7 @@ export class DecksService {
     const allDecks = await this.deckModel.find({
       deckOwner: request.user.userId,
     });
-    return allDecks;
+    return { allDecks };
   }
 
   async removeDeck(request: any, deckId: number) {
@@ -50,7 +50,7 @@ export class DecksService {
       deckOwner: request.user.userId,
       _id: deckId,
     });
-    return deck;
+    return { deck };
   }
 
   async updateDeck(
@@ -73,26 +73,27 @@ export class DecksService {
     if (cardRemoval) {
       if (deckLocation == 'mainDeck') {
         deck.mainDeck.set(cardId, deck.mainDeck.get(cardId) - amountOfCopies);
-        return deck.save();
+        deck.save();
       } else if (deckLocation == 'extraDeck') {
         deck.extraDeck.set(cardId, deck.extraDeck.get(cardId) - amountOfCopies);
-        return deck.save();
+        deck.save();
       } else {
         deck.sideDeck.set(cardId, deck.sideDeck.get(cardId) - amountOfCopies);
-        return deck.save();
+        deck.save();
       }
     } else {
       if (deckLocation == 'mainDeck') {
         deck.mainDeck.set(cardId, amountOfCopies);
-        return deck.save();
+        deck.save();
       } else if (deckLocation == 'extraDeck') {
         deck.extraDeck.set(cardId, amountOfCopies);
-        return deck.save();
+        deck.save();
       } else {
         deck.sideDeck.set(cardId, amountOfCopies);
-        return deck.save();
+        deck.save();
       }
     }
+    return { message: 'Deck updated successfully!' };
   }
 
   async getDeckById(deckId: number, request: any) {
@@ -119,6 +120,6 @@ export class DecksService {
       throw Error('Error');
     }
 
-    return deckData;
+    return { deckData };
   }
 }

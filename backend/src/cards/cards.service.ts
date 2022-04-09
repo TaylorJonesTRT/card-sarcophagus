@@ -72,12 +72,12 @@ export class CardsService {
 
   async getOwnedCards(user: any) {
     const ownedCards = user.ownedCards;
-    return ownedCards;
+    return { ownedCards };
   }
 
   async getAllCards() {
     const cards = await this.cardModel.find().sort({ cardName: 1 });
-    return cards;
+    return { cards };
   }
 
   async addOwnedCard(
@@ -124,7 +124,7 @@ export class CardsService {
   }
 
   async getSingleCardData(cardId: number) {
-    const card = await this.cardModel.find({ cardId });
-    return card;
+    const card = await this.cardModel.findOne({ cardId });
+    return { card };
   }
 }
