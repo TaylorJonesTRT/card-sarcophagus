@@ -88,21 +88,29 @@ export class DecksService {
     }
   }
 
-  async getDeckById(deckId: number) {
+  async getDeckById(deckId: number, request: any) {
     const deckData = {
       mainDeck: {},
       extraDeck: {},
       sideDeck: {},
     };
-    const deck = await this.deckModel.findById(deckId);
 
-    if (!deck) {
-      throw Error('No deck could be found by that deckId');
+    try {
+      const deck = await this.deckModel.findOne({
+        deckOwner: request.user.userId,
+        _id: deckId,
+      });
+
+      if (!deck) {
+        throw Error('No deck could be found by that deckId');
+      }
+
+      deckData.mainDeck = deck.mainDeck;
+      deckData.extraDeck = deck.extraDeck;
+      deckData.sideDeck = deck.sideDeck;
+    } catch (err) {
+      throw Error('Error');
     }
-
-    deckData.mainDeck = deck.mainDeck;
-    deckData.extraDeck = deck.extraDeck;
-    deckData.sideDeck = deck.sideDeck;
 
     return deckData;
   }

@@ -23,9 +23,10 @@ export class DecksController {
     return this.decksService.showAllDecks(request);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  getDeck(@Param('id') deckId: number) {
-    return this.decksService.getDeckById(deckId);
+  getDeck(@Param('id') deckId: number, @Req() request: Request) {
+    return this.decksService.getDeckById(deckId, request);
   }
 
   @UseGuards(JwtAuthGuard)
