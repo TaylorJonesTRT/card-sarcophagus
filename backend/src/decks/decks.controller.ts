@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import {
   Controller,
   Delete,
@@ -6,30 +7,38 @@ import {
   Put,
   Body,
   Param,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { DecksService } from './decks.service';
 
 @Controller('decks')
 export class DecksController {
   constructor(private readonly decksService: DecksService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  showAllDecks() {
-    return this.decksService.showAllDecks();
+  showAllDecks(@Req() request: Request) {
+    return this.decksService.showAllDecks(request);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  getDeck(@Param('id') deckId: number) {
-    return this.decksService.getDeckById(deckId);
+  getDeck(@Param('id') deckId: number, @Req() request: Request) {
+    return this.decksService.getDeckById(deckId, request);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  createNewDeck(@Body('deckName') deckName: string) {
-    return this.decksService.createDeck(deckName);
+  createNewDeck(@Body('deckName') deckName: string, @Req() request: Request) {
+    return this.decksService.createDeck(deckName, request);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('')
   updateDeck(
+    @Req() request: Request,
     @Body('deckId') deckId: number,
     @Body('cardId') cardId: string,
     @Body('amountOfCopies') amountOfCopies: number,
@@ -37,6 +46,7 @@ export class DecksController {
     @Body('cardRemoval') cardRemoval: boolean,
   ) {
     return this.decksService.updateDeck(
+      request,
       deckId,
       cardId,
       amountOfCopies,
@@ -45,8 +55,9 @@ export class DecksController {
     );
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('')
-  removeDeck(@Body('id') id: number) {
-    return this.decksService.removeDeck(id);
+  removeDeck(@Req() request: Request, @Body('deckId') deckId: number) {
+    return this.decksService.removeDeck(request, deckId);
   }
 }

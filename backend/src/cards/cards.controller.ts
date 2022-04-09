@@ -20,6 +20,7 @@ export class CardsController {
     return this.cardsService.saveCardsToDatabase();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   getOwnedCards(@Req() request: Request) {
     return this.cardsService.getOwnedCards(request.user);
@@ -56,12 +57,13 @@ export class CardsController {
     );
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put()
   updateOwnedCard(
     @Req() request: Request,
     @Body('cardId') cardId: string,
     @Body('amountOfCopies') copies: number,
-    @Body('owned') owned: boolean,
+    @Body('availableCopies') availableCopies: number,
     @Body('binderLocation') binderLocation: string,
     @Body('boxLocation') boxLocation: string,
   ) {
@@ -69,7 +71,7 @@ export class CardsController {
       request.user,
       cardId,
       copies,
-      owned,
+      availableCopies,
       binderLocation,
       boxLocation,
     );

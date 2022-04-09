@@ -12,12 +12,13 @@ export class DecksService {
     @InjectModel('Card') private readonly cardModel: Model<CardDocument>,
   ) {}
 
-  async createDeck(deckName: string) {
+  async createDeck(deckName: string, reqUser: any) {
     const deck = new this.deckModel({
       deckName,
       mainDeck: [],
       extraDeck: [],
       sideDeck: [],
+      deckOwner: reqUser.user.userId,
     });
 
     const alreadySaved = await this.deckModel.findOne({
@@ -32,28 +33,38 @@ export class DecksService {
       if (err) {
         return console.log(err);
       }
-      return { message: 'Deck successfully created!' };
     });
+    return { message: 'Deck created!' };
   }
 
-  async showAllDecks() {
-    const allDecks = await this.deckModel.find().sort({ deckName: 1 });
+  async showAllDecks(request) {
+    // const allDecks = await this.deckModel.find().sort({ deckName: 1 });
+    const allDecks = await this.deckModel.find({
+      deckOwner: request.user.userId,
+    });
     return allDecks;
   }
 
-  async removeDeck(deckId: number) {
-    const deck = await this.deckModel.deleteOne({ _id: deckId });
+  async removeDeck(request: any, deckId: number) {
+    const deck = await this.deckModel.deleteOne({
+      deckOwner: request.user.userId,
+      _id: deckId,
+    });
     return deck;
   }
 
   async updateDeck(
+    request: any,
     deckId: number,
     cardId: string,
     amountOfCopies: number,
     deckLocation: string,
     cardRemoval: boolean,
   ) {
-    const deck = await this.deckModel.findOne({ _id: deckId });
+    const deck = await this.deckModel.findOne({
+      deckOwner: request.user.userId,
+      _id: deckId,
+    });
 
     if (!deck) {
       throw Error('No deck couild found by that deckId!');
@@ -72,33 +83,41 @@ export class DecksService {
       }
     } else {
       if (deckLocation == 'mainDeck') {
-        deck.mainDeck.set(cardId, deck.mainDeck.get(cardId) + amountOfCopies);
+        deck.mainDeck.set(cardId, amountOfCopies);
         return deck.save();
       } else if (deckLocation == 'extraDeck') {
-        deck.extraDeck.set(cardId, deck.extraDeck.get(cardId) + amountOfCopies);
+        deck.extraDeck.set(cardId, amountOfCopies);
         return deck.save();
       } else {
-        deck.sideDeck.set(cardId, deck.sideDeck.get(cardId) + amountOfCopies);
+        deck.sideDeck.set(cardId, amountOfCopies);
         return deck.save();
       }
     }
   }
 
-  async getDeckById(deckId: number) {
+  async getDeckById(deckId: number, request: any) {
     const deckData = {
       mainDeck: {},
       extraDeck: {},
       sideDeck: {},
     };
-    const deck = await this.deckModel.findById(deckId);
 
-    if (!deck) {
-      throw Error('No deck could be found by that deckId');
+    try {
+      const deck = await this.deckModel.findOne({
+        deckOwner: request.user.userId,
+        _id: deckId,
+      });
+
+      if (!deck) {
+        throw Error('No deck could be found by that deckId');
+      }
+
+      deckData.mainDeck = deck.mainDeck;
+      deckData.extraDeck = deck.extraDeck;
+      deckData.sideDeck = deck.sideDeck;
+    } catch (err) {
+      throw Error('Error');
     }
-
-    deckData.mainDeck = deck.mainDeck;
-    deckData.extraDeck = deck.extraDeck;
-    deckData.sideDeck = deck.sideDeck;
 
     return deckData;
   }
