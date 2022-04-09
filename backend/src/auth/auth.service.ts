@@ -40,6 +40,7 @@ export class AuthService {
     const newUser = new this.usersModel({
       email,
       password,
+      ownedCards: [{}],
     });
 
     newUser.save((err) => {
