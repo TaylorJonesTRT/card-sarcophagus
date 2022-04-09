@@ -37,8 +37,11 @@ export class DecksService {
     return { message: 'Deck created!' };
   }
 
-  async showAllDecks() {
-    const allDecks = await this.deckModel.find().sort({ deckName: 1 });
+  async showAllDecks(request) {
+    // const allDecks = await this.deckModel.find().sort({ deckName: 1 });
+    const allDecks = await this.deckModel.find({
+      deckOwner: request.user.userId,
+    });
     return allDecks;
   }
 

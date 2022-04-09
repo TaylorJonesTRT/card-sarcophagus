@@ -17,9 +17,10 @@ import { DecksService } from './decks.service';
 export class DecksController {
   constructor(private readonly decksService: DecksService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  showAllDecks() {
-    return this.decksService.showAllDecks();
+  showAllDecks(@Req() request: Request) {
+    return this.decksService.showAllDecks(request);
   }
 
   @Get(':id')
