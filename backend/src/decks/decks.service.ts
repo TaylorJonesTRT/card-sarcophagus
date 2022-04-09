@@ -51,13 +51,17 @@ export class DecksService {
   }
 
   async updateDeck(
+    request: any,
     deckId: number,
     cardId: string,
     amountOfCopies: number,
     deckLocation: string,
     cardRemoval: boolean,
   ) {
-    const deck = await this.deckModel.findOne({ _id: deckId });
+    const deck = await this.deckModel.findOne({
+      deckOwner: request.user.userId,
+      _id: deckId,
+    });
 
     if (!deck) {
       throw Error('No deck couild found by that deckId!');
@@ -76,13 +80,13 @@ export class DecksService {
       }
     } else {
       if (deckLocation == 'mainDeck') {
-        deck.mainDeck.set(cardId, deck.mainDeck.get(cardId) + amountOfCopies);
+        deck.mainDeck.set(cardId, amountOfCopies);
         return deck.save();
       } else if (deckLocation == 'extraDeck') {
-        deck.extraDeck.set(cardId, deck.extraDeck.get(cardId) + amountOfCopies);
+        deck.extraDeck.set(cardId, amountOfCopies);
         return deck.save();
       } else {
-        deck.sideDeck.set(cardId, deck.sideDeck.get(cardId) + amountOfCopies);
+        deck.sideDeck.set(cardId, amountOfCopies);
         return deck.save();
       }
     }

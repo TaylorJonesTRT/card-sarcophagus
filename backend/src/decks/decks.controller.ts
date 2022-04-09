@@ -35,8 +35,10 @@ export class DecksController {
     return this.decksService.createDeck(deckName, request);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('')
   updateDeck(
+    @Req() request: Request,
     @Body('deckId') deckId: number,
     @Body('cardId') cardId: string,
     @Body('amountOfCopies') amountOfCopies: number,
@@ -44,6 +46,7 @@ export class DecksController {
     @Body('cardRemoval') cardRemoval: boolean,
   ) {
     return this.decksService.updateDeck(
+      request,
       deckId,
       cardId,
       amountOfCopies,
