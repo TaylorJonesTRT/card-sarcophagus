@@ -89,44 +89,42 @@ export class CardsService {
     boxLocation: string,
   ) {
     const user = await this.usersModel.findOne({ email: reqUser.username });
-    const cardData = {
-      cardId,
-      amountOfCopies,
-      binderLocation,
-      boxLocation,
-    };
-    user.ownedCards.push(cardData);
+    user.ownedCards[0][cardId] = {};
+    user.ownedCards[0][cardId].amountOfCopies = amountOfCopies;
+    user.ownedCards[0][cardId].availableCopies = availableCopies;
+    user.ownedCards[0][cardId].binderLocation = binderLocation;
+    user.ownedCards[0][cardId].boxLocation = boxLocation;
+    console.log(user.ownedCards[0]);
+    user.markModified('ownedCards');
     user.save((err) => {
       if (err) return console.log(err);
     });
-    return cardData;
+    return { message: 'Card added to collection!' };
   }
 
   async updateOwnedCard(
     user,
     cardId: string,
     amountOfCopies: number,
-    owned: boolean,
+    availableCopies: number,
     binderLocation: string,
     boxLocation: string,
   ) {
     const activeUser = await this.usersModel.findOne({
       email: 'taylor@taylorwjones.com',
     });
-    // await activeUser.ownedCards.set(cardId, amountOfCopies);
-    const ownedCards = activeUser.ownedCards;
-    // const testing = { ...ownedCards };
-    // testing.set(cardId, amountOfCopies);
-    // ownedCards.get(cardId);
-    // const filter = { cardId };
-    const cardInformation = {
-      owned,
-      amountOfCopies,
-      binderLocation,
-      boxLocation,
-    };
-    // const card = await this.cardModel.findOneAndUpdate(filter, cardInformation);
-    return ownedCards;
+    const cardToUpdate = activeUser.ownedCards.find((obj) => {
+      return obj.cardId === cardId;
+    });
+    cardToUpdate.amountOfCopies = amountOfCopies;
+    cardToUpdate.availableCopies = availableCopies;
+    cardToUpdate.binderLocation = binderLocation;
+    cardToUpdate.boxLocation = boxLocation;
+
+    activeUser.save((err) => {
+      if (err) return console.log(err);
+    });
+    return cardToUpdate;
   }
 
   async getSingleCardData(cardId: number) {
