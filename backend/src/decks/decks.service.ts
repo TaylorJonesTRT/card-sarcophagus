@@ -45,8 +45,11 @@ export class DecksService {
     return allDecks;
   }
 
-  async removeDeck(deckId: number) {
-    const deck = await this.deckModel.deleteOne({ _id: deckId });
+  async removeDeck(request: any, deckId: number) {
+    const deck = await this.deckModel.deleteOne({
+      deckOwner: request.user.userId,
+      _id: deckId,
+    });
     return deck;
   }
 

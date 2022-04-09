@@ -55,8 +55,9 @@ export class DecksController {
     );
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('')
-  removeDeck(@Body('id') id: number) {
-    return this.decksService.removeDeck(id);
+  removeDeck(@Req() request: Request, @Body('deckId') deckId: number) {
+    return this.decksService.removeDeck(request, deckId);
   }
 }
