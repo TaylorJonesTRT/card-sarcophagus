@@ -103,28 +103,24 @@ export class CardsService {
   }
 
   async updateOwnedCard(
-    user,
+    reqUser,
     cardId: string,
     amountOfCopies: number,
     availableCopies: number,
     binderLocation: string,
     boxLocation: string,
   ) {
-    const activeUser = await this.usersModel.findOne({
-      email: 'taylor@taylorwjones.com',
-    });
-    const cardToUpdate = activeUser.ownedCards.find((obj) => {
-      return obj.cardId === cardId;
-    });
-    cardToUpdate.amountOfCopies = amountOfCopies;
-    cardToUpdate.availableCopies = availableCopies;
-    cardToUpdate.binderLocation = binderLocation;
-    cardToUpdate.boxLocation = boxLocation;
+    const user = await this.usersModel.findOne({ email: reqUser.username });
+    user.ownedCards[0][cardId].amountOfCopies = amountOfCopies;
+    user.ownedCards[0][cardId].availableCopies = availableCopies;
+    user.ownedCards[0][cardId].binderLocation = binderLocation;
+    user.ownedCards[0][cardId].boxLocation = boxLocation;
+    user.markModified('ownedCards');
 
-    activeUser.save((err) => {
+    user.save((err) => {
       if (err) return console.log(err);
     });
-    return cardToUpdate;
+    return { message: 'Card has been updated in your collection!' };
   }
 
   async getSingleCardData(cardId: number) {
