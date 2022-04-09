@@ -12,12 +12,13 @@ export class DecksService {
     @InjectModel('Card') private readonly cardModel: Model<CardDocument>,
   ) {}
 
-  async createDeck(deckName: string) {
+  async createDeck(deckName: string, reqUser: any) {
     const deck = new this.deckModel({
       deckName,
       mainDeck: [],
       extraDeck: [],
       sideDeck: [],
+      deckOwner: reqUser.user.userId,
     });
 
     const alreadySaved = await this.deckModel.findOne({
@@ -32,8 +33,8 @@ export class DecksService {
       if (err) {
         return console.log(err);
       }
-      return { message: 'Deck successfully created!' };
     });
+    return { message: 'Deck created!' };
   }
 
   async showAllDecks() {

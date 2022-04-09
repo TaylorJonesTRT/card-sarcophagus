@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import {
   Controller,
   Delete,
@@ -6,7 +7,10 @@ import {
   Put,
   Body,
   Param,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { DecksService } from './decks.service';
 
 @Controller('decks')
@@ -23,9 +27,10 @@ export class DecksController {
     return this.decksService.getDeckById(deckId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  createNewDeck(@Body('deckName') deckName: string) {
-    return this.decksService.createDeck(deckName);
+  createNewDeck(@Body('deckName') deckName: string, @Req() request: Request) {
+    return this.decksService.createDeck(deckName, request);
   }
 
   @Put('')
