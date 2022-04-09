@@ -9,7 +9,8 @@ import { UsersModule } from '../users/users.module';
 import { LocalStrategy } from './local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as bcrypt from 'bcrypt';
 import { JwtStrategy } from './jwt.strategy';
 
 @Module({
@@ -20,7 +21,7 @@ import { JwtStrategy } from './jwt.strategy';
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '1d' },
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],

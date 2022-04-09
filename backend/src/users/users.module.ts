@@ -10,7 +10,7 @@ import { Users, UsersSchema } from './schemas/users.schema';
   imports: [
     MongooseModule.forFeatureAsync([
       {
-        name: 'User',
+        name: Users.name,
         useFactory: () => {
           const schema = UsersSchema;
           schema.pre<Users>('save', async function () {

@@ -70,12 +70,8 @@ export class CardsService {
     return 'Adding cards to database, check your console';
   }
 
-  async getOwnedCards(userId: string) {
-    const user = await this.usersModel.findOne({ _id: userId });
+  async getOwnedCards(user: any) {
     const ownedCards = user.ownedCards;
-    // const ownedCards = await this.cardModel
-    //   .find({ owned: true })
-    //   .sort({ cardName: 1 });
     return ownedCards;
   }
 
@@ -84,22 +80,48 @@ export class CardsService {
     return cards;
   }
 
-  async addOrUpdateCard(
-    cardId: number,
+  async addOwnedCard(
+    reqUser: any,
+    cardId: string,
+    amountOfCopies: number,
+    binderLocation: string,
+    boxLocation: string,
+  ) {
+    const user = await this.usersModel.findOne({ email: reqUser.username });
+    const cardData = {
+      amountOfCopies,
+      binderLocation,
+      boxLocation,
+    };
+    user.ownedCards[cardId] = cardData;
+    return cardData;
+  }
+
+  async updateOwnedCard(
+    user,
+    cardId: string,
     amountOfCopies: number,
     owned: boolean,
     binderLocation: string,
     boxLocation: string,
   ) {
-    const filter = { cardId };
+    const activeUser = await this.usersModel.findOne({
+      email: 'taylor@taylorwjones.com',
+    });
+    // await activeUser.ownedCards.set(cardId, amountOfCopies);
+    const ownedCards = activeUser.ownedCards;
+    // const testing = { ...ownedCards };
+    // testing.set(cardId, amountOfCopies);
+    // ownedCards.get(cardId);
+    // const filter = { cardId };
     const cardInformation = {
       owned,
       amountOfCopies,
       binderLocation,
       boxLocation,
     };
-    const card = await this.cardModel.findOneAndUpdate(filter, cardInformation);
-    return card;
+    // const card = await this.cardModel.findOneAndUpdate(filter, cardInformation);
+    return ownedCards;
   }
 
   async getSingleCardData(cardId: number) {

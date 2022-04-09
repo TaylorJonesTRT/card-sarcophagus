@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Req,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
+import { Request } from 'express';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CardsService } from './cards.service';
 
 @Controller('cards')
@@ -11,8 +21,8 @@ export class CardsController {
   }
 
   @Get()
-  getOwnedCards(userId: string) {
-    return this.cardsService.getOwnedCards(userId);
+  getOwnedCards(@Req() request: Request) {
+    return this.cardsService.getOwnedCards(request.user);
   }
 
   @Get('all-cards')
@@ -20,15 +30,41 @@ export class CardsController {
     return this.cardsService.getAllCards();
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('testing')
+  testFunction(@Req() request: Request) {
+    return request.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post()
-  addOrUpdateCard(
-    @Body('cardId') cardId: number,
+  addOwnedCard(
+    @Req() request: Request,
+    @Body('cardId') cardId: string,
+    @Body('amountOfCopies') amountOfCopies: number,
+    @Body('binderLocation') binderLocation: string,
+    @Body('boxLocation') boxLocation: string,
+  ) {
+    return this.cardsService.addOwnedCard(
+      request.user,
+      cardId,
+      amountOfCopies,
+      binderLocation,
+      boxLocation,
+    );
+  }
+
+  @Put()
+  updateOwnedCard(
+    @Req() request: Request,
+    @Body('cardId') cardId: string,
     @Body('amountOfCopies') copies: number,
     @Body('owned') owned: boolean,
     @Body('binderLocation') binderLocation: string,
     @Body('boxLocation') boxLocation: string,
   ) {
-    return this.cardsService.addOrUpdateCard(
+    return this.cardsService.updateOwnedCard(
+      request.user,
       cardId,
       copies,
       owned,
@@ -38,7 +74,7 @@ export class CardsController {
   }
 
   @Post('card')
-  getCardData(@Body('cardId') cardId: number) {
+  getCardData(@Req() request: Request, @Body('cardId') cardId: number) {
     return this.cardsService.getSingleCardData(cardId);
   }
 }

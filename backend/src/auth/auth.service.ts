@@ -13,9 +13,9 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
+  async validateUser(username: string, pass: string): Promise<any> {
     try {
-      const user = await this.usersModel.findOne({ email });
+      const user = await this.usersModel.findOne({ email: username });
       if (!user) {
         return null;
       }
@@ -52,21 +52,23 @@ export class AuthService {
 
   async login(user: any) {
     try {
-      const payload = {
-        email: user._doc.email,
-        sub: user._doc._id,
-        ownedCards: user._doc.ownedCards,
-        decks: user._doc.decks,
-        jwtId: user._doc.jwtId,
-      };
-
       const activeUser = await this.usersModel.findOne({ _id: user._doc._id });
+      if (!activeUser) {
+        throw new Error('No user found with that email');
+      }
       activeUser.jwtId += 1;
       activeUser.save((err) => {
         if (err) {
           return console.log(err);
         }
       });
+      const payload = {
+        email: user._doc.email,
+        sub: user._doc._id,
+        ownedCards: user._doc.ownedCards,
+        decks: user._doc.decks,
+        jwtId: activeUser.jwtId,
+      };
       return {
         access_token: this.jwtService.sign(payload),
       };
