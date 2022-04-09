@@ -20,6 +20,7 @@ export class CardsController {
     return this.cardsService.saveCardsToDatabase();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   getOwnedCards(@Req() request: Request) {
     return this.cardsService.getOwnedCards(request.user);
