@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { UsersDocument } from '../users/schemas/users.schema';
 import { Card, CardDocument } from './schemas/card.schema';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class CardsService {
   constructor(
     private httpService: HttpService,
     @InjectModel('Card') private readonly cardModel: Model<CardDocument>,
+    @InjectModel('Users') private readonly usersModel: Model<UsersDocument>,
   ) {}
 
   async apiFetch() {
@@ -68,10 +70,8 @@ export class CardsService {
     return 'Adding cards to database, check your console';
   }
 
-  async getOwnedCards() {
-    const ownedCards = await this.cardModel
-      .find({ owned: true })
-      .sort({ cardName: 1 });
+  async getOwnedCards(user: any) {
+    const ownedCards = user.ownedCards;
     return ownedCards;
   }
 
@@ -80,22 +80,53 @@ export class CardsService {
     return cards;
   }
 
-  async addOrUpdateCard(
-    cardId: number,
+  async addOwnedCard(
+    reqUser: any,
+    cardId: string,
+    amountOfCopies: number,
+    availableCopies: number,
+    binderLocation: string,
+    boxLocation: string,
+  ) {
+    const user = await this.usersModel.findOne({ email: reqUser.username });
+    const cardData = {
+      cardId,
+      amountOfCopies,
+      binderLocation,
+      boxLocation,
+    };
+    user.ownedCards.push(cardData);
+    user.save((err) => {
+      if (err) return console.log(err);
+    });
+    return cardData;
+  }
+
+  async updateOwnedCard(
+    user,
+    cardId: string,
     amountOfCopies: number,
     owned: boolean,
     binderLocation: string,
     boxLocation: string,
   ) {
-    const filter = { cardId };
+    const activeUser = await this.usersModel.findOne({
+      email: 'taylor@taylorwjones.com',
+    });
+    // await activeUser.ownedCards.set(cardId, amountOfCopies);
+    const ownedCards = activeUser.ownedCards;
+    // const testing = { ...ownedCards };
+    // testing.set(cardId, amountOfCopies);
+    // ownedCards.get(cardId);
+    // const filter = { cardId };
     const cardInformation = {
       owned,
       amountOfCopies,
       binderLocation,
       boxLocation,
     };
-    const card = await this.cardModel.findOneAndUpdate(filter, cardInformation);
-    return card;
+    // const card = await this.cardModel.findOneAndUpdate(filter, cardInformation);
+    return ownedCards;
   }
 
   async getSingleCardData(cardId: number) {
