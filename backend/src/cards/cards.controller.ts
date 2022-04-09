@@ -42,6 +42,7 @@ export class CardsController {
     @Req() request: Request,
     @Body('cardId') cardId: string,
     @Body('amountOfCopies') amountOfCopies: number,
+    @Body('availableCopies') availableCopies: number,
     @Body('binderLocation') binderLocation: string,
     @Body('boxLocation') boxLocation: string,
   ) {
@@ -49,6 +50,7 @@ export class CardsController {
       request.user,
       cardId,
       amountOfCopies,
+      availableCopies,
       binderLocation,
       boxLocation,
     );

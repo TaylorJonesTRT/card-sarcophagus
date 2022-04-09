@@ -84,16 +84,21 @@ export class CardsService {
     reqUser: any,
     cardId: string,
     amountOfCopies: number,
+    availableCopies: number,
     binderLocation: string,
     boxLocation: string,
   ) {
     const user = await this.usersModel.findOne({ email: reqUser.username });
     const cardData = {
+      cardId,
       amountOfCopies,
       binderLocation,
       boxLocation,
     };
-    user.ownedCards[cardId] = cardData;
+    user.ownedCards.push(cardData);
+    user.save((err) => {
+      if (err) return console.log(err);
+    });
     return cardData;
   }
 

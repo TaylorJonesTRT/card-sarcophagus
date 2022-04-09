@@ -13,8 +13,8 @@ export class Users {
   @Prop({ required: true })
   password: string;
 
-  @Prop([{ type: Object }])
-  ownedCards: Record<string, unknown>;
+  @Prop([{ type: Array }])
+  ownedCards: any[];
 
   @Prop([{ type: MongooseSchema.Types.ObjectId, ref: 'Deck' }])
   decks: [Types.ObjectId];
