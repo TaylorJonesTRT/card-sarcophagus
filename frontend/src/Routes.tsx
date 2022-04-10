@@ -7,6 +7,7 @@ import Decks from './Components/DeckArea';
 import CardEditor from './Components/CardEditor';
 import Header from './Components/Header';
 import BottomBar from './Components/BottomBar';
+import LoginScreen from './Components/LoginScreen';
 
 const AppRoutes = () => (
   <div className='App w-screen h-screen flex flex-col'>
@@ -15,6 +16,7 @@ const AppRoutes = () => (
       <Route path='/' element={<CardArea />} />
       <Route path='/decks' element={<Decks />} />
       <Route path='/card-editor' element={<CardEditor />} />
+      <Route path='/login' element={<LoginScreen />} />
     </Routes>
     <BottomBar />
   </div>
