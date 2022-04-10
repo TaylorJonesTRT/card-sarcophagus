@@ -19,7 +19,13 @@ export class AuthService {
       if (!user) {
         return null;
       }
+      console.log(pass);
+      console.log(user.password);
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(pass, salt);
+      console.log(hashedPassword);
       const validatePassword = await bcrypt.compare(pass, user.password);
+      console.log(validatePassword);
       if (user && validatePassword) {
         const { password, ...result } = user;
         return result;

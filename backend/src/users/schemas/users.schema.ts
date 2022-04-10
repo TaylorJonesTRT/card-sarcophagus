@@ -25,7 +25,8 @@ export class Users {
 
 export const UsersSchema = SchemaFactory.createForClass(Users);
 
-UsersSchema.pre<Users>('save', async function () {
+UsersSchema.pre<UsersDocument>('save', async function () {
+  if (!this.isModified('password')) return;
   const user = this;
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(user.password, salt);
