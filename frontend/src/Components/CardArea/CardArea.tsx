@@ -1,10 +1,10 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import BottomBar from '../BottomBar';
-import Header from '../Header';
+import Cookies from 'universal-cookie';
 
 const CardArea = () => {
   const [cards, setCards] = useState<any[]>([]);
@@ -12,10 +12,18 @@ const CardArea = () => {
 
   useEffect(() => {
     const fetchCards = async () => {
+      const cookies = new Cookies();
       const fetchedCards = await axios
         .get('http://localhost:3001/api/cards')
         .then((response) => {
           setCards(response.data);
+        })
+        .catch((error) => {
+          if (error.response.status.statusCode === 401) {
+            cookies.remove('carsar');
+            return navigate('/');
+          }
+          return console.log(error.response);
         });
       return fetchedCards;
     };

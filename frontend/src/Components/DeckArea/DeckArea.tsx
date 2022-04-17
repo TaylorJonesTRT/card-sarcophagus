@@ -1,11 +1,34 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
+import axios from 'axios';
 import deckBox from '../../Assets/deckbox.png';
 
 const DeckArea = () => {
   const cardData = [deckBox, deckBox, deckBox];
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchDecks = async () => {
+      const cookies = new Cookies();
+      const fetchedCards = await axios
+        .get('http://localhost:3001/api/cards')
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          if (error.response.status.statusCode === 401) {
+            cookies.remove('carsar');
+            return navigate('/login');
+          }
+          return console.log(error.response);
+        });
+      return fetchedCards;
+    };
+    fetchDecks();
+  }, []);
   return (
     <div className='w-full basis-full pt-3'>
       <div className='container w-[1240px] mx-auto decks'>
