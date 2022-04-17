@@ -1,51 +1,18 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import React, { useEffect } from 'react';
-import axios from 'axios';
-import Cookies from 'universal-cookie';
+import React from 'react';
+import loginCards from './login-cards.jpg';
 
-const LoginScreen = () => {
-  useEffect(() => {
-    const fetchCookie = async () => {
-      const cookies = new Cookies();
-      const loginRequest = await axios
-        .request({
-          method: 'POST',
-          url: 'http://localhost:3001/api/auth/login',
-          data: {
-            username: 'taylor@taylorwjones.com',
-            password: 'testingyesyuh',
-          },
-        })
-        .then((response) => console.log(response))
-        .catch((error) => console.log(error));
-      return loginRequest;
-      // axios
-      //   .post('http://localhost:3001/api/auth/login', {
-      //     username: 'taylor@taylorwjones.com',
-      //     password: 'testingyesyuh',
-      //   })
-      //   .then((response) => console.log(response))
-      //   .catch((error) => console.log(error));
-      // const fetchedCookie = await axios
-      //   .post('http://localhost:3001/api/auth/login', {
-      //     username: 'taylor@taylorwjones.com',
-      //     password: 'testingyesyuh',
-      //   })
-      //   .then((response) => cookies.set('carsar', response.data.accessToken))
-      //   .catch((error) => {
-      //     console.log(error.response);
-      //   });
-      // return fetchedCookie;
-    };
-    fetchCookie();
-  }, []);
-
-  return (
-    <div className='left-bar'>
+const LoginScreen = () => (
+  <div className='grid grid-cols-5'>
+    <div className='left-bar col-span-2'>
       <span>hello</span>
     </div>
-  );
-};
+    <div className='h-screen bg-green-200 col-span-3'>
+      <img src={loginCards} className='h-full w-full object-fill' alt='ygobg' />
+    </div>
+  </div>
+);
 
 export default LoginScreen;
