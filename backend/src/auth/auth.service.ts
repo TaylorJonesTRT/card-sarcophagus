@@ -19,13 +19,9 @@ export class AuthService {
       if (!user) {
         return null;
       }
-      console.log(pass);
-      console.log(user.password);
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(pass, salt);
-      console.log(hashedPassword);
       const validatePassword = await bcrypt.compare(pass, user.password);
-      console.log(validatePassword);
       if (user && validatePassword) {
         const { password, ...result } = user;
         return result;
@@ -77,7 +73,7 @@ export class AuthService {
         jwtId: activeUser.jwtId,
       };
       return {
-        access_token: this.jwtService.sign(payload),
+        accessToken: this.jwtService.sign(payload),
       };
     } catch (err) {
       console.error(err);
