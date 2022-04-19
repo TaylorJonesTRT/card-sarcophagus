@@ -22,7 +22,6 @@ const SortOptions = () => (
             type='radio'
             id='card-name'
             name='card-sort-options'
-            value='Name'
             className='mr-2'
           />
           Name
@@ -33,7 +32,6 @@ const SortOptions = () => (
               type='radio'
               id='card-attack'
               name='card-sort-options'
-              value='Attack'
               className='mr-2'
             />
             Attack
@@ -45,7 +43,6 @@ const SortOptions = () => (
               type='radio'
               id='card-defense'
               name='card-sort-options'
-              value='Defense'
               className='mr-2'
             />
             Defense
@@ -57,7 +54,6 @@ const SortOptions = () => (
               type='radio'
               id='card-level'
               name='card-sort-options'
-              value='Level'
               className='mr-2'
             />
             Level
@@ -69,7 +65,6 @@ const SortOptions = () => (
               type='radio'
               id='card-type'
               name='card-sort-options'
-              value='Type'
               className='mr-2'
             />
             Card Type

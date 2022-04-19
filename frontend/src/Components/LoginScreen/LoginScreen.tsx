@@ -2,7 +2,9 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import Cookies from 'universal-cookie';
 import loginCards from './login-cards.jpg';
 
 const ActionHeader = (props: any) => {
@@ -39,8 +41,11 @@ const ActionHeader = (props: any) => {
   );
 };
 
-const LoginScreen = () => {
+const LoginScreen = (props: any) => {
   const [login, setLogin] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const { loginChange } = props;
 
   const changeLoginMethod = () => {
     const makeChange = () => {
@@ -49,10 +54,22 @@ const LoginScreen = () => {
     makeChange();
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
+    const cookies = new Cookies();
     event.preventDefault();
-    // TODO: need to implement the api call to the backend to login and recieve
-    // todo: a jwt to store in as a cookie.
+    if (login) {
+      await axios
+        .post('http://localhost:3001/api/auth/login', { username, password })
+        .then((response) => cookies.set('carsar', response.data.accessToken));
+      loginChange(true);
+    }
+  };
+
+  const handleInputChange = (event: any) => {
+    if (event.target.name === 'username') {
+      return setUsername(event.target.value);
+    }
+    return setPassword(event.target.value);
   };
 
   return (
@@ -81,6 +98,7 @@ const LoginScreen = () => {
                   type='text'
                   placeholder=''
                   name='username'
+                  onChange={handleInputChange}
                   className='border border-gray-300 mt-1 rounded'
                   required
                 />
@@ -88,16 +106,17 @@ const LoginScreen = () => {
               <label htmlFor='password' className='grid grid-cols-1 mt-1'>
                 Password
                 <input
-                  type='text'
+                  type='password'
                   placeholder=''
                   name='password'
+                  onChange={handleInputChange}
                   className='border border-gray-200 mt-1 rounded'
                   required
                 />
               </label>
               <button
                 type='submit'
-                className='bg-gradient-to-tr from-indigo-500 to-violet-500 hover:bg-gradient-to-tr hover:from-violet-500 hover:to-indigo-500 w-full mt-3 rounded p-1 text-white text-sm'
+                className='bg-gradient-to-tr from-indigo-500 to-violet-500 hover:bg-gradient-to-tr hover:from-violet-500 hover:to-indigo-500 w-full mt-3 rounded p-2 text-white text-sm'
               >
                 {login ? 'Log In' : 'Create an Account'}
               </button>

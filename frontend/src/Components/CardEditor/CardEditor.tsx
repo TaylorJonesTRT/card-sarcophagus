@@ -6,64 +6,60 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 import cardBack from '../../Assets/card-back.png';
 
 interface PopulatedData {
-  _id: number;
-  cardId: number;
-  cardName: string;
-  cardType: string;
-  cardLevel: number;
-  cardAttribute: string;
-  cardRace: string;
-  cardDesc: string;
-  cardAtk: number;
-  cardDef: number;
-  cardImage: string;
-  owned: boolean;
-  amountOfCopies: number;
-  availableCopies: number;
-  boxLocation: null;
-  binderLocation: null;
-  __v: number;
+  card: {
+    amountOfCopies: number;
+    availableCopies: number;
+    binderLocation: string;
+    boxLocation: string;
+    owned: boolean;
+    cardId: number;
+  };
+  cardFetch: {
+    _id: number;
+    cardId: number;
+    cardName: string;
+    cardType: string;
+    cardLevel: number;
+    cardAttribute: string;
+    cardRace: string;
+    cardDesc: string;
+    cardAtk: number;
+    cardDef: number;
+    cardImage: string;
+    __v: number;
+  };
 }
 
-const CardEditor = () => {
+const CardEditor = (props: any) => {
+  const { changeLoginMethod, checkJwt } = props;
   const cardEditorSubmit = () => {};
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [populatedCardData, setPopulatedCardData] = useState<
     PopulatedData | undefined
-  >({
-    _id: 0,
-    cardId: 0,
-    cardName: '',
-    cardType: '',
-    cardLevel: 0,
-    cardAttribute: '',
-    cardRace: '',
-    cardDesc: '',
-    cardAtk: 0,
-    cardDef: 0,
-    cardImage: '',
-    owned: false,
-    amountOfCopies: 0,
-    availableCopies: 0,
-    boxLocation: null,
-    binderLocation: null,
-    __v: 0,
-  });
+  >();
   const cardId = searchParams.get('cardId');
 
   useEffect(() => {
     const fillInCardEditor = async () => {
-      if (cardId !== null) {
-        const card = await axios
-          .post('http://localhost:3001/api/cards/card', { cardId })
-          .then((response) => response.data[0]);
-        return setPopulatedCardData(card);
+      const cookies = new Cookies();
+      if (cardId === null) {
+        return setPopulatedCardData(undefined);
       }
-      return setPopulatedCardData(undefined);
+      const card = await axios
+        .post(
+          'http://localhost:3001/api/cards/card',
+          { cardId },
+          {
+            headers: { Authorization: `Bearer ${cookies.get('carsar')}` },
+          },
+        )
+        .then((response) => response.data);
+      return setPopulatedCardData(card);
     };
     fillInCardEditor();
   }, []);
@@ -82,7 +78,7 @@ const CardEditor = () => {
                   id='card-name'
                   name='card-name'
                   className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-                  value={populatedCardData?.cardName || ''}
+                  value={populatedCardData?.cardFetch.cardName || ''}
                 />
               </label>
             </li>
@@ -94,7 +90,7 @@ const CardEditor = () => {
                   id='card-owned'
                   name='card-owned'
                   className='text-black border-2 border-gray-400 rounded outline-none w-7 h-7'
-                  checked={populatedCardData?.owned || false}
+                  checked={populatedCardData?.card.owned || false}
                 />
               </label>
             </li>
@@ -106,7 +102,7 @@ const CardEditor = () => {
                   id='card-amount-copies'
                   name='card-amount-copies'
                   className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-                  value={populatedCardData?.amountOfCopies}
+                  value={populatedCardData?.card.amountOfCopies}
                 />
               </label>
             </li>
@@ -118,7 +114,7 @@ const CardEditor = () => {
                   id='card-available-copies'
                   name='card-available-copies'
                   className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-                  value={populatedCardData?.availableCopies}
+                  value={populatedCardData?.card.availableCopies}
                 />
               </label>
             </li>
@@ -130,7 +126,7 @@ const CardEditor = () => {
                   id='card-box-location'
                   name='card-box-location'
                   className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-                  value={populatedCardData?.boxLocation || ''}
+                  value={populatedCardData?.card.boxLocation}
                 />
               </label>
             </li>
@@ -142,7 +138,7 @@ const CardEditor = () => {
                   id='card-binder-location'
                   name='card-binder-location'
                   className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-                  value={populatedCardData?.binderLocation || ''}
+                  value={populatedCardData?.card.binderLocation}
                 />
               </label>
             </li>

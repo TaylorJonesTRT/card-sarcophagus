@@ -6,7 +6,7 @@ import Cookies from 'universal-cookie';
 import axios from 'axios';
 import deckBox from '../../Assets/deckbox.png';
 
-const DeckArea = () => {
+const DeckArea = (props: any) => {
   const cardData = [deckBox, deckBox, deckBox];
   const navigate = useNavigate();
 
