@@ -40,11 +40,6 @@ export class CardsService {
         cardAtk: cards[i].atk,
         cardDef: cards[i].def,
         cardImage: cards[i].card_images[0].image_url,
-        owned: false,
-        amountOfCopies: 0,
-        availableCopies: 0,
-        boxLocation: null,
-        binderLocation: null,
       });
       const alreadySaved = await this.cardModel.findOne({
         cardId: cards[i].id,
@@ -52,7 +47,7 @@ export class CardsService {
       if (alreadySaved) {
         console.log(
           `\x1b[41m`,
-          `Skipping ~${cards[i].name}~ as already in database`,
+          `Skipping ~${cards[i].name}~ was already in database`,
         );
         continue;
       }
@@ -89,12 +84,15 @@ export class CardsService {
     boxLocation: string,
   ) {
     const user = await this.usersModel.findOne({ email: reqUser.username });
+    const card = await this.cardModel.findOne({ cardId });
     user.ownedCards[0][cardId] = {};
     user.ownedCards[0][cardId].amountOfCopies = amountOfCopies;
     user.ownedCards[0][cardId].availableCopies = availableCopies;
     user.ownedCards[0][cardId].binderLocation = binderLocation;
     user.ownedCards[0][cardId].boxLocation = boxLocation;
-    console.log(user.ownedCards[0]);
+    user.ownedCards[0][cardId].owned = true;
+    user.ownedCards[0][cardId].cardId = card.cardId;
+
     user.markModified('ownedCards');
     user.save((err) => {
       if (err) return console.log(err);
@@ -123,8 +121,12 @@ export class CardsService {
     return { message: 'Card has been updated in your collection!' };
   }
 
-  async getSingleCardData(cardId: number) {
-    const card = await this.cardModel.findOne({ cardId });
-    return { card };
+  async getSingleCardData(user: any, cardId: number) {
+    const activeUser = await this.usersModel.findOne({ email: user.username });
+    const ownedCards = activeUser.ownedCards;
+
+    const cardFetch = await this.cardModel.findOne({ cardId });
+    const card = activeUser.ownedCards[0][cardId];
+    return { card, cardFetch };
   }
 }

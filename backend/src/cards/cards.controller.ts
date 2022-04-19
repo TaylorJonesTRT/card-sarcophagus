@@ -77,8 +77,9 @@ export class CardsController {
     );
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('card')
   getCardData(@Req() request: Request, @Body('cardId') cardId: number) {
-    return this.cardsService.getSingleCardData(cardId);
+    return this.cardsService.getSingleCardData(request.user, cardId);
   }
 }
