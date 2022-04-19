@@ -15,30 +15,39 @@ import LoginScreen from './Components/LoginScreen';
 const AppRoutes = () => {
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const checkJwt = () => {
+    const cookies = new Cookies();
+    const token = cookies.get('carsar');
+    if (token) {
+      return setLoggedIn(true);
+    }
+    return setLoggedIn(false);
+  };
+
   useEffect(() => {
-    const checkJwt = () => {
-      const cookies = new Cookies();
-      const token = cookies.get('carsar');
-      console.log(token);
-      if (token) {
-        return setLoggedIn(true);
-      }
-      return setLoggedIn(false);
-    };
     checkJwt();
   }, []);
 
   if (!loggedIn) {
-    return <LoginScreen />;
+    return <LoginScreen loginChange={setLoggedIn} checkJwt={checkJwt} />;
   }
 
   return (
     <div className='App w-screen h-screen flex flex-col'>
       <Header />
       <Routes>
-        <Route path='/' element={<CardArea />} />
-        <Route path='/decks' element={<Decks />} />
-        <Route path='/card-editor' element={<CardEditor />} />
+        <Route
+          path='/'
+          element={<CardArea loginChange={setLoggedIn} checkJwt={checkJwt} />}
+        />
+        <Route
+          path='/decks'
+          element={<Decks loginChange={setLoggedIn} checkJwt={checkJwt} />}
+        />
+        <Route
+          path='/card-editor'
+          element={<CardEditor loginChange={setLoggedIn} checkJwt={checkJwt} />}
+        />
       </Routes>
       <BottomBar />
     </div>
