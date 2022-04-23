@@ -1,10 +1,9 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import React, { useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
-import { useJwt } from 'react-jwt';
-import axios from 'axios';
 import CardArea from './Components/CardArea';
 import Decks from './Components/DeckArea';
 import CardEditor from './Components/CardEditor';
@@ -13,15 +12,22 @@ import BottomBar from './Components/BottomBar';
 import LoginScreen from './Components/LoginScreen';
 
 const AppRoutes = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState<boolean>();
+  const navigate = useNavigate();
 
+  // eslint-disable-next-line consistent-return
   const checkJwt = () => {
     const cookies = new Cookies();
     const token = cookies.get('carsar');
     if (token) {
-      return setLoggedIn(true);
+      setLoggedIn(true);
+      return true;
     }
-    return setLoggedIn(false);
+    if (!token) {
+      setLoggedIn(false);
+      navigate('/');
+      return false;
+    }
   };
 
   useEffect(() => {
@@ -34,19 +40,13 @@ const AppRoutes = () => {
 
   return (
     <div className='App w-screen h-screen flex flex-col'>
-      <Header />
+      <Header loggedIn={loggedIn} />
       <Routes>
-        <Route
-          path='/'
-          element={<CardArea loginChange={setLoggedIn} checkJwt={checkJwt} />}
-        />
-        <Route
-          path='/decks'
-          element={<Decks loginChange={setLoggedIn} checkJwt={checkJwt} />}
-        />
+        <Route path='/' element={<CardArea checkJwt={checkJwt} />} />
+        <Route path='/decks' element={<Decks checkJwt={checkJwt} />} />
         <Route
           path='/card-editor'
-          element={<CardEditor loginChange={setLoggedIn} checkJwt={checkJwt} />}
+          element={<CardEditor checkJwt={checkJwt} />}
         />
       </Routes>
       <BottomBar />
