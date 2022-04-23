@@ -86,10 +86,12 @@ export class CardsService {
     const user = await this.usersModel.findOne({ email: reqUser.username });
     const card = await this.cardModel.findOne({ cardId });
     user.ownedCards[0][cardId] = {};
+    user.ownedCards[0][cardId].cardName = card.cardName;
     user.ownedCards[0][cardId].amountOfCopies = amountOfCopies;
     user.ownedCards[0][cardId].availableCopies = availableCopies;
     user.ownedCards[0][cardId].binderLocation = binderLocation;
     user.ownedCards[0][cardId].boxLocation = boxLocation;
+    user.ownedCards[0][cardId].cardImage = card.cardImage;
     user.ownedCards[0][cardId].owned = true;
     user.ownedCards[0][cardId].cardId = card.cardId;
 
@@ -127,6 +129,6 @@ export class CardsService {
 
     const cardFetch = await this.cardModel.findOne({ cardId });
     const card = activeUser.ownedCards[0][cardId];
-    return { card, cardFetch };
+    return { card };
   }
 }
