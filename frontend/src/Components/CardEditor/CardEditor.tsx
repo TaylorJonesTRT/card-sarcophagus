@@ -4,13 +4,14 @@
 /* eslint-disable no-restricted-exports */
 
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import cardBack from '../../Assets/card-back.png';
 
 interface PopulatedData {
   card: {
+    cardName: string;
     amountOfCopies: number;
     availableCopies: number;
     binderLocation: string;
@@ -18,33 +19,19 @@ interface PopulatedData {
     owned: boolean;
     cardId: number;
   };
-  cardFetch: {
-    _id: number;
-    cardId: number;
-    cardName: string;
-    cardType: string;
-    cardLevel: number;
-    cardAttribute: string;
-    cardRace: string;
-    cardDesc: string;
-    cardAtk: number;
-    cardDef: number;
-    cardImage: string;
-    __v: number;
-  };
 }
 
 const CardEditor = (props: any) => {
-  const { changeLoginMethod, checkJwt } = props;
-  const cardEditorSubmit = () => {};
-
+  const { checkJwt } = props;
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [populatedCardData, setPopulatedCardData] = useState<
     PopulatedData | undefined
-  >();
+  >(undefined);
   const cardId = searchParams.get('cardId');
 
   useEffect(() => {
+    checkJwt();
     const fillInCardEditor = async () => {
       const cookies = new Cookies();
       if (cardId === null) {
@@ -64,6 +51,12 @@ const CardEditor = (props: any) => {
     fillInCardEditor();
   }, []);
 
+  const handleInputChange = (event: any) => {};
+
+  const cardEditorSubmit = () => {
+    checkJwt();
+  };
+
   return (
     <div className='w-full basis-full'>
       <div className='container:lg w-[1240px] mx-auto'>
@@ -76,9 +69,10 @@ const CardEditor = (props: any) => {
                 <input
                   type='text'
                   id='card-name'
-                  name='card-name'
+                  name='cardName'
                   className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-                  value={populatedCardData?.cardFetch.cardName || ''}
+                  defaultValue={populatedCardData?.card.cardName || ''}
+                  onChange={handleInputChange}
                 />
               </label>
             </li>
@@ -87,10 +81,10 @@ const CardEditor = (props: any) => {
                 Owned?:
                 <input
                   type='checkbox'
-                  id='card-owned'
-                  name='card-owned'
+                  id='cardOwned'
+                  name='owned'
                   className='text-black border-2 border-gray-400 rounded outline-none w-7 h-7'
-                  checked={populatedCardData?.card.owned || false}
+                  defaultChecked={populatedCardData?.card.owned || false}
                 />
               </label>
             </li>
@@ -100,9 +94,9 @@ const CardEditor = (props: any) => {
                 <input
                   type='number'
                   id='card-amount-copies'
-                  name='card-amount-copies'
+                  name='amountOfCopies'
                   className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-                  value={populatedCardData?.card.amountOfCopies}
+                  defaultValue={populatedCardData?.card.amountOfCopies}
                 />
               </label>
             </li>
@@ -112,9 +106,9 @@ const CardEditor = (props: any) => {
                 <input
                   type='number'
                   id='card-available-copies'
-                  name='card-available-copies'
+                  name='availableCopies'
                   className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-                  value={populatedCardData?.card.availableCopies}
+                  defaultValue={populatedCardData?.card.availableCopies}
                 />
               </label>
             </li>
@@ -124,9 +118,9 @@ const CardEditor = (props: any) => {
                 <input
                   type='text'
                   id='card-box-location'
-                  name='card-box-location'
+                  name='boxLocation'
                   className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-                  value={populatedCardData?.card.boxLocation}
+                  defaultValue={populatedCardData?.card.boxLocation}
                 />
               </label>
             </li>
@@ -136,9 +130,9 @@ const CardEditor = (props: any) => {
                 <input
                   type='text'
                   id='card-binder-location'
-                  name='card-binder-location'
+                  name='binderLocation'
                   className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-                  value={populatedCardData?.card.binderLocation}
+                  defaultValue={populatedCardData?.card.binderLocation}
                 />
               </label>
             </li>

@@ -1,16 +1,19 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import deckBox from '../../Assets/deckbox.png';
 
 const DeckArea = (props: any) => {
+  const [decks, setDecks] = useState();
+  const { checkJwt } = props;
   const cardData = [deckBox, deckBox, deckBox];
   const navigate = useNavigate();
 
   useEffect(() => {
+    checkJwt();
     const fetchDecks = async () => {
       const cookies = new Cookies();
       const fetchedCards = await axios
@@ -21,7 +24,8 @@ const DeckArea = (props: any) => {
         .catch((error) => {
           if (error.response.status.statusCode === 401) {
             cookies.remove('carsar');
-            return navigate('/login');
+            navigate('/login');
+            return window.location.reload();
           }
           return console.log(error.response);
         });

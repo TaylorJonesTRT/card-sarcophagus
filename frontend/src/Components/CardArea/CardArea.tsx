@@ -10,8 +10,10 @@ import Cookies from 'universal-cookie';
 const CardArea = (props: any) => {
   const [cards, setCards] = useState<any[]>([]);
   const navigate = useNavigate();
+  const { checkJwt } = props;
 
   useEffect(() => {
+    checkJwt();
     const fetchCards = async () => {
       const cookies = new Cookies();
       const fetchedCards = await axios
@@ -26,13 +28,19 @@ const CardArea = (props: any) => {
         .catch((error) => {
           if (error.response.status === 401) {
             cookies.remove('carsar');
-            return navigate('/');
+            navigate('/');
+            return window.location.reload();
           }
         });
       return fetchedCards;
     };
     fetchCards();
   }, []);
+
+  const handleCardClick = (cardId: number) => {
+    checkJwt();
+    return navigate(`/card-editor?cardId=${cardId}`);
+  };
 
   return (
     <div className='w-full basis-full pt-3'>
@@ -44,12 +52,8 @@ const CardArea = (props: any) => {
                 <div
                   role='button'
                   tabIndex={0}
-                  onClick={(e) =>
-                    navigate(`/card-editor?cardId=${card.cardId}`)
-                  }
-                  onKeyPress={(e) =>
-                    navigate(`/card-editor?cardId=${card.cardId}`)
-                  }
+                  onClick={(e) => handleCardClick(card.cardId)}
+                  onKeyPress={(e) => handleCardClick(card.cardId)}
                   id={card.cardId}
                   key={card.cardId}
                 >
