@@ -32,15 +32,15 @@ export class AuthService {
     }
   }
 
-  async createUser(email: string, password: string) {
-    const alreadyCreated = await this.usersModel.findOne({ email });
+  async createUser(username: string, password: string) {
+    const alreadyCreated = await this.usersModel.findOne({ email: username });
 
     if (alreadyCreated) {
       return { error: 'An account already exists with that email' };
     }
 
     const newUser = new this.usersModel({
-      email,
+      email: username,
       password,
       ownedCards: [{}],
     });

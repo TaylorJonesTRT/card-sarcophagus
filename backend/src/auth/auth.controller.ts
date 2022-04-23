@@ -7,9 +7,12 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  createUser(@Body('email') email: string, @Body('password') password: string) {
-    return this.authService.createUser(email, password);
+  @Post('register')
+  createUser(
+    @Body('username') username: string,
+    @Body('password') password: string,
+  ) {
+    return this.authService.createUser(username, password);
   }
 
   @UseGuards(LocalAuthGuard)
