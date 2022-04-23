@@ -57,7 +57,15 @@ const LoginScreen = (props: any) => {
   const handleSubmit = async (event: any) => {
     const cookies = new Cookies();
     event.preventDefault();
-    if (login) {
+    if (!login) {
+      await axios
+        .post('http://localhost:3001/api/auth/register', {
+          username,
+          password,
+        })
+        .then((response) => console.log(response.data));
+      setLogin(true);
+    } else if (login) {
       await axios
         .post('http://localhost:3001/api/auth/login', { username, password })
         .then((response) => cookies.set('carsar', response.data.accessToken));
