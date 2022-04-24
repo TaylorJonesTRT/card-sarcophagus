@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
@@ -48,7 +49,11 @@ const CardArea = (props: any) => {
       <div className='container:lg w-[1240px] mx-auto'>
         <ul className='flex flex-row gap-4 flex-wrap overflow-auto'>
           <li key='newCard' className='relative text-center'>
-            <div role='button' tabIndex={0}>
+            <div
+              role='button'
+              tabIndex={0}
+              onClick={() => navigate('/card-editor')}
+            >
               <img
                 src={faceDownCard}
                 alt='add new card'
