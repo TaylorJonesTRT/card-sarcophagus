@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import faceDownCard from '../../Assets/faceDownCard.webp';
 
 const CardArea = (props: any) => {
   const [cards, setCards] = useState<any[]>([]);
@@ -46,6 +47,18 @@ const CardArea = (props: any) => {
     <div className='w-full basis-full pt-3'>
       <div className='container:lg w-[1240px] mx-auto'>
         <ul className='flex flex-row gap-4 flex-wrap overflow-auto'>
+          <li key='newCard' className='relative text-center'>
+            <div role='button' tabIndex={0}>
+              <img
+                src={faceDownCard}
+                alt='add new card'
+                className='w-28 shadow opacity-30 grayscale'
+              />
+              <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+                Add a new card
+              </span>
+            </div>
+          </li>
           {cards[0] !== undefined &&
             Object.values(cards[0]).map((card: any) => (
               <li key={card.cardId}>
