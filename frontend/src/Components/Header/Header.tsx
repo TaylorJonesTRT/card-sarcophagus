@@ -26,9 +26,6 @@ const Header = (props: any) => {
         <h1 className='font-bold'>
           <Link to='/'>Card Sarcophagus</Link>
         </h1>
-        <div className=''>
-          <Link to='/card-editor'>+ Add a Card</Link>
-        </div>
         <nav className=''>
           <ul className='flex flex-row justify-end'>
             <li className='mr-6 hover:underline'>
