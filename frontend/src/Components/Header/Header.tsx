@@ -37,8 +37,8 @@ const Header = (props: any) => {
             {loggedIn && (
               <li
                 className='mr-6 hover:underline hover:cursor-pointer'
-                onClick={(e) => handleLogout()}
-                onKeyDown={(e) => handleLogout()}
+                onClick={() => handleLogout()}
+                onKeyDown={() => handleLogout()}
               >
                 Log Out
               </li>
