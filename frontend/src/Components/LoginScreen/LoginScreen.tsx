@@ -18,7 +18,7 @@ const ActionHeader = (props: any) => {
           tabIndex={0}
           onClick={clickAction}
           onKeyDown={keyAction}
-          className='text-indigo-500'
+          className='text-indigo-500 hover:underline'
         >
           account?
         </span>
@@ -33,7 +33,7 @@ const ActionHeader = (props: any) => {
         tabIndex={0}
         onClick={clickAction}
         onKeyDown={keyAction}
-        className='text-indigo-500'
+        className='text-indigo-500 hover:underline'
       >
         account?
       </span>
