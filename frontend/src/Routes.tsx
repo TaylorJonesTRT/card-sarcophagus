@@ -1,12 +1,11 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import CardArea from './Components/CardArea';
 import Decks from './Components/DeckArea';
-import CardEditor from './Components/CardEditor';
 import Header from './Components/Header';
 import BottomBar from './Components/BottomBar';
 import LoginScreen from './Components/LoginScreen';
@@ -44,10 +43,6 @@ const AppRoutes = () => {
       <Routes>
         <Route path='/' element={<CardArea checkJwt={checkJwt} />} />
         <Route path='/decks' element={<Decks checkJwt={checkJwt} />} />
-        <Route
-          path='/card-editor'
-          element={<CardEditor checkJwt={checkJwt} />}
-        />
       </Routes>
       <BottomBar />
     </div>
