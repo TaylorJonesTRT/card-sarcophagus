@@ -4,10 +4,10 @@ import Cookies from 'universal-cookie';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import cardBack from '../../Assets/card-back.png';
+import deckBox from '../../Assets/deckbox.png';
 
 const EditorModal = (props: any) => {
-  const { cardId, closeModal } = props;
-  const handleInputChange = () => {};
+  const { editorType, cardId, clickedDeckName, closeModal } = props;
   const [cardImage, setCardImage] = useState<string>('');
   const [cardName, setCardName] = useState<string>('');
   const [cardOwned, setCardOwned] = useState<boolean>();
@@ -16,9 +16,23 @@ const EditorModal = (props: any) => {
   const [binderLocation, setBinderLocation] = useState<string>('');
   const [boxLocation, setBoxLoaction] = useState<string>('');
 
+  const [deckName, setDeckName] = useState<string>('');
+
   const cookies = new Cookies();
 
+  const clearState = () => {
+    setCardImage('');
+    setCardName('');
+    setCardOwned(false);
+    setAmountOfCopies(0);
+    setAvailableCopies(0);
+    setBinderLocation('');
+    setBoxLoaction('');
+    setDeckName('');
+  };
+
   useEffect(() => {
+    clearState();
     if (cardId) {
       const fillInCardEditor = async () => {
         if (cardId) {
@@ -42,13 +56,68 @@ const EditorModal = (props: any) => {
       };
       fillInCardEditor();
     }
-  }, []);
+    if (clickedDeckName) {
+      const fillInDeckName = () => {
+        setDeckName(clickedDeckName);
+      };
+      fillInDeckName();
+    }
+  }, [cardId, clickedDeckName]);
 
   const handleEditorSubmit = () => {};
 
+  const handleDeckSubmit = () => {};
+
   const handleExit = () => {
+    clearState();
     closeModal();
   };
+
+  if (editorType === 'deck') {
+    return (
+      <form className='w-[900px] h-[250px] fixed inset-0 z-50 overflow-x-hidden overflow-y-auto justify-center items-center bg-gradient-to-r from-gray-700 to-gray-900 rounded grid grid-flow-col auto-cols-auto gap-5 p-5 text-white mx-auto mt-52'>
+        <FontAwesomeIcon
+          icon={faCircleXmark}
+          className='absolute top-2 left-2 cursor-pointer'
+          onClick={handleExit}
+          title='Close'
+        />
+        <img src={deckBox} alt='card' className='mt-2 w-28' />
+        <ul className='h-max grid grid-col-2 gap-2 pl-5'>
+          <li>
+            <label htmlFor='card-name' className='pr-4'>
+              <span className='pr-2'>Deck Name:</span>
+              <input
+                type='text'
+                id='deck-name'
+                name='deckName'
+                className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                defaultValue={deckName}
+                onChange={(e) => setDeckName(e.target.value)}
+              />
+            </label>
+          </li>
+        </ul>
+        <div className='flex flex-col gap-4 w-full h-full'>
+          <button
+            className='card-editor-button grow h-auto p-4 bg-gradient-to-tr from-cyan-400 to-blue-500 hover:from-blue-500 hover:to-cyan-400 rounded text-blue-900'
+            type='submit'
+            onSubmit={handleDeckSubmit}
+          >
+            Submit Deck
+          </button>
+          {deckName && (
+            <button
+              className='card-editor-button-delete grow h-auto p-4 bg-gradient-to-tr from-orange-400 to-red-500 hover:from-red-500 hover:to-orange-400 rounded text-orange-900'
+              type='submit'
+            >
+              Delete Deck
+            </button>
+          )}
+        </div>
+      </form>
+    );
+  }
 
   return (
     <form className='w-[900px] h-[250px] fixed inset-0 z-50 overflow-x-hidden overflow-y-auto justify-center items-center bg-gradient-to-r from-gray-700 to-gray-900 rounded grid grid-flow-col auto-cols-auto p-5 text-white mx-auto mt-52'>
@@ -58,7 +127,12 @@ const EditorModal = (props: any) => {
         onClick={handleExit}
         title='Close'
       />
-      <img src={cardBack} alt='card' className='mt-2' />
+      {cardImage ? (
+        <img src={cardImage} alt={cardName} className='mt-2 w-28' />
+      ) : (
+        <img src={cardBack} alt='card' className='mt-2 w-28' />
+      )}
+
       <ul className='h-max grid grid-col-2 gap-2 pl-5'>
         <li className='col-start-1'>
           <label htmlFor='card-name'>
@@ -69,7 +143,7 @@ const EditorModal = (props: any) => {
               name='cardName'
               className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
               defaultValue={cardName || ''}
-              onChange={handleInputChange}
+              onChange={(e) => setCardName(e.target.value)}
             />
           </label>
         </li>
@@ -82,6 +156,7 @@ const EditorModal = (props: any) => {
               name='owned'
               className='text-black border-2 border-gray-400 rounded outline-none w-7 h-7'
               defaultChecked={cardOwned || false}
+              onChange={(e) => setCardOwned(e.target.checked)}
             />
           </label>
         </li>
@@ -94,6 +169,7 @@ const EditorModal = (props: any) => {
               name='amountOfCopies'
               className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
               defaultValue={amountOfCopies}
+              onChange={(e) => setAmountOfCopies(parseInt(e.target.value, 10))}
             />
           </label>
         </li>
@@ -106,6 +182,7 @@ const EditorModal = (props: any) => {
               name='availableCopies'
               className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
               defaultValue={availableCopies}
+              onChange={(e) => setAvailableCopies(parseInt(e.target.value, 10))}
             />
           </label>
         </li>
@@ -118,6 +195,7 @@ const EditorModal = (props: any) => {
               name='boxLocation'
               className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
               defaultValue={boxLocation}
+              onChange={(e) => setBoxLoaction(e.target.value)}
             />
           </label>
         </li>
@@ -130,6 +208,7 @@ const EditorModal = (props: any) => {
               name='binderLocation'
               className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
               defaultValue={binderLocation}
+              onChange={(e) => setBinderLocation(e.target.value)}
             />
           </label>
         </li>
