@@ -4,12 +4,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Card, CardDocument } from '../cards/schemas/card.schema';
 import { Deck, DeckDocument } from './schemas/deck.schema';
+import { Users, UsersDocument } from '../users/schemas/users.schema';
 
 @Injectable()
 export class DecksService {
   constructor(
     @InjectModel('Deck') private readonly deckModel: Model<DeckDocument>,
     @InjectModel('Card') private readonly cardModel: Model<CardDocument>,
+    @InjectModel('Users') private readonly usersModel: Model<UsersDocument>,
   ) {}
 
   async createDeck(deckName: string, reqUser: any) {
@@ -46,10 +48,26 @@ export class DecksService {
 
   async removeDeck(request: any, deckId: number) {
     // TODO: Need to implement logic so that any cards in a deck go back to pile
-    const deck = await this.deckModel.deleteOne({
+    const user = await this.usersModel.findOne({
+      email: request.user.username,
+    });
+    const deck = await this.deckModel.findOne({
       deckOwner: request.user.userId,
       _id: deckId,
     });
+
+    deck.mainDeck.forEach((value, key, map) => {
+      user.ownedCards[0][key].availableCopies += value;
+    });
+    deck.extraDeck.forEach((value, key, map) => {
+      user.ownedCards[0][key].availableCopies += value;
+    });
+    deck.sideDeck.forEach((value, key, map) => {
+      user.ownedCards[0][key].availableCopies += value;
+    });
+    user.markModified('ownedCards');
+    user.save();
+    await this.deckModel.deleteOne({ deck });
     return { deck };
   }
 
