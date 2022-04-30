@@ -38,7 +38,6 @@ export class DecksService {
   }
 
   async showAllDecks(request) {
-    // const allDecks = await this.deckModel.find().sort({ deckName: 1 });
     const allDecks = await this.deckModel.find({
       deckOwner: request.user.userId,
     });
@@ -46,6 +45,7 @@ export class DecksService {
   }
 
   async removeDeck(request: any, deckId: number) {
+    // TODO: Need to implement logic so that any cards in a deck go back to pile
     const deck = await this.deckModel.deleteOne({
       deckOwner: request.user.userId,
       _id: deckId,
