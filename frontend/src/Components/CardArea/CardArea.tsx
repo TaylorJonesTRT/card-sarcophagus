@@ -8,9 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import faceDownCard from '../../Assets/faceDownCard.webp';
+import EditorModal from '../EditorModal';
 
 const CardArea = (props: any) => {
   const [cards, setCards] = useState<any[]>([]);
+  const [showCardModal, setShowCardModal] = useState<boolean>(false);
+  const [clickedCardId, setClickedCardId] = useState<number>();
   const navigate = useNavigate();
   const { checkJwt } = props;
 
@@ -39,21 +42,27 @@ const CardArea = (props: any) => {
     fetchCards();
   }, []);
 
+  const newCardClick = () => {
+    setShowCardModal(true);
+  };
+
   const handleCardClick = (cardId: number) => {
     checkJwt();
-    return navigate(`/card-editor?cardId=${cardId}`);
+    setClickedCardId(cardId);
+    setShowCardModal(true);
   };
+
+  const closeModal = () => setShowCardModal(false);
 
   return (
     <div className='w-full basis-full pt-3'>
       <div className='container:lg w-[1240px] mx-auto'>
+        {showCardModal && (
+          <EditorModal cardId={clickedCardId} closeModal={closeModal} />
+        )}
         <ul className='flex flex-row gap-4 flex-wrap overflow-auto'>
           <li key='newCard' className='relative text-center'>
-            <div
-              role='button'
-              tabIndex={0}
-              onClick={() => navigate('/card-editor')}
-            >
+            <div role='button' tabIndex={0} onClick={newCardClick}>
               <img
                 src={faceDownCard}
                 alt='add new card'
