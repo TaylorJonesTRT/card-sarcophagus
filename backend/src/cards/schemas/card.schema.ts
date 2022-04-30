@@ -34,18 +34,6 @@ export class Card {
 
   @Prop({ required: true })
   cardImage: string;
-
-  // @Prop({ required: true, default: 0 })
-  // amountOfCopies: number;
-
-  // @Prop({ required: true, default: 0 })
-  // availableCopies: number;
-
-  // @Prop({ required: false })
-  // boxLocation: string;
-
-  // @Prop({ required: false })
-  // binderLocation: string;
 }
 
 export const CardSchema = SchemaFactory.createForClass(Card);
