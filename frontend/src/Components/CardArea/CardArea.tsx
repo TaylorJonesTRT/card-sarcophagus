@@ -43,6 +43,8 @@ const CardArea = (props: any) => {
   }, []);
 
   const newCardClick = () => {
+    checkJwt();
+    setClickedCardId(undefined);
     setShowCardModal(true);
   };
 
@@ -58,7 +60,11 @@ const CardArea = (props: any) => {
     <div className='w-full basis-full pt-3'>
       <div className='container:lg w-[1240px] mx-auto'>
         {showCardModal && (
-          <EditorModal cardId={clickedCardId} closeModal={closeModal} />
+          <EditorModal
+            cardId={clickedCardId}
+            closeModal={closeModal}
+            editorType='card'
+          />
         )}
         <ul className='flex flex-row gap-4 flex-wrap overflow-auto'>
           <li key='newCard' className='relative text-center'>
