@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import React, { useState, useEffect } from 'react';
@@ -33,10 +34,21 @@ const DeckArea = (props: any) => {
     };
     fetchDecks();
   }, []);
+
   return (
     <div className='w-full basis-full pt-3'>
       <div className='container w-[1240px] mx-auto decks'>
         <ul className='flex flex-row gap-10'>
+          <li key='addNewDeck' className='text-center'>
+            <div role='button' tabIndex={0}>
+              <img
+                className='w-28 opacity-50 grayscale'
+                src={deckBox}
+                alt='add new deck'
+              />
+              <span>Add new deck</span>
+            </div>
+          </li>
           {cardData.map((card: string | undefined) => (
             <li>
               <div
