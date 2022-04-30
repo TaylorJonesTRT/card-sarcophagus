@@ -3,7 +3,7 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Cookies from 'universal-cookie';
 import loginCards from './login-cards.jpg';
 
