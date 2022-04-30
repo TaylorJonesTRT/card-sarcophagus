@@ -14,14 +14,13 @@ const DeckArea = (props: any) => {
   const [decks, setDecks] = useState<any[]>([]);
   const [clickedDeckName, setClickedDeckName] = useState<string>();
   const [showEditor, setShowEditor] = useState<boolean>(false);
-  const cardData = [deckBox, deckBox, deckBox];
   const navigate = useNavigate();
 
   useEffect(() => {
     checkJwt();
     const fetchDecks = async () => {
       const cookies = new Cookies();
-      const fetchedCards = await axios
+      const fetchedDecks = await axios
         .get('http://localhost:3001/api/decks', {
           headers: {
             Authorization: `Bearer ${cookies.get('carsar')}`,
@@ -37,6 +36,7 @@ const DeckArea = (props: any) => {
             return window.location.reload();
           }
         });
+      return fetchedDecks;
     };
     fetchDecks();
   }, []);
@@ -84,7 +84,7 @@ const DeckArea = (props: any) => {
                 role='button'
                 tabIndex={0}
                 className='flex flex-col text-center'
-                onClick={(e) => {
+                onClick={() => {
                   openEditDeckModal(deck.deckName);
                 }}
               >
