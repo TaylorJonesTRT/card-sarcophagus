@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { DecksService } from './decks.service';
 import { Deck } from './schemas/deck.schema';
 import { Card } from '../cards/schemas/card.schema';
+import { Users } from '../users/schemas/users.schema';
 
 describe('DecksService', () => {
   let service: DecksService;
@@ -18,6 +19,10 @@ describe('DecksService', () => {
         },
         {
           provide: getModelToken(Card.name),
+          useValue: Model,
+        },
+        {
+          provide: getModelToken(Users.name),
           useValue: Model,
         },
       ],

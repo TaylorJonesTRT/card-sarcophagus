@@ -5,6 +5,7 @@ import { DecksController } from './decks.controller';
 import { DecksService } from './decks.service';
 import { Deck } from './schemas/deck.schema';
 import { Card } from '../cards/schemas/card.schema';
+import { Users } from './../users/schemas/users.schema';
 
 describe('DecksController', () => {
   let controller: DecksController;
@@ -20,6 +21,10 @@ describe('DecksController', () => {
         },
         {
           provide: getModelToken(Card.name),
+          useValue: Model,
+        },
+        {
+          provide: getModelToken(Users.name),
           useValue: Model,
         },
       ],
