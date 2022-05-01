@@ -15,6 +15,7 @@ const EditorModal = (props: any) => {
   const [availableCopies, setAvailableCopies] = useState<number>();
   const [binderLocation, setBinderLocation] = useState<string>('');
   const [boxLocation, setBoxLoaction] = useState<string>('');
+  const [requestType, setRequestType] = useState<string>('');
 
   const cookies = new Cookies();
 
@@ -55,7 +56,35 @@ const EditorModal = (props: any) => {
     }
   }, [cardId]);
 
-  const handleEditorSubmit = () => {};
+  const handleEditorSubmit = async (event: any) => {
+    event.preventDefault();
+    if (requestType === 'submit') {
+      event.preventDefault();
+      await axios
+        .post(
+          'http://localhost:3001/api/cards',
+          {
+            cardId,
+            amountOfCopies,
+            availableCopies,
+            binderLocation,
+            boxLocation,
+          },
+          {
+            headers: { Authorization: `Bearer ${cookies.get('carsar')}` },
+          },
+        )
+        .then((response) => console.log(response));
+    }
+    if (requestType === 'remove') {
+      await axios
+        .delete('http://localhost:3001/api/cards', {
+          data: { cardId },
+          headers: { Authorization: `Bearer ${cookies.get('carsar')}` },
+        })
+        .then((response) => console.log(response));
+    }
+  };
 
   const handleExit = () => {
     clearState();
@@ -63,7 +92,10 @@ const EditorModal = (props: any) => {
   };
 
   return (
-    <form className='w-[900px] h-[250px] fixed inset-0 z-50 overflow-x-hidden overflow-y-auto justify-center items-center bg-gradient-to-r from-gray-700 to-gray-900 rounded grid grid-flow-col auto-cols-auto p-5 text-white mx-auto mt-52'>
+    <form
+      onSubmit={(event) => handleEditorSubmit(event)}
+      className='w-[900px] h-[250px] fixed inset-0 z-50 overflow-x-hidden overflow-y-auto justify-center items-center bg-gradient-to-r from-gray-700 to-gray-900 rounded grid grid-flow-col auto-cols-auto p-5 text-white mx-auto mt-52'
+    >
       <FontAwesomeIcon
         icon={faCircleXmark}
         className='absolute top-2 left-2 cursor-pointer'
@@ -160,7 +192,7 @@ const EditorModal = (props: any) => {
         <button
           className='card-editor-button grow h-auto p-4 bg-gradient-to-tr from-cyan-400 to-blue-500 hover:from-blue-500 hover:to-cyan-400 rounded text-blue-900'
           type='submit'
-          onSubmit={handleEditorSubmit}
+          onClick={() => setRequestType('submit')}
         >
           Submit Card
         </button>
@@ -168,6 +200,7 @@ const EditorModal = (props: any) => {
           <button
             className='card-editor-button-delete grow h-auto p-4 bg-gradient-to-tr from-orange-400 to-red-500 hover:from-red-500 hover:to-orange-400 rounded text-orange-900'
             type='submit'
+            onClick={() => setRequestType('remove')}
           >
             Remove Card
           </button>
