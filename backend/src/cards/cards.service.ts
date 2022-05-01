@@ -123,12 +123,26 @@ export class CardsService {
     return { message: 'Card has been updated in your collection!' };
   }
 
-  async getSingleCardData(user: any, cardId: number) {
-    const activeUser = await this.usersModel.findOne({ email: user.username });
+  async getSingleCardData(reqUser: any, cardId: number) {
+    const activeUser = await this.usersModel.findOne({
+      email: reqUser.username,
+    });
     const ownedCards = activeUser.ownedCards;
 
     const cardFetch = await this.cardModel.findOne({ cardId });
     const card = activeUser.ownedCards[0][cardId];
     return { card };
+  }
+
+  async removeOwnedCard(reqUser, cardId: string) {
+    const activeUser = await this.usersModel.findOne({
+      email: reqUser.username,
+    });
+    delete activeUser.ownedCards[0][cardId];
+    activeUser.markModified('ownedCards');
+    activeUser.save((err) => {
+      if (err) return console.log(err);
+    });
+    return activeUser.ownedCards[0];
   }
 }

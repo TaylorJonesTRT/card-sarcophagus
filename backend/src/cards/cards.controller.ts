@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Delete,
   Body,
   Req,
   Put,
@@ -75,6 +76,12 @@ export class CardsController {
       binderLocation,
       boxLocation,
     );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete()
+  removeOwnedCard(@Req() request: Request, @Body('cardId') cardId: string) {
+    return this.cardsService.removeOwnedCard(request.user, cardId);
   }
 
   @UseGuards(JwtAuthGuard)
