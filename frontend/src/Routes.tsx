@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import CardArea from './Components/CardArea';
-import Decks from './Components/DeckArea';
 import Header from './Components/Header';
 import BottomBar from './Components/BottomBar';
 import LoginScreen from './Components/LoginScreen';
@@ -42,7 +41,6 @@ const AppRoutes = () => {
       <Header loggedIn={loggedIn} />
       <Routes>
         <Route path='/' element={<CardArea checkJwt={checkJwt} />} />
-        <Route path='/decks' element={<Decks checkJwt={checkJwt} />} />
       </Routes>
       <BottomBar />
     </div>
