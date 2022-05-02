@@ -6,7 +6,6 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import CardArea from './Components/CardArea';
 import Header from './Components/Header';
-import BottomBar from './Components/BottomBar';
 import LoginScreen from './Components/LoginScreen';
 
 const AppRoutes = () => {
@@ -42,7 +41,6 @@ const AppRoutes = () => {
       <Routes>
         <Route path='/' element={<CardArea checkJwt={checkJwt} />} />
       </Routes>
-      <BottomBar />
     </div>
   );
 };

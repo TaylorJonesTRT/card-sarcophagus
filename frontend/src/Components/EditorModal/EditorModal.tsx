@@ -4,7 +4,6 @@ import Cookies from 'universal-cookie';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import cardBack from '../../Assets/card-back.png';
-import deckBox from '../../Assets/deckbox.png';
 
 const EditorModal = (props: any) => {
   const { cardId, closeModal } = props;

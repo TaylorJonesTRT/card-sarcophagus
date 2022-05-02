@@ -31,9 +31,6 @@ const Header = (props: any) => {
             <li className='mr-6 hover:underline'>
               <Link to='/'>Cards</Link>
             </li>
-            <li className='mr-6 hover:underline'>
-              <Link to='/decks'>Decks</Link>
-            </li>
             {loggedIn && (
               <li
                 className='mr-6 hover:underline hover:cursor-pointer'
