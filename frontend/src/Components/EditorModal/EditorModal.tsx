@@ -82,7 +82,14 @@ const EditorModal = (props: any) => {
           data: { cardId },
           headers: { Authorization: `Bearer ${cookies.get('carsar')}` },
         })
-        .then((response) => console.log(response));
+        .then((response) => {
+          console.log(response);
+          clearState();
+          closeModal();
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        });
     }
   };
 
