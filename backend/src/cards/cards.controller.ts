@@ -27,6 +27,15 @@ export class CardsController {
     return this.cardsService.getOwnedCards(request.user);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('sorted')
+  getSortedCards(
+    @Req() request: Request,
+    @Body('sortOption') sortOption: string,
+  ) {
+    return this.cardsService.getSortedCards(request.user, sortOption);
+  }
+
   @Get('all-cards')
   getAllCards() {
     return this.cardsService.getAllCards();

@@ -3,6 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as _ from 'lodash';
 import { lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UsersDocument } from '../users/schemas/users.schema';
@@ -65,9 +66,26 @@ export class CardsService {
     return 'Adding cards to database, check your console';
   }
 
-  async getOwnedCards(user: any) {
-    const ownedCards = user.ownedCards;
-    return { ownedCards };
+  async getOwnedCards(reqUser: any) {
+    const activeUser = await this.usersModel.findOne({
+      email: reqUser.username,
+    });
+    return { activeUser };
+  }
+
+  async getSortedCards(reqUser: any, sortOption = 'cardName') {
+    const activeUser = await this.usersModel.findOne({
+      email: reqUser.username,
+    });
+    const ownedCards = { ...activeUser.ownedCards };
+    const sortedCards = _.orderBy(
+      activeUser.ownedCards[0],
+      [(item) => (item[sortOption] ? item[sortOption] : ''), 'cardName'],
+      ['desc', 'desc'],
+    );
+    const sortedArray = [];
+    sortedArray[0] = sortedCards;
+    return { sortedArray };
   }
 
   async getAllCards() {
@@ -94,6 +112,13 @@ export class CardsService {
     user.ownedCards[0][cardId].cardImage = card.cardImage;
     user.ownedCards[0][cardId].owned = true;
     user.ownedCards[0][cardId].cardId = card.cardId;
+    user.ownedCards[0][cardId].cardLevel = card.cardLevel;
+    user.ownedCards[0][cardId].cardAttribute = card.cardAttribute;
+    user.ownedCards[0][cardId].cardRace = card.cardRace;
+    user.ownedCards[0][cardId].cardType = card.cardType;
+    user.ownedCards[0][cardId].cardDesc = card.cardDesc;
+    user.ownedCards[0][cardId].cardAtk = card.cardAtk;
+    user.ownedCards[0][cardId].cardDef = card.cardDef;
 
     user.markModified('ownedCards');
     user.save((err) => {
