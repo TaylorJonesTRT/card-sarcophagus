@@ -77,12 +77,18 @@ export class CardsService {
     const activeUser = await this.usersModel.findOne({
       email: reqUser.username,
     });
-    const ownedCards = { ...activeUser.ownedCards };
-    const sortedCards = _.orderBy(
+    let sortedCards = _.orderBy(
       activeUser.ownedCards[0],
       [(item) => (item[sortOption] ? item[sortOption] : ''), 'cardName'],
       ['desc', 'desc'],
     );
+    if (sortOption === 'cardType') {
+      sortedCards = _.orderBy(
+        activeUser.ownedCards[0],
+        [(item) => (item[sortOption] ? item[sortOption] : ''), 'cardName'],
+        ['asc', 'desc'],
+      );
+    }
     const sortedArray = [];
     sortedArray[0] = sortedCards;
     return { sortedArray };
