@@ -17,6 +17,7 @@ const CardArea = (props: any) => {
   const [sortedCards, setSortedCards] = useState<any[]>([]);
   const [showCardModal, setShowCardModal] = useState<boolean>(false);
   const [clickedCardId, setClickedCardId] = useState<number>();
+  const [hoveredCardId, setHoveredCardId] = useState();
   const navigate = useNavigate();
   const { checkJwt } = props;
 
@@ -99,6 +100,8 @@ const CardArea = (props: any) => {
                         tabIndex={0}
                         onClick={(e) => handleCardClick(card.cardId)}
                         onKeyPress={(e) => handleCardClick(card.cardId)}
+                        onMouseEnter={(e) => setHoveredCardId(card.cardId)}
+                        onMouseLeave={() => setHoveredCardId(undefined)}
                         id={card.cardId}
                         key={card.cardId}
                       >
@@ -139,7 +142,7 @@ const CardArea = (props: any) => {
           </ul>
         </div>
       </div>
-      <BottomBar updateCards={updateCards} />
+      <BottomBar updateCards={updateCards} hoveredCardId={hoveredCardId} />
     </>
   );
 };
