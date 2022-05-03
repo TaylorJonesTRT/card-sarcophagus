@@ -5,13 +5,13 @@ import CardInfoArea from './CardInfoArea';
 import SortOptions from './SortOptions';
 
 const BottomBar = (props: any) => {
-  const { updateCards } = props;
+  const { updateCards, hoveredCardId } = props;
   return (
     <footer
       className='bg-gradient-to-bl
-    from-gray-800 to-gray-600 flex flex-row justify-between text-white basis-auto'
+    from-gray-800 to-gray-600 grid grid-cols-2 justify-items-center text-white basis-auto'
     >
-      <CardInfoArea />
+      <CardInfoArea hoveredCardId={hoveredCardId} />
       <SortOptions updateCards={updateCards} />
     </footer>
   );

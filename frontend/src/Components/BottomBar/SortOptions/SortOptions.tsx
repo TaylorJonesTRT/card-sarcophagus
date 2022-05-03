@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const SortOptions = (props: any) => {
   const { updateCards } = props;
-  const [cardSorting, setCardSorting] = useState<string>('');
 
   return (
-    <div className='sort-options w-1/2 flex flex-col m-3'>
+    <div className='sort-options flex flex-col m-3'>
       <form>
         <h2>Sort Cards By:</h2>
         <ul className='flex flex-cols-5 gap-10 pt-1'>
