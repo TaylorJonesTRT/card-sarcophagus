@@ -1,4 +1,7 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import React from 'react';
+import SearchBar from '../../SearchBar';
 
 const SortOptions = (props: any) => {
   const { updateCards } = props;
@@ -9,16 +12,18 @@ const SortOptions = (props: any) => {
         <h2>Sort Cards By:</h2>
         <ul className='flex flex-cols-5 gap-10 pt-1'>
           <li>
-            <input
-              type='radio'
-              id='card-name'
-              name='card-sort-options'
-              className='mr-2'
-              value='cardName'
-              defaultChecked
-              onChange={(event) => updateCards(event.target.value)}
-            />
-            Name
+            <label htmlFor='cardName'>
+              <input
+                type='radio'
+                id='card-name'
+                name='card-sort-options'
+                className='mr-2'
+                value='cardName'
+                defaultChecked
+                onChange={(event) => updateCards(event.target.value)}
+              />
+              Name
+            </label>
           </li>
           <li>
             <label htmlFor='card-attack'>
@@ -74,21 +79,7 @@ const SortOptions = (props: any) => {
           </li>
         </ul>
       </form>
-      <form className='pt-5'>
-        <ul>
-          <li>
-            <label htmlFor='card-name' className='grid grid-rows-2'>
-              Search:
-              <input
-                type='text'
-                id='card-search'
-                name='card-name'
-                className='border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-              />
-            </label>
-          </li>
-        </ul>
-      </form>
+      <SearchBar updateCards={updateCards} />
     </div>
   );
 };

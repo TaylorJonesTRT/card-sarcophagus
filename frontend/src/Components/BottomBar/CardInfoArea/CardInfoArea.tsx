@@ -26,7 +26,7 @@ const CardInfoArea = (props: any) => {
               headers: { Authorization: `Bearer ${cookies.get('carsar')}` },
             },
           )
-          .then((response) => response.data.card);
+          .then((response) => response.data.cardFetch);
         setName(card.cardName);
         setLevel(card.cardLevel);
         setAttack(card.cardAtk);

@@ -5,7 +5,7 @@ import CardInfoArea from './CardInfoArea';
 import SortOptions from './SortOptions';
 
 const BottomBar = (props: any) => {
-  const { updateCards, hoveredCardId } = props;
+  const { updateCards, searchCards, hoveredCardId } = props;
   return (
     <footer
       className='bg-gradient-to-bl
