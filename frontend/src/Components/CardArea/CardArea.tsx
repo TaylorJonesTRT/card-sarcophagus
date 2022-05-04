@@ -54,19 +54,35 @@ const CardArea = (props: any) => {
     setShowCardModal(true);
   };
 
-  const updateCards = async (sortOption: string) => {
+  const updateCards = async (sortOption: string, searchString: string) => {
     const cookies = new Cookies();
-    const fetchedCards = await axios
-      .post(
-        'http://localhost:3001/api/cards/sorted',
-        { sortOption },
-        {
-          headers: { Authorization: `Bearer ${cookies.get('carsar')}` },
-        },
-      )
-      .then((response) => setSortedCards(response.data.sortedArray));
-    return fetchedCards;
+    if (sortOption) {
+      const fetchedCards = await axios
+        .post(
+          'http://localhost:3001/api/cards/sorted',
+          { sortOption },
+          {
+            headers: { Authorization: `Bearer ${cookies.get('carsar')}` },
+          },
+        )
+        .then((response) => setSortedCards(response.data.sortedArray));
+      return fetchedCards;
+    }
+    if (searchString) {
+      const searchedCards = await axios
+        .post(
+          'http://localhost:3001/api/cards/search',
+          { cardName: searchString },
+          {
+            headers: { Authorization: `Bearer ${cookies.get('carsar')}` },
+          },
+        )
+        .then((response) => setSortedCards(response.data.store));
+      return searchedCards;
+    }
   };
+
+  const searchCards = async (string: string) => {};
 
   const closeModal = () => setShowCardModal(false);
 
