@@ -109,22 +109,22 @@ export class CardsService {
   ) {
     const user = await this.usersModel.findOne({ email: reqUser.username });
     const card = await this.cardModel.findOne({ cardId });
-    user.ownedCards[0][cardId] = {};
-    user.ownedCards[0][cardId].cardName = card.cardName;
-    user.ownedCards[0][cardId].amountOfCopies = amountOfCopies;
-    user.ownedCards[0][cardId].availableCopies = availableCopies;
-    user.ownedCards[0][cardId].binderLocation = binderLocation;
-    user.ownedCards[0][cardId].boxLocation = boxLocation;
-    user.ownedCards[0][cardId].cardImage = card.cardImage;
-    user.ownedCards[0][cardId].owned = true;
-    user.ownedCards[0][cardId].cardId = card.cardId;
-    user.ownedCards[0][cardId].cardLevel = card.cardLevel;
-    user.ownedCards[0][cardId].cardAttribute = card.cardAttribute;
-    user.ownedCards[0][cardId].cardRace = card.cardRace;
-    user.ownedCards[0][cardId].cardType = card.cardType;
-    user.ownedCards[0][cardId].cardDesc = card.cardDesc;
-    user.ownedCards[0][cardId].cardAtk = card.cardAtk;
-    user.ownedCards[0][cardId].cardDef = card.cardDef;
+    user.ownedCards[0][card.cardName] = {};
+    user.ownedCards[0][card.cardName].cardName = card.cardName;
+    user.ownedCards[0][card.cardName].amountOfCopies = amountOfCopies;
+    user.ownedCards[0][card.cardName].availableCopies = availableCopies;
+    user.ownedCards[0][card.cardName].binderLocation = binderLocation;
+    user.ownedCards[0][card.cardName].boxLocation = boxLocation;
+    user.ownedCards[0][card.cardName].cardImage = card.cardImage;
+    user.ownedCards[0][card.cardName].owned = true;
+    user.ownedCards[0][card.cardName].cardId = card.cardId;
+    user.ownedCards[0][card.cardName].cardLevel = card.cardLevel;
+    user.ownedCards[0][card.cardName].cardAttribute = card.cardAttribute;
+    user.ownedCards[0][card.cardName].cardRace = card.cardRace;
+    user.ownedCards[0][card.cardName].cardType = card.cardType;
+    user.ownedCards[0][card.cardName].cardDesc = card.cardDesc;
+    user.ownedCards[0][card.cardName].cardAtk = card.cardAtk;
+    user.ownedCards[0][card.cardName].cardDef = card.cardDef;
 
     user.markModified('ownedCards');
     user.save((err) => {
@@ -142,10 +142,11 @@ export class CardsService {
     boxLocation: string,
   ) {
     const user = await this.usersModel.findOne({ email: reqUser.username });
-    user.ownedCards[0][cardId].amountOfCopies = amountOfCopies;
-    user.ownedCards[0][cardId].availableCopies = availableCopies;
-    user.ownedCards[0][cardId].binderLocation = binderLocation;
-    user.ownedCards[0][cardId].boxLocation = boxLocation;
+    const card = await this.cardModel.findOne({ cardId });
+    user.ownedCards[0][card.cardName].amountOfCopies = amountOfCopies;
+    user.ownedCards[0][card.cardName].availableCopies = availableCopies;
+    user.ownedCards[0][card.cardName].binderLocation = binderLocation;
+    user.ownedCards[0][card.cardName].boxLocation = boxLocation;
     user.markModified('ownedCards');
 
     user.save((err) => {
@@ -155,14 +156,8 @@ export class CardsService {
   }
 
   async getSingleCardData(reqUser: any, cardId: number) {
-    const activeUser = await this.usersModel.findOne({
-      email: reqUser.username,
-    });
-    const ownedCards = activeUser.ownedCards;
-
     const cardFetch = await this.cardModel.findOne({ cardId });
-    const card = activeUser.ownedCards[0][cardId];
-    return { card };
+    return { cardFetch };
   }
 
   async removeOwnedCard(reqUser, cardId: string) {
@@ -175,5 +170,17 @@ export class CardsService {
       if (err) return console.log(err);
     });
     return activeUser.ownedCards[0];
+  }
+
+  async searchForCards(reqUser: any, cardNameString: string) {
+    const activeUser = await this.usersModel.findOne({
+      email: reqUser.username,
+    });
+    const store = [];
+    const searchedCards = Object.entries(activeUser.ownedCards[0]).filter(
+      ([key, value]) => key.toLowerCase().includes(cardNameString),
+    );
+    store[0] = Object.fromEntries(searchedCards);
+    return { store };
   }
 }

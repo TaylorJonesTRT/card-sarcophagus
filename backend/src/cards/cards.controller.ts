@@ -31,7 +31,7 @@ export class CardsController {
   @Post('sorted')
   getSortedCards(
     @Req() request: Request,
-    @Body('sortOption') sortOption: string,
+    @Body('sortOption') sortOption = 'cardName',
   ) {
     return this.cardsService.getSortedCards(request.user, sortOption);
   }
@@ -97,5 +97,11 @@ export class CardsController {
   @Post('card')
   getCardData(@Req() request: Request, @Body('cardId') cardId: number) {
     return this.cardsService.getSingleCardData(request.user, cardId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('search')
+  searchForCards(@Req() request: Request, @Body('cardName') cardName: string) {
+    return this.cardsService.searchForCards(request.user, cardName);
   }
 }

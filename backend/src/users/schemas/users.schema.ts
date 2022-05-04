@@ -33,3 +33,5 @@ UsersSchema.pre<UsersDocument>('save', async function () {
   // modify property on this
   this.password = hashedPassword;
 });
+
+UsersSchema.index({ ownedCards: 'text' });
