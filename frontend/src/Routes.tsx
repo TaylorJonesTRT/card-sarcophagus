@@ -3,6 +3,7 @@
 /* eslint-disable import/no-unresolved */
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Cookies from 'universal-cookie';
 import CardArea from './Components/CardArea';
 import Header from './Components/Header';
@@ -13,18 +14,23 @@ const AppRoutes = () => {
   const navigate = useNavigate();
 
   // eslint-disable-next-line consistent-return
-  const checkJwt = () => {
+  const checkJwt = async () => {
     const cookies = new Cookies();
-    const token = cookies.get('carsar');
-    if (token) {
-      setLoggedIn(true);
-      return true;
-    }
-    if (!token) {
-      setLoggedIn(false);
-      navigate('/');
-      return false;
-    }
+    const checkRequest = await axios
+      .post('http://localhost:3001/api/auth/check-auth', null, {
+        headers: {
+          Authorization: `Bearer ${cookies.get('carsar')}`,
+        },
+      })
+      .then((response) => {
+        setLoggedIn(true);
+        return true;
+      })
+      .catch((error) => {
+        setLoggedIn(false);
+        return false;
+      });
+    return checkRequest;
   };
 
   useEffect(() => {
