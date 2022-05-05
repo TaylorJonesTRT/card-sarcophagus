@@ -68,8 +68,6 @@ export class AuthService {
       const payload = {
         email: user._doc.email,
         sub: user._doc._id,
-        ownedCards: user._doc.ownedCards,
-        decks: user._doc.decks,
         jwtId: activeUser.jwtId,
       };
       return {
