@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
@@ -13,6 +14,7 @@ const CardInfoArea = (props: any) => {
   const [type, setType] = useState<string>('');
   const [desc, setDesc] = useState<string>('');
   const [image, setImage] = useState<string>('');
+  const [test, setTest] = useState<any>();
 
   useEffect(() => {
     if (hoveredCardId !== undefined) {
@@ -26,15 +28,16 @@ const CardInfoArea = (props: any) => {
               headers: { Authorization: `Bearer ${cookies.get('carsar')}` },
             },
           )
-          .then((response) => response.data.cardFetch);
-        setName(card.cardName);
-        setLevel(card.cardLevel);
-        setAttack(card.cardAtk);
-        setDefense(card.cardDef);
-        setAttribute(card.cardAttribute);
-        setType(card.cardType);
-        setDesc(card.cardDesc);
-        setImage(card.cardImage);
+          .then((response) => response.data[0]);
+        const cardKey = Object.keys(card);
+        setName(card[cardKey[0]]['cardName']);
+        setLevel(card[cardKey[0]]['cardLevel']);
+        setAttack(card[cardKey[0]]['cardAttack']);
+        setDefense(card[cardKey[0]]['cardDefense']);
+        setAttribute(card[cardKey[0]]['cardAttribute']);
+        setType(card[cardKey[0]]['cardType']);
+        setDesc(card[cardKey[0]]['cardDesc']);
+        setImage(card[cardKey[0]]['cardImage']);
       };
       fetchCard();
     }
