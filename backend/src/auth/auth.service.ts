@@ -77,4 +77,16 @@ export class AuthService {
       console.error(err);
     }
   }
+
+  async checkAuth(reqUser: any) {
+    const activeUser = await this.usersModel.findOne({
+      email: reqUser.username,
+    });
+    if (activeUser) {
+      return { message: 'Still logged in' };
+    }
+    if (!activeUser) {
+      return { message: 'Not logged in' };
+    }
+  }
 }
