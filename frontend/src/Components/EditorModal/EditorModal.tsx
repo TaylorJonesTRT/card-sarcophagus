@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
@@ -41,14 +42,15 @@ const EditorModal = (props: any) => {
                 headers: { Authorization: `Bearer ${cookies.get('carsar')}` },
               },
             )
-            .then((response) => response.data.card);
-          setCardImage(card.cardImage);
-          setCardName(card.cardName);
-          setCardOwned(card.owned);
-          setAmountOfCopies(card.amountOfCopies);
-          setAvailableCopies(card.availableCopies);
-          setBinderLocation(card.binderLocation);
-          setBoxLoaction(card.boxLocation);
+            .then((response) => response.data[0]);
+          const cardKey = Object.keys(card);
+          setCardImage(card[cardKey[0]]['cardImage']);
+          setCardName(card[cardKey[0]]['cardName']);
+          setCardOwned(card[cardKey[0]]['cardOwned']);
+          setAmountOfCopies(card[cardKey[0]]['amountOfCopies']);
+          setAvailableCopies(card[cardKey[0]]['availableCopies']);
+          setBinderLocation(card[cardKey[0]]['binderLocation']);
+          setBoxLoaction(card[cardKey[0]]['boxLocation']);
         }
       };
       fillInCardEditor();

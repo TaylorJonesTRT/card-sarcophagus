@@ -14,7 +14,6 @@ const CardInfoArea = (props: any) => {
   const [type, setType] = useState<string>('');
   const [desc, setDesc] = useState<string>('');
   const [image, setImage] = useState<string>('');
-  const [test, setTest] = useState<any>();
 
   useEffect(() => {
     if (hoveredCardId !== undefined) {
