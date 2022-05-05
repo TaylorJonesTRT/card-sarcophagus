@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
@@ -156,8 +157,15 @@ export class CardsService {
   }
 
   async getSingleCardData(reqUser: any, cardId: number) {
-    const cardFetch = await this.cardModel.findOne({ cardId });
-    return { cardFetch };
+    const activeUser = await this.usersModel.findOne({
+      email: reqUser.username,
+    });
+    const cardFetch = [];
+    const card = Object.entries(activeUser.ownedCards[0]).filter(
+      ([key, value]) => value['cardId'] === cardId,
+    );
+    cardFetch[0] = Object.fromEntries(card);
+    return cardFetch;
   }
 
   async removeOwnedCard(reqUser, cardId: string) {
