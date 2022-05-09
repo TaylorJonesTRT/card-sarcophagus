@@ -191,4 +191,12 @@ export class CardsService {
     store[0] = Object.fromEntries(searchedCards);
     return { store };
   }
+
+  async editorSearch(reqUser: any, cardName: string) {
+    const cards = await this.cardModel.fuzzySearch({
+      query: cardName,
+      exact: true,
+    });
+    return cards;
+  }
 }

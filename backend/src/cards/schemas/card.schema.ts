@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -38,3 +39,6 @@ export class Card {
 
 export const CardSchema = SchemaFactory.createForClass(Card);
 CardSchema.index({ cardName: 'text' });
+CardSchema.plugin(require('mongoose-fuzzy-searching'), {
+  fields: ['cardName'],
+});
