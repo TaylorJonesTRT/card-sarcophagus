@@ -104,4 +104,10 @@ export class CardsController {
   searchForCards(@Req() request: Request, @Body('cardName') cardName: string) {
     return this.cardsService.searchForCards(request.user, cardName);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('editor-search')
+  editorSearch(@Req() request: Request, @Body('cardName') cardName: string) {
+    return this.cardsService.editorSearch(request.user, cardName);
+  }
 }
