@@ -175,9 +175,13 @@ export class CardsService {
     const activeUser = await this.usersModel.findOne({
       email: reqUser.username,
     });
-    delete activeUser.ownedCards[0][cardId];
+    const card = await this.cardModel.findOne({ cardId });
+    delete activeUser.ownedCards[0][card.cardName];
+    // const { [cardId]: removedCard, ...newOwnedCards } =
+    //   activeUser.ownedCards[0];
+    // activeUser.ownedCards[0] = newOwnedCards;
     activeUser.markModified('ownedCards');
-    activeUser.save((err) => {
+    await activeUser.save((err) => {
       if (err) return console.log(err);
     });
     return activeUser.ownedCards[0];
