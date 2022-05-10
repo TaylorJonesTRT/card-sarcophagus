@@ -164,6 +164,9 @@ export class CardsService {
     const card = Object.entries(activeUser.ownedCards[0]).filter(
       ([key, value]) => value['cardId'] === cardId,
     );
+    if (card[0] === undefined) {
+      return { message: 'not an owned card' };
+    }
     cardFetch[0] = Object.fromEntries(card);
     return cardFetch;
   }
@@ -197,6 +200,13 @@ export class CardsService {
       query: cardName,
       exact: true,
     });
+    if (cards.length > 30) {
+      cards.length = 30;
+      return cards;
+    }
+    if (cardName === '') {
+      return [];
+    }
     return cards;
   }
 }
