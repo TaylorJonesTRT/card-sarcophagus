@@ -18,6 +18,7 @@ const CardArea = (props: any) => {
   const [showCardModal, setShowCardModal] = useState<boolean>(false);
   const [clickedCardId, setClickedCardId] = useState<number>();
   const [hoveredCardId, setHoveredCardId] = useState();
+  const [editorType, setEditorType] = useState<string>('');
   const navigate = useNavigate();
   const { checkJwt } = props;
 
@@ -91,11 +92,22 @@ const CardArea = (props: any) => {
       <div className='w-full basis-full pt-3'>
         <div className='container:lg w-[1240px] mx-auto'>
           {showCardModal && (
-            <EditorModal cardId={clickedCardId} closeModal={closeModal} />
+            <EditorModal
+              cardId={clickedCardId}
+              closeModal={closeModal}
+              editorType={editorType}
+            />
           )}
           <ul className='flex flex-row gap-4 flex-wrap overflow-auto'>
             <li key='newCard' className='relative text-center'>
-              <div role='button' tabIndex={0} onClick={newCardClick}>
+              <div
+                role='button'
+                tabIndex={0}
+                onClick={() => {
+                  setEditorType('newCard');
+                  newCardClick();
+                }}
+              >
                 <img
                   src={faceDownCard}
                   alt='add new card'
@@ -114,7 +126,10 @@ const CardArea = (props: any) => {
                       <div
                         role='button'
                         tabIndex={0}
-                        onClick={(e) => handleCardClick(card.cardId)}
+                        onClick={(e) => {
+                          setEditorType('ownedCard');
+                          handleCardClick(card.cardId);
+                        }}
                         onKeyPress={(e) => handleCardClick(card.cardId)}
                         onMouseEnter={(e) => setHoveredCardId(card.cardId)}
                         onMouseLeave={() => setHoveredCardId(undefined)}
