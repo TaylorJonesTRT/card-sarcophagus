@@ -133,7 +133,6 @@ const CardArea = (props: any) => {
                         onKeyPress={(e) => handleCardClick(card.cardId)}
                         onMouseEnter={(e) => setHoveredCardId(card.cardId)}
                         onMouseLeave={() => setHoveredCardId(undefined)}
-                        id={card.cardId}
                         key={card.cardId}
                       >
                         <img
@@ -156,7 +155,6 @@ const CardArea = (props: any) => {
                         tabIndex={0}
                         onClick={(e) => handleCardClick(card.cardId)}
                         onKeyPress={(e) => handleCardClick(card.cardId)}
-                        id={card.cardId}
                         key={card.cardId}
                       >
                         <img
