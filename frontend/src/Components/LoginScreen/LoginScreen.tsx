@@ -63,8 +63,10 @@ const LoginScreen = (props: any) => {
           username,
           password,
         })
-        .then((response) => console.log(response.data));
-      setLogin(true);
+        .then((response) => cookies.set('carsar', response.data.accessToken));
+      setTimeout(() => {
+        loginChange(true);
+      }, 2000);
     } else if (login) {
       await axios
         .post('http://localhost:3001/api/auth/login', { username, password })

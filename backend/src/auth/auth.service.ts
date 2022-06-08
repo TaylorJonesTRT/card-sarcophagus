@@ -50,7 +50,14 @@ export class AuthService {
         return console.log(err);
       }
     });
-    return { message: 'Account Created!' };
+
+    const payload = {
+      email: newUser.email,
+      sub: newUser._id,
+      jwtId: newUser.jwtId,
+    };
+
+    return { accessToken: this.jwtService.sign(payload) };
   }
 
   async login(user: any) {
