@@ -4,6 +4,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
+import { toast } from 'react-toastify';
 
 const Header = (props: any) => {
   const { loggedIn } = props;
@@ -12,8 +13,18 @@ const Header = (props: any) => {
 
   const handleLogout = () => {
     cookies.remove('carsar');
-    navigate('/');
-    window.location.reload();
+    toast.info('Logging you out', {
+      position: 'bottom-right',
+      autoClose: 1000,
+      hideProgressBar: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+    });
+    setTimeout(() => {
+      navigate('/');
+      window.location.reload();
+    }, 2000);
   };
 
   return (
