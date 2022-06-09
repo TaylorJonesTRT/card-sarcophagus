@@ -5,9 +5,11 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import { ToastContainer } from 'react-toastify';
 import CardArea from './Components/CardArea';
 import Header from './Components/Header';
 import LoginScreen from './Components/LoginScreen';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const AppRoutes = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>();
@@ -38,7 +40,22 @@ const AppRoutes = () => {
   }, []);
 
   if (!loggedIn) {
-    return <LoginScreen loginChange={setLoggedIn} checkJwt={checkJwt} />;
+    return (
+      <>
+        <LoginScreen loginChange={setLoggedIn} checkJwt={checkJwt} />
+        <ToastContainer
+          position='bottom-left'
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable={false}
+          pauseOnHover={false}
+        />
+      </>
+    );
   }
 
   return (
@@ -47,6 +64,17 @@ const AppRoutes = () => {
       <Routes>
         <Route path='/' element={<CardArea checkJwt={checkJwt} />} />
       </Routes>
+      <ToastContainer
+        position='bottom-left'
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+      />
     </div>
   );
 };
