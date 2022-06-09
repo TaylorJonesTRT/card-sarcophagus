@@ -89,7 +89,7 @@ const CardArea = (props: any) => {
 
   return (
     <>
-      <div className='w-full basis-full pt-3'>
+      <div className='w-full basis-full pt-3 pb-3 overflow-auto justify-around mx-auto'>
         <div className='container:lg w-[1240px] mx-auto'>
           {showCardModal && (
             <EditorModal
@@ -98,7 +98,7 @@ const CardArea = (props: any) => {
               editorType={editorType}
             />
           )}
-          <ul className='flex flex-row gap-4 flex-wrap overflow-auto'>
+          <ul className='flex flex-row gap-7 flex-wrap overflow-auto pl-1'>
             <li key='newCard' className='relative text-center'>
               <div
                 role='button'
@@ -171,7 +171,9 @@ const CardArea = (props: any) => {
           </ul>
         </div>
       </div>
-      <BottomBar updateCards={updateCards} hoveredCardId={hoveredCardId} />
+      <div className='w-full'>
+        <BottomBar updateCards={updateCards} hoveredCardId={hoveredCardId} />
+      </div>
     </>
   );
 };
