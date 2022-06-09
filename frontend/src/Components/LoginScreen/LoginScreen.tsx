@@ -5,6 +5,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import Cookies from 'universal-cookie';
+import { toast } from 'react-toastify';
 import loginCards from './login-cards.jpg';
 
 const ActionHeader = (props: any) => {
@@ -63,10 +64,28 @@ const LoginScreen = (props: any) => {
           username,
           password,
         })
-        .then((response) => cookies.set('carsar', response.data.accessToken));
-      setTimeout(() => {
-        loginChange(true);
-      }, 2000);
+        .then((response) => {
+          cookies.set('carsar', response.data.accessToken);
+          toast.info('Account created! Logging you in!', {
+            position: 'bottom-right',
+            autoClose: 1000,
+            hideProgressBar: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
+          setTimeout(() => loginChange(true), 2000);
+        })
+        .catch((error) =>
+          toast.error(`${error.response.data.message}`, {
+            position: 'bottom-right',
+            autoClose: 1000,
+            hideProgressBar: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          }),
+        );
     } else if (login) {
       await axios
         .post('http://localhost:3001/api/auth/login', { username, password })
