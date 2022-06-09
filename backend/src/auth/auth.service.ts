@@ -1,3 +1,4 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { Users, UsersDocument } from '../users/schemas/users.schema';
@@ -33,31 +34,38 @@ export class AuthService {
   }
 
   async createUser(username: string, password: string) {
-    const alreadyCreated = await this.usersModel.findOne({ email: username });
+    try {
+      const alreadyCreated = await this.usersModel.findOne({ email: username });
 
-    if (alreadyCreated) {
-      return { error: 'An account already exists with that email' };
-    }
-
-    const newUser = new this.usersModel({
-      email: username,
-      password,
-      ownedCards: [{}],
-    });
-
-    newUser.save((err) => {
-      if (err) {
-        return console.log(err);
+      if (alreadyCreated) {
+        throw new HttpException(
+          'An account already exists with that email',
+          HttpStatus.NOT_ACCEPTABLE,
+        );
       }
-    });
 
-    const payload = {
-      email: newUser.email,
-      sub: newUser._id,
-      jwtId: newUser.jwtId,
-    };
+      const newUser = new this.usersModel({
+        email: username,
+        password,
+        ownedCards: [{}],
+      });
 
-    return { accessToken: this.jwtService.sign(payload) };
+      newUser.save((err) => {
+        if (err) {
+          return console.log(err);
+        }
+      });
+
+      const payload = {
+        email: newUser.email,
+        sub: newUser._id,
+        jwtId: newUser.jwtId,
+      };
+
+      return { accessToken: this.jwtService.sign(payload) };
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.NOT_ACCEPTABLE);
+    }
   }
 
   async login(user: any) {
