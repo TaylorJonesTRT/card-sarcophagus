@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import cardBack from '../../../Assets/card-back.png';
@@ -52,7 +53,17 @@ const NewCard = (props: any) => {
       )
       .then((response) => {
         console.log(response);
-        window.location.reload();
+        toast.info('Card added!', {
+          position: 'bottom-right',
+          autoClose: 500,
+          hideProgressBar: false,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       });
   };
 

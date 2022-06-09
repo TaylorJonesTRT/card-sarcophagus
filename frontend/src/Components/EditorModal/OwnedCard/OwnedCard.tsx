@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import cardBack from '../../../Assets/card-back.png';
@@ -92,8 +93,28 @@ const OwnedCard = (props: any) => {
           },
         )
         .then((response) => {
+          toast.info('Card added!', {
+            position: 'bottom-right',
+            autoClose: 500,
+            hideProgressBar: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
           console.log(response);
-          window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+          }, 501);
+        })
+        .catch((error) => {
+          toast.info(error.response.data.message, {
+            position: 'bottom-right',
+            autoClose: 500,
+            hideProgressBar: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
         });
     }
     if (requestType === 'remove') {
@@ -103,8 +124,18 @@ const OwnedCard = (props: any) => {
           headers: { Authorization: `Bearer ${cookies.get('carsar')}` },
         })
         .then((response) => {
+          toast.info('Card has been removed!', {
+            position: 'bottom-right',
+            autoClose: 500,
+            hideProgressBar: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
           console.log(response);
-          window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+          }, 501);
         });
     }
   };
