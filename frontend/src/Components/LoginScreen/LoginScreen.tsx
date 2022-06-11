@@ -1,3 +1,6 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-undef */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable import/extensions */
@@ -6,6 +9,8 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import Cookies from 'universal-cookie';
 import { toast } from 'react-toastify';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
+import { object, string } from 'yup';
 import loginCards from './login-cards.jpg';
 
 const ActionHeader = (props: any) => {
@@ -42,10 +47,24 @@ const ActionHeader = (props: any) => {
   );
 };
 
+interface Values {
+  username: string;
+  password: string;
+}
+
+const validationSchema = object().shape({
+  username: string().email('Invalid email').required('Field is required'),
+  password: string()
+    .min(8, 'Must be at least 8 characters long')
+    .matches(
+      /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/,
+      'Password must contain at least one uppercase, one lowercase, one number, and a special character',
+    )
+    .required('Passsword is required'),
+});
+
 const LoginScreen = (props: any) => {
   const [login, setLogin] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const { loginChange } = props;
 
   const changeLoginMethod = () => {
@@ -55,9 +74,8 @@ const LoginScreen = (props: any) => {
     makeChange();
   };
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (username: string, password: string) => {
     const cookies = new Cookies();
-    event.preventDefault();
     if (!login) {
       await axios
         .post('http://localhost:3001/api/auth/register', {
@@ -68,13 +86,13 @@ const LoginScreen = (props: any) => {
           cookies.set('carsar', response.data.accessToken);
           toast.info('Account created! Logging you in!', {
             position: 'bottom-right',
-            autoClose: 1000,
+            autoClose: 2000,
             hideProgressBar: false,
             pauseOnHover: false,
             draggable: false,
             progress: undefined,
           });
-          setTimeout(() => loginChange(true), 2000);
+          setTimeout(() => loginChange(true), 3000);
         })
         .catch((error) =>
           toast.error(`${error.response.data.message}`, {
@@ -92,13 +110,6 @@ const LoginScreen = (props: any) => {
         .then((response) => cookies.set('carsar', response.data.accessToken));
       loginChange(true);
     }
-  };
-
-  const handleInputChange = (event: any) => {
-    if (event.target.name === 'username') {
-      return setUsername(event.target.value);
-    }
-    return setPassword(event.target.value);
   };
 
   return (
@@ -120,36 +131,51 @@ const LoginScreen = (props: any) => {
               clickAction={changeLoginMethod}
               keyAction={changeLoginMethod}
             />
-            <form className='grid grid-flow-row mt-5' onSubmit={handleSubmit}>
-              <label htmlFor='username' className='grid grid-cols-1'>
-                Username
-                <input
-                  type='text'
-                  placeholder=''
-                  name='username'
-                  onChange={handleInputChange}
-                  className='border border-gray-300 mt-1 rounded'
-                  required
-                />
-              </label>
-              <label htmlFor='password' className='grid grid-cols-1 mt-1'>
-                Password
-                <input
-                  type='password'
-                  placeholder=''
-                  name='password'
-                  onChange={handleInputChange}
-                  className='border border-gray-200 mt-1 rounded'
-                  required
-                />
-              </label>
-              <button
-                type='submit'
-                className='bg-gradient-to-tr from-indigo-500 to-violet-500 hover:bg-gradient-to-tr hover:from-violet-500 hover:to-indigo-500 w-full mt-3 rounded p-2 text-white text-sm'
+            <div>
+              <Formik
+                initialValues={{ username: '', password: '' }}
+                validationSchema={validationSchema}
+                onSubmit={(values: Values, { setSubmitting }) => {
+                  setTimeout(() => {
+                    setSubmitting(false);
+                    handleSubmit(values.username, values.password);
+                  }, 2000);
+                }}
               >
-                {login ? 'Log In' : 'Create an Account'}
-              </button>
-            </form>
+                <Form className='grid grid-flow-row mt-5'>
+                  <label htmlFor='username' className='grid grid-cols-1'>
+                    Email{' '}
+                    <Field
+                      type='email'
+                      name='username'
+                      className='border border-gray-300 mt-1 rounded'
+                    />
+                    <div className='text-xs text-red-500'>
+                      <ErrorMessage name='username' component='p' />
+                    </div>
+                  </label>
+
+                  <label htmlFor='password' className='grid grid-cols-1 mt-1'>
+                    Password
+                    <Field
+                      type='password'
+                      name='password'
+                      className='border border-gray-300 mt-1 rounded'
+                    />
+                    <div className='text-xs text-red-500'>
+                      <ErrorMessage name='password' component='p' />
+                    </div>
+                  </label>
+
+                  <button
+                    type='submit'
+                    className='bg-gradient-to-tr from-indigo-500 to-violet-500 hover:bg-gradient-to-tr hover:from-violet-500 hover:to-indigo-500 w-full mt-3 rounded p-2 text-white text-sm'
+                  >
+                    Submit
+                  </button>
+                </Form>
+              </Formik>
+            </div>
           </div>
         </div>
       </div>
