@@ -80,9 +80,16 @@ export class CardsService {
     });
     let sortedCards = _.orderBy(
       activeUser.ownedCards[0],
-      [(item) => (item[sortOption] ? item[sortOption] : ''), 'cardName'],
-      ['desc', 'desc'],
+      [(item) => (item['cardName'] ? item[sortOption] : '')],
+      ['asc', 'desc'],
     );
+    if (sortOption === 'cardAtk') {
+      sortedCards = _.orderBy(
+        sortedCards,
+        ['cardAtk', 'cardName'],
+        ['desc', 'asc'],
+      );
+    }
     if (sortOption === 'cardType') {
       sortedCards = _.orderBy(
         activeUser.ownedCards[0],
