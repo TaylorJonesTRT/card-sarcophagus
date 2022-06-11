@@ -107,7 +107,7 @@ const NewCard = (props: any) => {
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
-      className='w-[900px] h-[250px] fixed inset-0 z-50 overflow-x-hidden overflow-y-auto justify-center items-center bg-gradient-to-r from-gray-700 to-gray-900 rounded grid grid-flow-col auto-cols-auto p-5 text-white mx-auto mt-52'
+      className='w-[900px] h-[250px] fixed inset-0 z-50 overflow-x-hidden overflow-y-auto justify-items-center bg-gradient-to-r from-gray-700 to-gray-900 rounded grid grid-cols-3 p-5 text-white mx-auto mt-52'
     >
       <FontAwesomeIcon
         icon={faCircleXmark}
@@ -115,115 +115,124 @@ const NewCard = (props: any) => {
         onClick={handleExit}
         title='Close'
       />
-      {cardImage ? (
-        <img src={cardImage} alt={cardName} className='mt-2 w-28' />
-      ) : (
-        <img src={cardBack} alt='card' className='mt-2 w-28' />
-      )}
+      <div className='w-36 place-self-start'>
+        {cardImage ? (
+          <img src={cardImage} alt={cardName} />
+        ) : (
+          <img src={cardBack} alt='card' />
+        )}
+      </div>
 
-      <ul className='h-max grid grid-col-2 gap-2 pl-5'>
-        <li className='col-start-1'>
-          <label htmlFor='card-name'>
-            Card Name:
-            <input
-              type='text'
-              id='card-name'
-              name='cardName'
-              className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-              value={cardName}
-              onChange={(e) => {
-                setCardName(e.target.value);
-                cardSearch(e.target.value);
-              }}
-            />
-          </label>
-          {cardSearchData.length !== 0 && (
-            <div className='absolute w-[225px] h-auto max-h-[150px] bg-white overflow-auto'>
-              <ul>
-                {cardSearchData.map((card: any) => (
-                  <li
-                    key={card.cardId}
-                    className='text-sm text-black border border-b-1 border-slate-500 hover:bg-slate-200'
-                  >
-                    <div
-                      role='button'
-                      tabIndex={0}
-                      onClick={() => {
-                        handleSearchClick(card.cardId, card.cardName);
-                        setCardImage(card.cardImage);
-                      }}
-                      className='overflow-auto'
+      <div className='mt-2 mr-8'>
+        <ul className='grid pr-10 gap-3'>
+          <li>
+            <label htmlFor='card-name' className='flex flex-col'>
+              Card Name:
+              <input
+                type='text'
+                id='card-name'
+                name='cardName'
+                className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                value={cardName}
+                onChange={(e) => {
+                  setCardName(e.target.value);
+                  cardSearch(e.target.value);
+                }}
+              />
+            </label>
+            {cardSearchData.length !== 0 && (
+              <div className='absolute w-[225px] h-auto max-h-[150px] bg-white overflow-auto'>
+                <ul>
+                  {cardSearchData.map((card: any) => (
+                    <li
+                      key={card.cardId}
+                      className='text-sm text-black border border-b-1 border-slate-500 hover:bg-slate-200'
                     >
-                      {card.cardName}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </li>
-        <li>
-          <label htmlFor='card-owned' className='flex flex-col'>
-            Owned?:
-            <input
-              type='checkbox'
-              id='cardOwned'
-              name='owned'
-              className='text-black border-2 border-gray-400 rounded outline-none w-7 h-7'
-              onChange={(e) => setCardOwned(e.target.checked)}
-            />
-          </label>
-        </li>
-        <li>
-          <label htmlFor='card-amount-copies'>
-            Owned Copies:
-            <input
-              type='number'
-              id='card-amount-copies'
-              name='amountOfCopies'
-              className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-              onChange={(e) => setAmountOfCopies(parseInt(e.target.value, 10))}
-            />
-          </label>
-        </li>
-        <li className='col-start-2'>
-          <label htmlFor='card-available-copies'>
-            Available for Use:
-            <input
-              type='number'
-              id='card-available-copies'
-              name='availableCopies'
-              className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-              onChange={(e) => setAvailableCopies(parseInt(e.target.value, 10))}
-            />
-          </label>
-        </li>
-        <li>
-          <label htmlFor='card-box-location'>
-            Box Location:
-            <input
-              type='text'
-              id='card-box-location'
-              name='boxLocation'
-              className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-              onChange={(e) => setBoxLoaction(e.target.value)}
-            />
-          </label>
-        </li>
-        <li>
-          <label htmlFor='card-binder-location'>
-            Binder Location:
-            <input
-              type='text'
-              id='card-binder-location'
-              name='binderLocation'
-              className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
-              onChange={(e) => setBinderLocation(e.target.value)}
-            />
-          </label>
-        </li>
-      </ul>
-      <div className='flex flex-col gap-4 w-full h-full'>
+                      <div
+                        role='button'
+                        tabIndex={0}
+                        onClick={() => {
+                          handleSearchClick(card.cardId, card.cardName);
+                          setCardImage(card.cardImage);
+                        }}
+                        className='overflow-auto'
+                      >
+                        {card.cardName}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </li>
+          <li className=''>
+            <label htmlFor='card-owned' className='flex flex-col'>
+              Owned?:
+              <input
+                type='checkbox'
+                id='cardOwned'
+                name='owned'
+                className='text-black border-2 border-gray-400 rounded outline-none w-7 h-7'
+                onChange={(e) => setCardOwned(e.target.checked)}
+              />
+            </label>
+          </li>
+          <li>
+            <label htmlFor='card-amount-copies' className='flex flex-col'>
+              Owned Copies:
+              <input
+                type='number'
+                id='card-amount-copies'
+                name='amountOfCopies'
+                className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                onChange={(e) =>
+                  setAmountOfCopies(parseInt(e.target.value, 10))
+                }
+              />
+            </label>
+          </li>
+          <li className='col-start-2'>
+            <label htmlFor='card-available-copies' className='flex flex-col'>
+              Available for Use:
+              <input
+                type='number'
+                id='card-available-copies'
+                name='availableCopies'
+                className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                onChange={(e) =>
+                  setAvailableCopies(parseInt(e.target.value, 10))
+                }
+              />
+            </label>
+          </li>
+          <li>
+            <label htmlFor='card-box-location' className='flex flex-col'>
+              Box Location:
+              <input
+                type='text'
+                id='card-box-location'
+                name='boxLocation'
+                className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                onChange={(e) => setBoxLoaction(e.target.value)}
+              />
+            </label>
+          </li>
+          <li>
+            <label htmlFor='card-binder-location' className='flex flex-col'>
+              Binder Location:
+              <input
+                type='text'
+                id='card-binder-location'
+                name='binderLocation'
+                className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
+                onChange={(e) => setBinderLocation(e.target.value)}
+              />
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div className='flex flex-col w-full h-full pl-8'>
         <button
           className='card-editor-button grow h-auto p-4 bg-gradient-to-tr from-cyan-400 to-blue-500 hover:from-blue-500 hover:to-cyan-400 rounded text-blue-900'
           type='submit'
