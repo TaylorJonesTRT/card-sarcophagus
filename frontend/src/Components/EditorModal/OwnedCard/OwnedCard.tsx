@@ -63,7 +63,7 @@ const OwnedCard = (props: any) => {
           const cardKey = Object.keys(card);
           setCardImage(card[cardKey[0]]['cardImage']);
           setCardName(card[cardKey[0]]['cardName']);
-          setCardOwned(card[cardKey[0]]['cardOwned']);
+          setCardOwned(card[cardKey[0]]['owned']);
           setAmountOfCopies(card[cardKey[0]]['amountOfCopies']);
           setAvailableCopies(card[cardKey[0]]['availableCopies']);
           setBinderLocation(card[cardKey[0]]['binderLocation']);
@@ -183,7 +183,7 @@ const OwnedCard = (props: any) => {
               id='cardOwned'
               name='owned'
               className='text-black border-2 border-gray-400 rounded outline-none w-7 h-7'
-              defaultChecked={cardOwned || false}
+              defaultChecked={cardOwned}
               onChange={(e) => setCardOwned(e.target.checked)}
             />
           </label>
