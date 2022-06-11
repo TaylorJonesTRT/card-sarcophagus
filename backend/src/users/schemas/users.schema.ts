@@ -5,12 +5,18 @@ import * as bcrypt from 'bcrypt';
 
 export type UsersDocument = Users & Document;
 
+const passwordRegex = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/;
+
 @Schema()
 export class Users {
-  @Prop({ required: true })
+  @Prop({ required: true, trim: true, unique: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({
+    required: true,
+    minlength: 8,
+    match: passwordRegex,
+  })
   password: string;
 
   @Prop([{ type: Array }])
