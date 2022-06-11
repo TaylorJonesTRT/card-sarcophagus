@@ -190,6 +190,7 @@ const OwnedCard = (props: any) => {
                 name='owned'
                 className='text-black border-2 border-gray-400 rounded outline-none w-7 h-7'
                 onChange={(e) => setCardOwned(e.target.checked)}
+                checked={cardOwned}
               />
             </label>
           </li>
@@ -204,6 +205,7 @@ const OwnedCard = (props: any) => {
                 onChange={(e) =>
                   setAmountOfCopies(parseInt(e.target.value, 10))
                 }
+                value={amountOfCopies}
               />
             </label>
           </li>
@@ -218,6 +220,7 @@ const OwnedCard = (props: any) => {
                 onChange={(e) =>
                   setAvailableCopies(parseInt(e.target.value, 10))
                 }
+                value={availableCopies}
               />
             </label>
           </li>
@@ -230,6 +233,7 @@ const OwnedCard = (props: any) => {
                 name='boxLocation'
                 className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
                 onChange={(e) => setBoxLoaction(e.target.value)}
+                value={boxLocation}
               />
             </label>
           </li>
@@ -242,6 +246,7 @@ const OwnedCard = (props: any) => {
                 name='binderLocation'
                 className='text-black border-2 border-gray-400 rounded outline-none focus:border-blue-400'
                 onChange={(e) => setBinderLocation(e.target.value)}
+                value={binderLocation}
               />
             </label>
           </li>
