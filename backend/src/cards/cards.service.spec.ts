@@ -110,6 +110,18 @@ describe('CardsService', () => {
   });
 
   // apiFetch
+  it('(Mock)Should return an array of cards', async () => {
+    function mockApiCall() {
+      const array = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(cardArray);
+        }, 300);
+      });
+      return array;
+    }
+
+    expect(await mockApiCall()).toEqual(cardArray);
+  });
 
   // saveCardsToDatabase
 
