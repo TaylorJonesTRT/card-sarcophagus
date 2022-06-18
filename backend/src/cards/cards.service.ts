@@ -9,6 +9,7 @@ import { lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UsersDocument } from '../users/schemas/users.schema';
 import { Card, CardDocument } from './schemas/card.schema';
+import { CardInterface } from './interfaces/card.interface';
 
 @Injectable()
 export class CardsService {
@@ -27,8 +28,8 @@ export class CardsService {
     return dataFetch;
   }
 
-  async saveCardsToDatabase() {
-    const cards = await this.apiFetch();
+  async saveCardsToDatabase(cards: any) {
+    // const cards = await this.apiFetch();
 
     for (let i = 0; i < cards.length; i += 1) {
       const newCard = new this.cardModel({
@@ -64,7 +65,8 @@ export class CardsService {
         );
       });
     }
-    return 'Adding cards to database, check your console';
+    const testing = await this.cardModel.find();
+    return testing.length;
   }
 
   async getOwnedCards(reqUser: any) {

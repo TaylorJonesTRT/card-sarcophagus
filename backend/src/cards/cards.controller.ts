@@ -17,8 +17,10 @@ export class CardsController {
   constructor(private readonly cardsService: CardsService) {}
 
   @Get('update-database')
-  updateCardDatabase() {
-    return this.cardsService.saveCardsToDatabase();
+  async updateCardDatabase() {
+    return this.cardsService.saveCardsToDatabase(
+      await this.cardsService.apiFetch(),
+    );
   }
 
   @UseGuards(JwtAuthGuard)

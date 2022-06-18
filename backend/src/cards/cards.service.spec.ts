@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpModule } from '@nestjs/axios';
-import { MongooseModule } from '@nestjs/mongoose';
+import {
+  getConnectionToken,
+  getModelToken,
+  MongooseModule,
+} from '@nestjs/mongoose';
+import { Connection, Model } from 'mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import {
   closeInMongodConnection,
@@ -8,89 +13,109 @@ import {
 } from '../test_utils/MongooseTestModule';
 import { UsersSchema } from '../users/schemas/users.schema';
 import { CardsService } from './cards.service';
-import { CardSchema } from './schemas/card.schema';
+import { Card, CardDocument, CardSchema } from './schemas/card.schema';
 import { CardInterface } from './interfaces/card.interface';
 import { CardDoc } from './interfaces/card-document.interface';
 
 const mockCard = (
-  cardId = '133121',
-  cardName = 'Dark Magician',
-  cardType = 'Spellcaster',
-  cardLevel = 7,
-  cardAttribute = 'Dark',
-  cardRace = 'Normal Monster',
-  cardDesc = 'I shoot the dark magic',
-  cardAtk = 2500,
-  cardDef = 1300,
-  cardImage = 'https://card-image.com',
-): CardInterface => ({
-  cardId,
-  cardName,
-  cardType,
-  cardLevel,
-  cardAttribute,
-  cardRace,
-  cardDesc,
-  cardAtk,
-  cardDef,
-  cardImage,
-});
-
-const mockCardDoc = (mock?: Partial<CardInterface>): Partial<CardDoc> => ({
-  cardId: mock?.cardId || 'a card id',
-  cardName: mock?.cardName || 'Dark Magician',
-  cardType: mock?.cardType || 'Spellcaster',
-  cardLevel: mock?.cardLevel || 7,
-  cardAttribute: mock?.cardAttribute || 'Dark',
-  cardRace: mock?.cardRace || 'Normal Monster',
-  cardDesc: mock?.cardDesc || 'I shoot the dark magic',
-  cardAtk: mock?.cardAtk || 2500,
-  cardDef: mock?.cardDef || 1300,
-  cardImage: mock?.cardImage || 'https://card-image.com',
+  id = '133121',
+  name = 'Dark Magician',
+  type = 'Spellcaster',
+  level = 7,
+  attribute = 'Dark',
+  race = 'Normal Monster',
+  desc = 'I shoot the dark magic',
+  atk = 2500,
+  def = 1300,
+  card_images = [
+    {
+      image_url: 'https://card-image.com',
+    },
+  ],
+) => ({
+  id,
+  name,
+  type,
+  level,
+  attribute,
+  race,
+  desc,
+  atk,
+  def,
+  card_images,
 });
 
 const cardArray = [
-  mockCard(),
-  mockCard(
-    '323187',
-    'Blue-Eyes White Dragon',
-    'Dragon',
-    7,
-    'Light',
-    'Normal Monster',
-    'I shoot the white eyes',
-    3000,
-    2000,
-    'https://card-image.com',
-  ),
-  mockCard(
-    '16919454',
-    'Red Eyes Black Dragon',
-    'Dragon',
-    7,
-    'Dark',
-    'Normal Monster',
-    'I shoot the red eyes',
-    2700,
-    1500,
-    'https://card-image.com',
-  ),
-  mockCard(
-    '2164947878',
-    'Raiders Knight',
-    'Warrior',
-    4,
-    'Dark',
-    'Xyz',
-    'I shoot the raider knights',
-    2000,
-    0,
-    'https://card-image.com',
-  ),
+  {
+    id: '1',
+    name: 'Blue-Eyes White Dragon',
+    type: 'Dragon',
+    level: 7,
+    attribute: 'Light',
+    race: 'Normal Monster',
+    desc: 'I shoot the white eyes',
+    atk: 3000,
+    def: 2000,
+    card_images: [
+      {
+        image_url: 'https://card-image.com',
+      },
+    ],
+  },
+  {
+    id: '2',
+    name: 'Blue-Eyes red Dragon',
+    type: 'Dragon',
+    level: 7,
+    attribute: 'Light',
+    race: 'Normal Monster',
+    desc: 'I shoot the white eyes',
+    atk: 3000,
+    def: 2000,
+    card_images: [
+      {
+        image_url: 'https://card-image.com',
+      },
+    ],
+  },
+  {
+    id: '3',
+    name: 'Blue-Eyes blue Dragon',
+    type: 'Dragon',
+    level: 7,
+    attribute: 'Light',
+    race: 'Normal Monster',
+    desc: 'I shoot the white eyes',
+    atk: 3000,
+    def: 2000,
+    card_images: [
+      {
+        image_url: 'https://card-image.com',
+      },
+    ],
+  },
+  {
+    id: '4',
+    name: 'Blue-Eyes dark Dragon',
+    type: 'Dragon',
+    level: 7,
+    attribute: 'Light',
+    race: 'Normal Monster',
+    desc: 'I shoot the white eyes',
+    atk: 3000,
+    def: 2000,
+    card_images: [
+      {
+        image_url: 'https://card-image.com',
+      },
+    ],
+  },
 ];
 
 describe('CardsService', () => {
   let service: CardsService;
+  let model: Model<CardDocument>;
+  let connection: Connection;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -103,47 +128,56 @@ describe('CardsService', () => {
       ],
     }).compile();
     service = module.get<CardsService>(CardsService);
+    model = module.get<Model<CardDocument>>(getModelToken(Card.name));
+    connection = await module.get(getConnectionToken());
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  // apiFetch
-  it('(Mock)Should return an array of cards', async () => {
-    function mockApiCall() {
-      const array = new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve(cardArray);
-        }, 300);
-      });
-      return array;
-    }
-
-    expect(await mockApiCall()).toEqual(cardArray);
+  afterAll(async () => {
+    await connection.close();
+    await closeInMongodConnection();
   });
 
-  // saveCardsToDatabase
+  describe('YGOProDeck and DB Loading', () => {
+    it('(Mock)Should return an array of cards', async () => {
+      function mockApiCall() {
+        const array = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(cardArray);
+          }, 300);
+        });
+        return array;
+      }
+      expect(await mockApiCall()).toEqual(cardArray);
+    });
 
-  // getOwnedCards
+    // saveCardsToDatabase
+    it('(Mock)Should save cards to DB', async () => {
+      await service.saveCardsToDatabase(cardArray);
+      expect(await model.find().then((response) => response.length)).toEqual(
+        cardArray.length,
+      );
+    });
 
-  // getSortedCards
+    // getOwnedCards
 
-  // getAllCards
+    // getSortedCards
 
-  // addOwnedCard
+    // getAllCards
 
-  // updateOwnedCard
+    // addOwnedCard
 
-  // getSingleCardData
+    // updateOwnedCard
 
-  // removeOwnedCard
+    // getSingleCardData
 
-  // searchForCards
+    // removeOwnedCard
 
-  // editorSearch
+    // searchForCards
 
-  afterAll(async () => {
-    await closeInMongodConnection();
+    // editorSearch
   });
 });
