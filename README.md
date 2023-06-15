@@ -1,16 +1,28 @@
-# Card Sarcophagus
+# Create T3 App
 
-View Live: [https://www.cardsarcophagus.com]
+This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
-### Not ready for mobile use yet, only desktop.
+## What's next? How do I make an app with this?
 
----
+We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
 
-## About
-This project has been created to help out Yu-Gi-Oh! players with their card collections. Every player has had to deal with the issue of "I think I own this card... or did I trade/sell it away??" or "I know I have this card but where?". Players have huge amounts of bulk that can be stored in either binder or boxes and when looking for a specific card they have to endlessly search until it has been found.
+If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 
----
+- [Next.js](https://nextjs.org)
+- [NextAuth.js](https://next-auth.js.org)
+- [Prisma](https://prisma.io)
+- [Tailwind CSS](https://tailwindcss.com)
+- [tRPC](https://trpc.io)
 
-## Running CardSarcophagus Locally
+## Learn More
 
-___
+To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+
+- [Documentation](https://create.t3.gg/)
+- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+
+You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+
+## How do I deploy this?
+
+Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
